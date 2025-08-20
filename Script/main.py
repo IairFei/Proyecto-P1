@@ -3,14 +3,14 @@ from baseDeDatos import mostrarMaterias, inicializarDatos, agregarMateriaAlCalen
 def inicioDePrograma():
     print("Bienvenido al programa de gestión de materias.")
     print("Por favor, siga las instrucciones para ingresar los datos de las materias.")
-    anio = int(input("Ingrese el año en el que se cursa la materia (0 para terminar): "))
+    anio = int(input("Ingrese el año de la carrera en el que está (1-5). 0 para terminar: "))
     if anio != 0:
-        while anio < 0:
-            print("El año no puede ser negativo. Intente nuevamente.")
+        while anio < 0 and anio > 5:
+            print("El año debe estar entre 1 y 5. Intente nuevamente: ")
             anio = int(input("Ingrese el año en el que se cursa la materia (0 para terminar): "))
-        cuatrimestre = int(input("Ingrese el cuatrimestre en el que se cursa la materia: "))
-        while cuatrimestre < 0 or cuatrimestre > 2:
-            print("El cuatrimestre no puede ser negativo o mayor a 2. Intente nuevamente.")
+        cuatrimestre = int(input("Ingrese el cuatrimestre en el que se cursa la materia (1-2): "))
+        while cuatrimestre < 1 or cuatrimestre > 2:
+            print("El cuatrimestre debe ser 1 o 2. Intente nuevamente.")
             cuatrimestre = int(input("Ingrese el cuatrimestre en el que se cursa la materia: "))
         materiasAElegir = mostrarMaterias(anio, cuatrimestre)
         
