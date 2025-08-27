@@ -42,6 +42,11 @@ def inicioDePrograma():
             estado = estadoPackDe5Materias()
             print(f"Estado 'Pack de 5 materias': {estado}")  """
 
+        if opcionElegida == 5:
+            verCalendario(calendario, materias)
+            inicioDePrograma()
+            
+
         
 
 if __name__ == "__main__":
