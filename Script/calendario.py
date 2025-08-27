@@ -15,15 +15,8 @@ def verCalendario(calendario, materias):
     
     for i in range(5):
         dia = dias[i]
-        fila = calendario[i]
-        if fila[0] != -1:
-            nombre_materia = "Materia no encontrada"
-            for materia in materias:
-                if materia.startswith(f"{fila[0]}-"):
-                    nombre_materia = materia.split(".", 2)[2]
-        else:
-            nombre_materia = "---"
-        
+        materia = calendario[i]
+        nombre_materia=materias[materia].split(".", 2)[2]
         print(f"{dia:<12} {nombre_materia:<35}")
     
     print("-" * 50)
