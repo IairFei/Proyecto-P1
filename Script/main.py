@@ -1,4 +1,5 @@
 from vallidacionDeDatos import estaDentroDelRango
+from calendario import verCalendario
 
 def mostrarMateriasDisponibles(anio, semestre):
     print(f"Mostrando materias disponibles para el año {anio}, semestre {semestre}:")
