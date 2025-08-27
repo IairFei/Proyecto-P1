@@ -1,38 +1,47 @@
 from vallidacionDeDatos import estaDentroDelRango
-from calendario import verCalendario
 
+def mostrarMateriasDisponibles(anio, semestre):
+    print(f"Mostrando materias disponibles para el año {anio}, semestre {semestre}:")
+    for materia in materias:    
+        codigo= materia.split("-", 1)
+        anioMateria= codigo[1].split(".", 1)[0]
+        cuatrimestre= codigo[1].split(".", 2)[1]
+        if int(anioMateria) == anio and int(cuatrimestre) == semestre:
+            print(f"- {materia}")
+    
 def inicioDePrograma():
-    print("Bienvenido al programa de gestión de materias.")
-    print("Por favor, siga las instrucciones para ingresar los datos de las materias.")
-    print("-----------------------------------------------------")
     print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n0- Salir\n")
     opcionElegida = int(input("Usuario: "))
     print("-----------------------------------------------------")
-    while estaDentroDelRango(0,6,opcionElegida) == False:
-        print("Opción inválida. Por favor, elija una opción válida.")
-        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n0- Salir\n")
-        opcionElegida = int(input("Usuario: "))
-        print("-----------------------------------------------------")
-    if opcionElegida == 1:
-        print("Ingrese el año de la materia (1-5): ")
-        anioElegido = int(input("Usuario: "))
-        while estaDentroDelRango(1,5,anioElegido) == False:
-            print("Año inválido. Por favor, ingrese un año válido (1-5).")
+    while opcionElegida != 0:
+        while estaDentroDelRango(0,6,opcionElegida) == False:
+            print("Opción inválida. Por favor, elija una opción válida.")
+            print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n0- Salir\n")
+            opcionElegida = int(input("Usuario: "))
+            print("-----------------------------------------------------")
+        if opcionElegida == 1:
             print("Ingrese el año de la materia (1-5): ")
-            anioElegido = input("Usuario: ")       
-        print("Ingrese el semestre de la materia (1-2): ")
-        semestreElegido = int(input("Usuario: "))
-        while estaDentroDelRango(1,2,semestreElegido) == False:
-            print("Semestre inválido. Por favor, ingrese un semestre válido (1-2).")
+            anioElegido = int(input("Usuario: "))
+            while estaDentroDelRango(1,5,anioElegido) == False:
+                print("Año inválido. Por favor, ingrese un año válido (1-5).")
+                print("Ingrese el año de la materia (1-5): ")
+                anioElegido = int(input("Usuario: "))  
             print("Ingrese el semestre de la materia (1-2): ")
             semestreElegido = int(input("Usuario: "))
-    if opcionElegida == 2:
-        estado = estadoPackDe5Materias()
-        print(f"Estado 'Pack de 5 materias': {estado}")
+            while estaDentroDelRango(1,2,semestreElegido) == False:
+                print("Semestre inválido. Por favor, ingrese un semestre válido (1-2).")
+                print("Ingrese el semestre de la materia (1-2): ")
+                semestreElegido = int(input("Usuario: "))
+            mostrarMateriasDisponibles(anioElegido, semestreElegido)
+            inicioDePrograma()
+            
+            
+            
+        """if opcionElegida == 2:
+            estado = estadoPackDe5Materias()
+            print(f"Estado 'Pack de 5 materias': {estado}")  """
 
-    if opcionElegida == 5:
-        verCalendario(calendario, materias)
-       
+        
 
 if __name__ == "__main__":
     calendario = [0,1,2,3,4]
