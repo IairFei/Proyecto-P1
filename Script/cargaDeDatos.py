@@ -1,4 +1,4 @@
-materias = []
+"""materias = []
 
 def cargaDeMaterias():
     materias.append([1,1, "Fundamentos de Informática"])
@@ -56,3 +56,5 @@ def cargaDeMaterias():
     
     return materias
     
+"""
+
