@@ -1,3 +1,5 @@
+import random
+
 def verCalendario(calendario, materias):
     """
     Muestra el calendario de materias como matriz formateada
@@ -22,3 +24,13 @@ def verCalendario(calendario, materias):
     print("-" * 50)
     print("✨ Fin del calendario ✨")
     print("=" * 50)
+
+def inscribirseAMateria(indice, materias, diasCalendario, calendario):
+    materiaAInscribirse = materias[indice].split(".",3)
+    print(materiaAInscribirse)
+    print(f"Inscribiendose a la materia: {materiaAInscribirse[2]}")
+    diaElegido = random.choice(diasCalendario)
+    calendario[diaElegido] = indice, materiaAInscribirse[2]
+    diasCalendario.remove(diaElegido)
+    print(calendario)
+    return True
