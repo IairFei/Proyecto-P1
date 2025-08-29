@@ -85,9 +85,6 @@ def inicioDePrograma():
                 else:
                     print("No se pudo cargar la nota porque la materia no fue encontrada.")
                 opcionElegida = menuPrincipal()
-            
-            
-            
         """if opcionElegida == 2:
             estado = estadoPackDe5Materias()
             print(f"Estado 'Pack de 5 materias': {estado}")  """
