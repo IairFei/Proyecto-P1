@@ -25,12 +25,16 @@ def buscarMateriaPorIndice(indice, materias):
 
 def buscarMateriaPorNombre(nombre, materias):
     cont = 0
+    materiaEncontrada = False
     indiceEncontrado = -1
-    while indiceEncontrado == -1 and cont < len(materias):
+    while materiaEncontrada == False and cont < len(materias):
         materia = materias[cont].split(".",3)
         nombreDeMateria = materia[2]
         if nombreDeMateria.lower().strip() == nombre.lower().strip():
             indiceEncontrado = cont
+            materiaEncontrada = True
             print(indiceEncontrado)
         cont += 1
+    if materiaEncontrada == False:
+        print("No se encontro la materia.")
     return indiceEncontrado
