@@ -13,3 +13,24 @@ def mostrarMateriasDisponibles(anio, cuatrimestre, materias):
             contMateriasDisponibles+=1
         indiceEnMaterias += 1
     return indices
+
+def buscarNombreMateriaPorIndice(indice, materias):
+    materia = materias[indice].split(".",3)
+    nombreDeMateria = materia[2]
+    return nombreDeMateria
+
+def buscarMateriaPorIndice(indice, materias):
+    materia = materias[indice].split(".",3)
+    return materia
+
+def buscarMateriaPorNombre(nombre, materias):
+    cont = 0
+    indiceEncontrado = -1
+    while indiceEncontrado == -1 and cont < len(materias):
+        materia = materias[cont].split(".",3)
+        nombreDeMateria = materia[2]
+        if nombreDeMateria.lower().strip() == nombre.lower().strip():
+            indiceEncontrado = cont
+            print(indiceEncontrado)
+        cont += 1
+    return indiceEncontrado
