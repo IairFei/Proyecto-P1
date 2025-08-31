@@ -41,10 +41,11 @@ def buscarMateriaPorNombre(nombre, materias):
 
 def tieneCorrelativasAprobadas(indiceMateria, materias, notasFinales, correlativas):
     contNoAprobadas = 0
+    aproboCorrelativas = True
     for i in range(len(correlativas[indiceMateria])):
         if correlativas[indiceMateria][i]==1 and notasFinales[i] < 4:
             print(f"Correlativa no aprobada: {materias[i]}")
             contNoAprobadas += 1
     if contNoAprobadas > 0:
-        return False
-    return True
+        aproboCorrelativas = False
+    return aproboCorrelativas
