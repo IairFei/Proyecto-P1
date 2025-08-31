@@ -1,6 +1,6 @@
 from vallidacionDeDatos import estaDentroDelRango, charValido
 from calendario import verCalendario, inscribirseAMateria
-from materias import mostrarMateriasDisponibles, buscarNombreMateriaPorIndice, buscarMateriaPorIndice, buscarMateriaPorNombre, tieneCorrelativasAprobadas
+from materias import mostrarMateriasDisponibles, buscarNombreMateriaPorIndice, buscarMateriaPorIndice, buscarMateriaPorNombre, tieneCorrelativasAprobadas, estadoPackDe5Materias
 
 def menuPrincipal():
     print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n0- Salir\n")
@@ -41,6 +41,47 @@ def inicioDePrograma():
                 print("No se pudo inscribir a la materia, todos los dias estan ocupados.")
             else:
                 print("La inscripcion se realizo con exito.")
+            opcionElegida = menuPrincipal()
+
+    #PACK DE 5 MATERIAS
+        if opcionElegida == 2:
+            estado = estadoPackDe5Materias(calendario, materiasRecursar)
+            print(f"Estado 'Pack de 5 materias': {estado}")
+            if estado == True:
+                print("Cumple con las condiciones para el 'Pack de 5 materias'.")
+                print("Vas a seleccionar 5 materias y el sistema automáticamente te inscribirá en días al azar.")
+                lista5Materias=[]
+                while len(lista5Materias) < 5:
+                    print("Ingrese el año de la materia (1-5): ")
+                    anioElegido = int(input("Usuario: "))
+                    while estaDentroDelRango(1,5,anioElegido) == False:
+                        print("Año inválido. Por favor, ingrese un año válido (1-5).")
+                        print("Ingrese el año de la materia (1-5): ")
+                        anioElegido = int(input("Usuario: "))  
+                    print("Ingrese el cuatrimestre de la materia (1-2): ")
+                    cuatrimestreElegido = int(input("Usuario: "))
+                    while estaDentroDelRango(1,2,cuatrimestreElegido) == False:
+                        print("Cuatrimestre inválido. Por favor, ingrese un cuatrimestre válido (1-2).")
+                        print("Ingrese el cuatrimestre de la materia (1-2): ")
+                        cuatrimestreElegido = int(input("Usuario: "))
+                    materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias)
+                    print(f"Ingrese el numero de la materia que desea inscribirse (1 a  {len(materiasDisponibles)}):")
+                    materiaElegida = int(input("Usuario: "))
+                    while estaDentroDelRango(1, len(materiasDisponibles), materiaElegida)==False:
+                        print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
+                        print(f"Ingrese el numero de la materia que desea inscribirse (1 a {len(materiasDisponibles)}):")
+                        materiaElegida = int(input("Usuario: "))
+                    correlativasMateria = tieneCorrelativasAprobadas(materiasDisponibles[materiaElegida-1], materias, notaFinal, correlativas)
+                    if correlativasMateria == True:
+                        lista5Materias.append(materiasDisponibles[materiaElegida-1])
+                    else:
+                        print("No se cumplen las correlativas para la materia seleccionada. Elegí otra.")
+                for i in range(5):
+                    inscribirseAMateria(lista5Materias[i], materias, diasCalendario,calendario, notaFinal, correlativas)
+                print("Inscripción al 'Pack de 5 materias' completada. Tu calendario quedó así:")
+                verCalendario(calendario, materias)
+            else:
+                print("No cumple con las condiciones para el 'Pack de 5 materias'.")
             opcionElegida = menuPrincipal()
 
     #CARGA DE NOTAS
@@ -94,9 +135,6 @@ def inicioDePrograma():
             else:
                 print("No hay materia asignada para ese día. Volviendo al menú principal.")
                 opcionElegida = menuPrincipal()
-        """if opcionElegida == 2:
-            estado = estadoPackDe5Materias()
-            print(f"Estado 'Pack de 5 materias': {estado}")  """
 
     # VER CALENDARIO
         if opcionElegida == 5:

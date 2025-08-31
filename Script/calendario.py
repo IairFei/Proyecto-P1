@@ -1,5 +1,5 @@
-import random
 
+import random
 from materias import tieneCorrelativasAprobadas
 
 def verCalendario(calendario, materias):
@@ -42,3 +42,4 @@ def inscribirseAMateria(indice, materias, diasCalendario, calendario, notaFinal,
     else:
         print("No se pudieron cumplir las condiciones para inscribirse.")
     return sePudoInscribir
+
