@@ -1,3 +1,4 @@
+
 def mostrarMateriasDisponibles(anio, cuatrimestre, materias):
     print(f"Mostrando materias disponibles para el año {anio}, cuatrimestre {cuatrimestre}:")
     indiceEnMaterias = 0
@@ -49,3 +50,31 @@ def tieneCorrelativasAprobadas(indiceMateria, materias, notasFinales, correlativ
     if contNoAprobadas > 0:
         aproboCorrelativas = False
     return aproboCorrelativas
+
+def tieneRecursadas(materiasRecursar):
+    tiene = False
+    i = 0
+    while i < len(materiasRecursar) and tiene == False:
+        if materiasRecursar[i] == 1:
+            tiene = True
+        i += 1
+    return tiene
+
+def tieneCalendarioVacio(calendario):
+    vacio = True
+    i = 0
+    while i < len(calendario) and vacio == True:
+        if calendario[i] != -1:
+            vacio = False
+        i += 1
+    return vacio
+
+
+def estadoPackDe5Materias(calendario, materiasRecursar):
+    vacio=tieneCalendarioVacio(calendario)
+    recursadas=tieneRecursadas(materiasRecursar)
+    print(f"Vacio: {vacio}, Recursadas: {recursadas}")
+    if vacio==True and recursadas==False:
+        return True
+    return False
+
