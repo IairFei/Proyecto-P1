@@ -1,5 +1,4 @@
-
-def mostrarMateriasDisponibles(anio, cuatrimestre, materias):
+def mostrarMateriasDisponibles(anio, cuatrimestre, materias, calendario):
     print(f"Mostrando materias disponibles para el año {anio}, cuatrimestre {cuatrimestre}:")
     indiceEnMaterias = 0
     contMateriasDisponibles = 1
@@ -8,7 +7,7 @@ def mostrarMateriasDisponibles(anio, cuatrimestre, materias):
         materia = materia.split(".", 3)
         anioMateria= materia[0]
         cuatrimestreMateria= materia[1]
-        if int(anioMateria) == anio and int(cuatrimestreMateria) == cuatrimestre:
+        if int(anioMateria) == anio and int(cuatrimestreMateria) == cuatrimestre and indiceEnMaterias not in calendario:
             print(f"{contMateriasDisponibles}- {materia[2]}")
             indices.append(indiceEnMaterias)
             contMateriasDisponibles+=1

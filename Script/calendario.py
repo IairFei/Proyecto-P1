@@ -33,7 +33,7 @@ def inscribirseAMateria(indice, materias, diasCalendario, calendario, notaFinal,
     sePudoInscribir = False
     materiaAInscribirse = materias[indice].split(".",3)
     print(f"Inscribiendose a la materia: {materiaAInscribirse[2]}")
-    if tieneCorrelativasAprobadas(indice, materias, notaFinal, correlativas):
+    if tieneCorrelativasAprobadas(indice, materias, notaFinal, correlativas) and indice not in calendario:
         if len(diasCalendario) > 0:
             diaElegido = random.choice(diasCalendario)
             calendario[diaElegido] = indice
