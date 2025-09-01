@@ -135,6 +135,31 @@ def inicioDePrograma():
             else:
                 print("No hay materia asignada para ese día. Volviendo al menú principal.")
                 opcionElegida = menuPrincipal()
+    
+    #DAR DE BAJA
+        if opcionElegida == 4:
+            print("Ingrese el numero del dia de la materia que desea dar de baja:")
+            verCalendario(calendario, materias)
+            diaIngresado = int(input("Usuario: "))
+            if calendario[diaIngresado-1] != -1:
+                indiceMateria = calendario[diaIngresado-1]
+                materia = materias[indiceMateria].split(".",3)
+                print(f"¿Desea dar de baja la materia {materia[2]}? (s/n): ")
+                respuesta = input("Usuario: ")
+                while charValido(respuesta) == False:
+                    print("Caracter inválido. Por favor, ingrese 's' para sí o 'n' para no.")
+                    print(f"¿Desea dar de baja la materia {materia[2]}? (s/n): ")
+                    respuesta = input("Usuario: ")
+                if respuesta.lower().strip() == 'n':
+                    print("Operacion cancelada. Volviendo al menú principal.")
+                    opcionElegida = menuPrincipal()
+                else:
+                    calendario[diaIngresado-1] = -1                    
+                    opcionElegida = menuPrincipal()
+            else:
+                print("No hay materia asignada para ese día. Volviendo al menú principal.")
+                opcionElegida = menuPrincipal()
+
 
     # VER CALENDARIO
         if opcionElegida == 5:
