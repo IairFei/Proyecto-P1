@@ -29,7 +29,7 @@ def inicioDePrograma():
                 print("Cuatrimestre inválido. Por favor, ingrese un cuatrimestre válido (1-2).")
                 print("Ingrese el cuatrimestre de la materia (1-2): ")
                 cuatrimestreElegido = int(input("Usuario: "))
-            materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias)
+            materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario)
             print(f"Ingrese el numero de la materia que desea inscribirse (1 a  {len(materiasDisponibles)}):")
             materiaElegida = int(input("Usuario: "))
             while estaDentroDelRango(1, len(materiasDisponibles), materiaElegida)==False:
