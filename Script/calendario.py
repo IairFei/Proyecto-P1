@@ -1,6 +1,6 @@
 
 import random
-from materias import tieneCorrelativasAprobadas
+from materias import tieneCorrelativasAprobadas, darDeBajaNotas
 
 def verCalendario(calendario, materias):
     """
@@ -43,3 +43,9 @@ def inscribirseAMateria(indice, materias, diasCalendario, calendario, notaFinal,
         print("No se pudieron cumplir las condiciones para inscribirse.")
     return sePudoInscribir
 
+def darDeBajaMateria(diaIngresado,calendario,diasCalendario,p1,p2,notaFinal):
+    indiceMateria = calendario[diaIngresado-1]
+    calendario[diaIngresado-1] = -1
+    diasCalendario.append(diaIngresado-1)
+    diasCalendario.sort()
+    darDeBajaNotas(indiceMateria,p1,p2,notaFinal)
