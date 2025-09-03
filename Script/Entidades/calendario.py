@@ -1,6 +1,6 @@
 
 import random
-from Script.Entidades.materias import tieneCorrelativasAprobadas, darDeBajaNotas
+from Entidades.materias import tieneCorrelativasAprobadas, darDeBajaNotas
 
 def verCalendario(calendario, materias):
     """

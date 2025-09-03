@@ -22,3 +22,6 @@ def tieneNotaParcial1(p1, indiceMateria):
     if p1[indiceMateria] != 0:
         tieneNota = True
     return tieneNota
+
+def esCero(dato):
+    return dato == 0
