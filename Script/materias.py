@@ -1,4 +1,6 @@
-def mostrarMateriasDisponibles(anio, cuatrimestre, materias, calendario):
+from vallidacionDeDatos import estaDentroDelRango, tieneNotasParciales, tieneNotaParcial1
+
+def mostrarMateriasDisponibles(anio, cuatrimestre, materias, calendario, notaFinal):
     print(f"Mostrando materias disponibles para el año {anio}, cuatrimestre {cuatrimestre}:")
     indiceEnMaterias = 0
     contMateriasDisponibles = 1
@@ -7,7 +9,7 @@ def mostrarMateriasDisponibles(anio, cuatrimestre, materias, calendario):
         materia = materia.split(".", 3)
         anioMateria= materia[0]
         cuatrimestreMateria= materia[1]
-        if int(anioMateria) == anio and int(cuatrimestreMateria) == cuatrimestre and indiceEnMaterias not in calendario:
+        if int(anioMateria) == anio and int(cuatrimestreMateria) == cuatrimestre and indiceEnMaterias not in calendario and notaFinal[indiceEnMaterias] == 0:
             print(f"{contMateriasDisponibles}- {materia[2]}")
             indices.append(indiceEnMaterias)
             contMateriasDisponibles+=1
@@ -81,3 +83,81 @@ def darDeBajaNotas(indiceMateria,p1,p2,notaFinal):
     p1[indiceMateria] = 0
     p2[indiceMateria] = 0
     notaFinal[indiceMateria] = 0
+
+def cargarNotas(indiceMateria,p1,p2,finales,notaFinal,materias, calendario, diasCalendario, materiasAprobadas, materiasRecursar):
+    print(f"Cargando notas para la materia: {buscarNombreMateriaPorIndice(indiceMateria,materias)}")
+    cond = 1
+    while cond == 1:
+        print("¿Que nota desea cargar?")
+        print("1- Primer parcial")
+        print("2- Segundo parcial")
+        print("3- Final regular")
+        print("0- Volver al menu principal")
+        opcion = int(input("Usuario: "))
+        while estaDentroDelRango(0,3,opcion) == False:
+            print("Opcion inválida. Por favor, ingrese una opcion válida (1-3).")
+            print("¿Que nota desea cargar?")
+            print("1- Primer parcial")
+            print("2- Segundo parcial")
+            print("3- Final regular")
+            print("0- Volver al menu principal")
+            opcion = int(input("Usuario: "))
+        if opcion == 0:
+            cond = 0
+        if opcion == 1:
+            print("Ingrese la nota del primer parcial (0-10):")
+            notaP1 = int(input("Usuario: "))
+            while estaDentroDelRango(0,10,notaP1) == False:
+                print("Nota inválida. Por favor, ingrese una nota válida (0-10).")
+                print("Ingrese la nota del primer parcial (0-10):")
+                notaP1 = int(input("Usuario: "))
+            p1[indiceMateria] = notaP1
+        if opcion == 2:
+            if tieneNotaParcial1(p1,indiceMateria) == False:
+                print("No se puede cargar nota de segundo parcial sin nota de primer parcial.")
+            else:
+                print("Ingrese la nota del segundo parcial (0-10):")
+                notaP2 = int(input("Usuario: "))
+                while estaDentroDelRango(0,10,notaP2) == False:
+                    print("Nota inválida. Por favor, ingrese una nota válida (0-10).")
+                    print("Ingrese la nota del segundo parcial (0-10):")
+                    notaP2 = int(input("Usuario: "))
+                p2[indiceMateria] = notaP2
+                if p2[indiceMateria] < 4 and notaP1 < 4:
+                    print("Materia para recursar.")
+                    eliminarMateriaDelCalendario(indiceMateria,calendario,diasCalendario)
+                    cond = 0
+        if opcion == 3:
+            if tieneNotasParciales(p1,p2,indiceMateria) == False:
+                print("No se pueden cargar notas de final sin notas parciales.")
+            else:
+                print("Ingrese la nota final (0-10):")
+                notaFinalInput = int(input("Usuario: "))
+                while estaDentroDelRango(0,10,notaFinalInput) == False:
+                    print("Nota inválida. Por favor, ingrese una nota válida (0-10).")
+                    print("Ingrese la nota final (0-10):")
+                    notaFinalInput = int(input("Usuario: "))
+                finales[indiceMateria] = notaFinalInput
+                if finales[indiceMateria] >= 4:
+                    notaFinal[indiceMateria] = calcularNotaFinal(p1,p2,finales,indiceMateria)
+                    materiasAprobadas[indiceMateria] = 1
+                    print("Materia aprobada.")
+                    eliminarMateriaDelCalendario(indiceMateria,calendario,diasCalendario)
+                else:
+                    materiasRecursar[indiceMateria] = 1
+                    print("Materia para recursar.")
+                    eliminarMateriaDelCalendario(indiceMateria,calendario,diasCalendario)
+                cond = 0
+
+def calcularNotaFinal(p1,p2,finales,indiceMateria):
+    notaFinal = (p1[indiceMateria] + p2[indiceMateria] + finales[indiceMateria])//3
+    return notaFinal
+
+def eliminarMateriaDelCalendario(indiceMateria,calendario,diasCalendario):
+    for i in range(len(calendario)):
+        if calendario[i] == indiceMateria:
+            calendario[i] = -1
+            diasCalendario.append(i)
+            diasCalendario.sort()
+
+            
