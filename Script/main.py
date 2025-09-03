@@ -1,5 +1,5 @@
 from vallidacionDeDatos import estaDentroDelRango, charValido
-from calendario import verCalendario, inscribirseAMateria
+from calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
 from materias import mostrarMateriasDisponibles, buscarNombreMateriaPorIndice, buscarMateriaPorIndice, buscarMateriaPorNombre, tieneCorrelativasAprobadas, estadoPackDe5Materias
 
 def menuPrincipal():
@@ -97,7 +97,7 @@ def inicioDePrograma():
                 nombreCorrecto = input("Usuario: ")
                 while charValido(nombreCorrecto) == False:
                     print("Caracter inválido. Por favor, ingrese 's' para sí o 'n' para no.")
-                    print("El la materia que queria elegir? (s/n)")
+                    print("Es la materia que queria elegir? (s/n)")
                     nombreCorrecto = input("Usuario: ")
                 if nombreCorrecto.lower().strip() == 'n':
                     print("Operacion cancelada. Volviendo al menú principal.")
@@ -154,7 +154,7 @@ def inicioDePrograma():
                     print("Operacion cancelada. Volviendo al menú principal.")
                     opcionElegida = menuPrincipal()
                 else:
-                    calendario[diaIngresado-1] = -1                    
+                    darDeBajaMateria(diaIngresado,calendario,diasCalendario,p1,p2,notaFinal)                    
                     opcionElegida = menuPrincipal()
             else:
                 print("No hay materia asignada para ese día. Volviendo al menú principal.")

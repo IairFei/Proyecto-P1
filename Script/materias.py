@@ -77,3 +77,7 @@ def estadoPackDe5Materias(calendario, materiasRecursar):
         return True
     return False
 
+def darDeBajaNotas(indiceMateria,p1,p2,notaFinal):
+    p1[indiceMateria] = 0
+    p2[indiceMateria] = 0
+    notaFinal[indiceMateria] = 0
