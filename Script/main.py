@@ -1,6 +1,6 @@
-from Script.ManejoDeDatos.vallidacionDeDatos import estaDentroDelRango, charValido
-from Script.Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
-from Script.Entidades.materias import mostrarMateriasDisponibles, buscarNombreMateriaPorIndice, buscarMateriaPorIndice, buscarMateriaPorNombre, tieneCorrelativasAprobadas, estadoPackDe5Materias, cargarNotas
+from ManejoDeDatos.vallidacionDeDatos import estaDentroDelRango, charValido, esCero
+from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
+from Entidades.materias import mostrarMateriasDisponibles, tieneCorrelativasAprobadas, estadoPackDe5Materias, cargarNotas
 
 def menuPrincipal():
     print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n0- Salir\n")
