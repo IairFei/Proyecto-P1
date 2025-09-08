@@ -1,4 +1,4 @@
-from Script.ManejoDeDatos.vallidacionDeDatos import estaDentroDelRango, tieneNotasParciales, tieneNotaParcial1
+from ManejoDeDatos.vallidacionDeDatos import estaDentroDelRango, tieneNotasParciales, tieneNotaParcial1
 
 def mostrarMateriasDisponibles(anio, cuatrimestre, materias, calendario, notaFinal):
     print(f"Mostrando materias disponibles para el año {anio}, cuatrimestre {cuatrimestre}:")

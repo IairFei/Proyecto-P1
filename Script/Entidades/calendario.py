@@ -1,6 +1,6 @@
 
 import random
-from Script.Entidades.materias import tieneCorrelativasAprobadas, darDeBajaNotas
+from Entidades.materias import tieneCorrelativasAprobadas, darDeBajaNotas
 
 def verCalendario(calendario, materias):
     """
@@ -49,4 +49,3 @@ def darDeBajaMateria(diaIngresado,calendario,diasCalendario,p1,p2,notaFinal):
     diasCalendario.append(diaIngresado-1)
     diasCalendario.sort()
     darDeBajaNotas(indiceMateria,p1,p2,notaFinal)
-
