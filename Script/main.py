@@ -130,7 +130,8 @@ def inicioDePrograma():
                 print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a {len(materiasDisponibles)}):")
                 materiaElegida = int(input("Usuario: "))
             indiceMateria = materiasDisponibles[materiaElegida-1]
-            if p1[indiceMateria] == 0 and p2[indiceMateria] == 0 and finales[indiceMateria] == 0 and notaFinal[indiceMateria] == 0:
+            Esvacio = lambda: p1[indiceMateria] + p2[indiceMateria] + finales[indiceMateria] + notaFinal[indiceMateria] == 0
+            if  Esvacio():
                 print(f"No se encuentran notas cargadas para la materia {materias[indiceMateria].split(".")[2]}.")
             else:
                 print(f"Mostrando notas de la materia: {materias[indiceMateria].split(".")[2]}")
