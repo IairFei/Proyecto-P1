@@ -165,18 +165,18 @@ def eliminarMateriaDelCalendario(indiceMateria,calendario,diasCalendario):
             diasCalendario.append(i)
             diasCalendario.sort()
 
-def mostrarMateriasCuatrimestre(anio, cuatrimestre, materias):
-    print(f"Mostrando materias del año {anio}, cuatrimestre {cuatrimestre}:")
-    indiceEnMaterias = 0
-    contMateriasDisponibles = 1
-    indices=[]
-    for materia in materias: 
-        materia = materia.split(".", 3)
-        anioMateria= materia[0]
-        cuatrimestreMateria= materia[1]
-        if int(anioMateria) == anio and int(cuatrimestreMateria) == cuatrimestre:
-            print(f"{contMateriasDisponibles}- {materia[2]}")
-            indices.append(indiceEnMaterias)
-            contMateriasDisponibles+=1
-        indiceEnMaterias += 1
-    return indices
+#SACA PROMEDIOS
+promedio= lambda lista: sum(lista) / len(lista)
+
+def promedioCursada(notaFinal):
+    notas=[]
+    for i in range(len(notaFinal)):
+        if notaFinal[i]!=0:
+            notas.append(notaFinal[i])
+            print()
+    if len(notas)==0:
+        print("No hay ninguna materia con nota final cargada")
+    else:
+        prom=promedio(notas)
+        print("el promedio de la cursada es de",prom)
+

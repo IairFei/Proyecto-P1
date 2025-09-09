@@ -1,12 +1,13 @@
 from ManejoDeDatos.vallidacionDeDatos import estaDentroDelRango, charValido
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
-from Entidades.materias import mostrarMateriasDisponibles, tieneCorrelativasAprobadas, estadoPackDe5Materias, cargarNotas
+from Entidades.materias import mostrarMateriasDisponibles, promedioCursada, tieneCorrelativasAprobadas, estadoPackDe5Materias, cargarNotas
 
 def menuPrincipal():
-    print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n0- Salir\n")
+    print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de notas\n0- Salir\n")
     opcionElegida = int(input("Usuario: "))
     print("-----------------------------------------------------")
     return opcionElegida
+
 def eleccionDeMateriaAnio():
     print("Ingrese el año de la materia (1-5): ")
     anioElegido = int(input("Usuario: "))
@@ -23,7 +24,6 @@ def eleccionDeMateriaCuatrimestre():
         print("Ingrese el cuatrimestre de la materia (1-2): ")
         cuatrimestreElegido = int(input("Usuario: "))
     return cuatrimestreElegido    
-
 def inicioDePrograma():
     opcionElegida = menuPrincipal()
     while opcionElegida != 0:
@@ -41,11 +41,7 @@ def inicioDePrograma():
                 print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
                 print(f"Ingrese el numero de la materia que desea inscribirse (1 a {len(materiasDisponibles)}):")
                 materiaElegida = int(input("Usuario: "))
-            inscripcionCorrecta = inscribirseAMateria(materiasDisponibles[materiaElegida-1], materias, diasCalendario,calendario, notaFinal, correlativas)
-            if inscripcionCorrecta == False:
-                print("No se pudo inscribir a la materia, todos los dias estan ocupados.")
-            else:
-                print("La inscripcion se realizo con exito.")
+            inscribirseAMateria(materiasDisponibles[materiaElegida-1], materias, diasCalendario,calendario, notaFinal, correlativas)
             opcionElegida = menuPrincipal()
 
     #PACK DE 5 MATERIAS
@@ -142,6 +138,15 @@ def inicioDePrograma():
                 print(f"Examen Final: {finales[indiceMateria]}")
                 print(f"Nota final: {notaFinal[indiceMateria]}")
             opcionElegida = menuPrincipal()
+
+    #VER PROMEDIO CURSADA
+        if opcionElegida == 7:
+    
+            print("Notas")
+            promedioCursada(notaFinal)
+            opcionElegida = menuPrincipal()
+
+               
 
 if __name__ == "__main__":
     diasCalendario = [0,1,2,3,4]
