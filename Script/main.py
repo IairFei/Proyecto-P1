@@ -37,11 +37,7 @@ def inicioDePrograma():
                 print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
                 print(f"Ingrese el numero de la materia que desea inscribirse (1 a {len(materiasDisponibles)}):")
                 materiaElegida = int(input("Usuario: "))
-            inscripcionCorrecta = inscribirseAMateria(materiasDisponibles[materiaElegida-1], materias, diasCalendario,calendario, notaFinal, correlativas)
-            if inscripcionCorrecta == False:
-                print("No se pudo inscribir a la materia, todos los dias estan ocupados.")
-            else:
-                print("La inscripcion se realizo con exito.")
+            inscribirseAMateria(materiasDisponibles[materiaElegida-1], materias, diasCalendario,calendario, notaFinal, correlativas)
             opcionElegida = menuPrincipal()
 
     #PACK DE 5 MATERIAS

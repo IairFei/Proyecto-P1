@@ -30,7 +30,6 @@ def verCalendario(calendario, materias):
     print("=" * 50)
 
 def inscribirseAMateria(indice, materias, diasCalendario, calendario, notaFinal, correlativas):
-    sePudoInscribir = False
     materiaAInscribirse = materias[indice].split(".",3)
     print(f"Inscribiendose a la materia: {materiaAInscribirse[2]}")
     if tieneCorrelativasAprobadas(indice, materias, notaFinal, correlativas) and indice not in calendario:
@@ -38,10 +37,10 @@ def inscribirseAMateria(indice, materias, diasCalendario, calendario, notaFinal,
             diaElegido = random.choice(diasCalendario)
             calendario[diaElegido] = indice
             diasCalendario.remove(diaElegido)
-            sePudoInscribir = True
+        else:
+            print("No se pudo inscribir a la materia, todos los dias estan ocupados.")
     else:
-        print("No se pudieron cumplir las condiciones para inscribirse.")
-    return sePudoInscribir
+        print("No se cumplen las correlativas o ya estas inscripto en la materia.")
 
 def darDeBajaMateria(diaIngresado,calendario,diasCalendario,p1,p2,notaFinal):
     indiceMateria = calendario[diaIngresado-1]
