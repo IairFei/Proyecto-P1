@@ -79,7 +79,6 @@ def tieneCalendarioVacio(calendario):
 def estadoPackDe5Materias(calendario, materiasRecursar):
     vacio=tieneCalendarioVacio(calendario)
     recursadas=tieneRecursadas(materiasRecursar)
-    print(f"Vacio: {vacio}, Recursadas: {recursadas}")
     if vacio==True and recursadas==False:
         return True
     return False

@@ -48,7 +48,6 @@ def inicioDePrograma():
     #PACK DE 5 MATERIAS
         if opcionElegida == 2:
             estado = estadoPackDe5Materias(calendario, materiasRecursar)
-            print(f"Estado 'Pack de 5 materias': {estado}")
             if estado == True:
                 print("Cumple con las condiciones para el 'Pack de 5 materias'.")
                 print("Vas a seleccionar 5 materias y el sistema automáticamente te inscribirá en días al azar.")
