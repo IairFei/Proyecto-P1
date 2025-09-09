@@ -113,6 +113,7 @@ def inicioDePrograma():
 
     # VER NOTAS
         if opcionElegida == 6:
+            notaMateria = []
             anioElegido = eleccionDeMateriaAnio()
             cuatrimestreElegido = eleccionDeMateriaCuatrimestre()
             materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal, False)
@@ -129,18 +130,22 @@ def inicioDePrograma():
             else:
                 print(f"Mostrando notas de la materia: {materias[indiceMateria].split(".")[2]}")
                 if p1[indiceMateria] != 0:
+                    notaMateria.append(p1[indiceMateria])
                     print(f"Primer Parcial: {p1[indiceMateria]}")
                 if p2[indiceMateria] != 0:
+                    notaMateria.append(p2[indiceMateria])
                     print(f"Segundo Parcial: {p2[indiceMateria]}")
                 if finales[indiceMateria] != 0:
+                    notaMateria.append(finales[indiceMateria])
                     print(f"Examen Final: {finales[indiceMateria]}")
                 if notaFinal[indiceMateria] != 0:
+                    notaMateria.append(notaFinal[indiceMateria])
                     print(f"Nota final: {notaFinal[indiceMateria]}")
+                print(f"La nota más alta es: {max(notaMateria)} y la más baja es: {min(notaMateria)}")
             opcionElegida = menuPrincipal()
 
     #VER PROMEDIO CURSADA
         if opcionElegida == 7:
-    
             print("Notas")
             promedioCursada(notaFinal)
             opcionElegida = menuPrincipal()
