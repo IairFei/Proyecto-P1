@@ -149,22 +149,22 @@ def inicioDePrograma():
         if opcionElegida == 6:
             anioElegido = eleccionDeMateriaAnio()
             cuatrimestreElegido = eleccionDeMateriaCuatrimestre()
-            materiasDelCuatrimestre = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal, False)
-            print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a  {len(materiasDelCuatrimestre)}):")
+            materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal, False)
+            print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a  {len(materiasDisponibles)}):")
             materiaElegida = int(input("Usuario: "))
-            while estaDentroDelRango(1, len(materiasDelCuatrimestre), materiaElegida)==False:
-                print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDelCuatrimestre)}).")
-                print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a {len(materiasDelCuatrimestre)}):")
+            while estaDentroDelRango(1, len(materiasDisponibles), materiaElegida)==False:
+                print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
+                print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a {len(materiasDisponibles)}):")
                 materiaElegida = int(input("Usuario: "))
-            print(materiasDelCuatrimestre)
-            indiceMateria = materiasDelCuatrimestre[materiaElegida-1]+1
-            if p1[indiceMateria-1] == 0:
-                print(f"No se encuentran notas cargadas para la materia {materias[indiceMateria-1].split(".")[2]}")
-            print(f"Mostrando notas de la materia: {materias[indiceMateria-1].split(".")[2]}")
-            print(f"Primer Parcial: {p1[indiceMateria-1]}")
-            print(f"Segundo Parcial: {p2[indiceMateria-1]}")
-            print(f"Examen Final: {finales[indiceMateria-1]}")
-            print(f"Nota final: {notaFinal[indiceMateria-1]}")
+            print(materiasDisponibles)
+            indiceMateria = materiasDisponibles[materiaElegida-1]
+            if p1[indiceMateria] == 0:
+                print(f"No se encuentran notas cargadas para la materia {materias[indiceMateria].split(".")[2]}")
+            print(f"Mostrando notas de la materia: {materias[indiceMateria].split(".")[2]}")
+            print(f"Primer Parcial: {p1[indiceMateria]}")
+            print(f"Segundo Parcial: {p2[indiceMateria]}")
+            print(f"Examen Final: {finales[indiceMateria]}")
+            print(f"Nota final: {notaFinal[indiceMateria]}")
             opcionElegida = menuPrincipal()
 
 if __name__ == "__main__":
