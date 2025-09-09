@@ -178,5 +178,5 @@ def promedioCursada(notaFinal):
         print("No hay ninguna materia con nota final cargada")
     else:
         prom=promedio(notas)
-        print("el promedio de la cursada es de",prom)
+        print("El promedio de la cursada es de",prom)
 

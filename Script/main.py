@@ -3,7 +3,8 @@ from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMa
 from Entidades.materias import mostrarMateriasDisponibles, promedioCursada, tieneCorrelativasAprobadas, estadoPackDe5Materias, cargarNotas
 
 def menuPrincipal():
-    print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de notas\n0- Salir\n")
+    print("-----------------------------------------------------")
+    print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n0- Salir\n")
     opcionElegida = int(input("Usuario: "))
     print("-----------------------------------------------------")
     return opcionElegida
@@ -27,7 +28,7 @@ def eleccionDeMateriaCuatrimestre():
 def inicioDePrograma():
     opcionElegida = menuPrincipal()
     while opcionElegida != 0:
-        while estaDentroDelRango(0,6,opcionElegida) == False:
+        while estaDentroDelRango(0,7,opcionElegida) == False:
             print("Opción inválida. Por favor, elija una opción válida.")
             opcionElegida = menuPrincipal()
     #INSCRIPCION A MATERIA
@@ -129,14 +130,18 @@ def inicioDePrograma():
                 print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a {len(materiasDisponibles)}):")
                 materiaElegida = int(input("Usuario: "))
             indiceMateria = materiasDisponibles[materiaElegida-1]
-            if notaFinal[indiceMateria] == 0:
-                print(f"No se encuentran notas cargadas para la materia {materias[indiceMateria].split(".")[2]}")
+            if p1[indiceMateria] == 0 and p2[indiceMateria] == 0 and finales[indiceMateria] == 0 and notaFinal[indiceMateria] == 0:
+                print(f"No se encuentran notas cargadas para la materia {materias[indiceMateria].split(".")[2]}.")
             else:
                 print(f"Mostrando notas de la materia: {materias[indiceMateria].split(".")[2]}")
-                print(f"Primer Parcial: {p1[indiceMateria]}")
-                print(f"Segundo Parcial: {p2[indiceMateria]}")
-                print(f"Examen Final: {finales[indiceMateria]}")
-                print(f"Nota final: {notaFinal[indiceMateria]}")
+                if p1[indiceMateria] != 0:
+                    print(f"Primer Parcial: {p1[indiceMateria]}")
+                if p2[indiceMateria] != 0:
+                    print(f"Segundo Parcial: {p2[indiceMateria]}")
+                if finales[indiceMateria] != 0:
+                    print(f"Examen Final: {finales[indiceMateria]}")
+                if notaFinal[indiceMateria] != 0:
+                    print(f"Nota final: {notaFinal[indiceMateria]}")
             opcionElegida = menuPrincipal()
 
     #VER PROMEDIO CURSADA
