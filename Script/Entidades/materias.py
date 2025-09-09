@@ -104,7 +104,7 @@ def cargarNotas(indiceMateria,p1,p2,finales,notaFinal,materias, calendario, dias
             opcion = int(input("Usuario: "))
         if opcion == 0:
             cond = 0
-        if opcion == 1:
+        elif opcion == 1:
             print("Ingrese la nota del primer parcial (0-10):")
             notaP1 = int(input("Usuario: "))
             while estaDentroDelRango(0,10,notaP1) == False:
@@ -112,7 +112,7 @@ def cargarNotas(indiceMateria,p1,p2,finales,notaFinal,materias, calendario, dias
                 print("Ingrese la nota del primer parcial (0-10):")
                 notaP1 = int(input("Usuario: "))
             p1[indiceMateria] = notaP1
-        if opcion == 2:
+        elif opcion == 2:
             if tieneNotaParcial1(p1,indiceMateria) == False:
                 print("No se puede cargar nota de segundo parcial sin nota de primer parcial.")
             else:
@@ -127,7 +127,7 @@ def cargarNotas(indiceMateria,p1,p2,finales,notaFinal,materias, calendario, dias
                     print("Materia para recursar.")
                     eliminarMateriaDelCalendario(indiceMateria,calendario,diasCalendario)
                     cond = 0
-        if opcion == 3:
+        else:
             if tieneNotasParciales(p1,p2,indiceMateria) == False:
                 print("No se pueden cargar notas de final sin notas parciales.")
             else:
