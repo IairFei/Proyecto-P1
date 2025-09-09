@@ -1,6 +1,6 @@
 from ManejoDeDatos.vallidacionDeDatos import estaDentroDelRango, tieneNotasParciales, tieneNotaParcial1
 
-def mostrarMateriasDisponibles(anio, cuatrimestre, materias, calendario, notaFinal, necesitaCorrelativas):
+def mostrarMateriasDisponibles(anio, cuatrimestre, materias, calendario, notaFinal, mostrarTodas=False):
     print(f"Mostrando materias disponibles para el año {anio}, cuatrimestre {cuatrimestre}:")
     indiceEnMaterias = 0
     contMateriasDisponibles = 1
@@ -10,11 +10,11 @@ def mostrarMateriasDisponibles(anio, cuatrimestre, materias, calendario, notaFin
         anioMateria= materia[0]
         cuatrimestreMateria= materia[1]
         if int(anioMateria) == anio and int(cuatrimestreMateria) == cuatrimestre:
-            if necesitaCorrelativas and indiceEnMaterias not in calendario and notaFinal[indiceEnMaterias] == 0:
+            if mostrarTodas == False and indiceEnMaterias not in calendario and notaFinal[indiceEnMaterias] == 0:
                 print(f"{contMateriasDisponibles}- {materia[2]}")
                 indices.append(indiceEnMaterias)
                 contMateriasDisponibles+=1
-            elif necesitaCorrelativas == False:
+            elif mostrarTodas == True:
                 print(f"{contMateriasDisponibles}- {materia[2]}")
                 indices.append(indiceEnMaterias)
                 contMateriasDisponibles+=1

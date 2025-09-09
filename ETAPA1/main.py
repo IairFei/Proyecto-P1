@@ -35,7 +35,7 @@ def inicioDePrograma():
         if opcionElegida == 1:
             anioElegido = eleccionDeMateriaAnio()
             cuatrimestreElegido = eleccionDeMateriaCuatrimestre()
-            materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal, True)            
+            materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal)            
             print(f"Ingrese el numero de la materia que desea inscribirse (1 a  {len(materiasDisponibles)}):")
             materiaElegida = int(input("Usuario: "))
             while estaDentroDelRango(1, len(materiasDisponibles), materiaElegida)==False:
@@ -116,7 +116,7 @@ def inicioDePrograma():
             notaMateria = []
             anioElegido = eleccionDeMateriaAnio()
             cuatrimestreElegido = eleccionDeMateriaCuatrimestre()
-            materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal, False)
+            materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal, True)
             print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a  {len(materiasDisponibles)}):")
             materiaElegida = int(input("Usuario: "))
             while estaDentroDelRango(1, len(materiasDisponibles), materiaElegida)==False:
