@@ -7,29 +7,30 @@ def menuPrincipal():
     opcionElegida = int(input("Usuario: "))
     print("-----------------------------------------------------")
     return opcionElegida
-    
+def eleccionDeMateria():
+    print("Ingrese el año de la materia (1-5): ")
+    anioElegido = int(input("Usuario: "))
+    while estaDentroDelRango(1,5,anioElegido) == False:
+        print("Año inválido. Por favor, ingrese un año válido (1-5).")
+        print("Ingrese el año de la materia (1-5): ")
+        anioElegido = int(input("Usuario: "))  
+    print("Ingrese el cuatrimestre de la materia (1-2): ")
+    cuatrimestreElegido = int(input("Usuario: "))
+    while estaDentroDelRango(1,2,cuatrimestreElegido) == False:
+        print("Cuatrimestre inválido. Por favor, ingrese un cuatrimestre válido (1-2).")
+        print("Ingrese el cuatrimestre de la materia (1-2): ")
+        cuatrimestreElegido = int(input("Usuario: "))
+    return anioElegido,cuatrimestreElegido    
 def inicioDePrograma():
     opcionElegida = menuPrincipal()
     while opcionElegida != 0:
         while estaDentroDelRango(0,6,opcionElegida) == False:
             print("Opción inválida. Por favor, elija una opción válida.")
             opcionElegida = menuPrincipal()
-
     #INSCRIPCION A MATERIA
         if opcionElegida == 1:
-            print("Ingrese el año de la materia (1-5): ")
-            anioElegido = int(input("Usuario: "))
-            while estaDentroDelRango(1,5,anioElegido) == False:
-                print("Año inválido. Por favor, ingrese un año válido (1-5).")
-                print("Ingrese el año de la materia (1-5): ")
-                anioElegido = int(input("Usuario: "))  
-            print("Ingrese el cuatrimestre de la materia (1-2): ")
-            cuatrimestreElegido = int(input("Usuario: "))
-            while estaDentroDelRango(1,2,cuatrimestreElegido) == False:
-                print("Cuatrimestre inválido. Por favor, ingrese un cuatrimestre válido (1-2).")
-                print("Ingrese el cuatrimestre de la materia (1-2): ")
-                cuatrimestreElegido = int(input("Usuario: "))
-            materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal)
+            anioElegido,cuatrimestreElegido=eleccionDeMateria()
+            materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal)            
             print(f"Ingrese el numero de la materia que desea inscribirse (1 a  {len(materiasDisponibles)}):")
             materiaElegida = int(input("Usuario: "))
             while estaDentroDelRango(1, len(materiasDisponibles), materiaElegida)==False:

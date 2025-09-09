@@ -160,4 +160,17 @@ def eliminarMateriaDelCalendario(indiceMateria,calendario,diasCalendario):
             diasCalendario.append(i)
             diasCalendario.sort()
 
-            
+#SACA PROMEDIOS
+promedio= lambda lista: sum(lista) / len(lista)
+
+def promedioCursada(notaFinal):
+    notas=[]
+    for i in range(len(notaFinal)):
+        if notaFinal[i]!=0:
+            notas.append(notaFinal[i])
+            print()
+    if len(notas)==0:
+        print("No hay ninguna materia con nota final cargada")
+    else:
+        prom=promedio(notas)
+        print("el promedio de la cursada es de",prom)
