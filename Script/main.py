@@ -1,26 +1,29 @@
-from ManejoDeDatos.vallidacionDeDatos import estaDentroDelRango, charValido, esCero
+from ManejoDeDatos.vallidacionDeDatos import estaDentroDelRango, charValido
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
 from Entidades.materias import mostrarMateriasDisponibles, promedioCursada, tieneCorrelativasAprobadas, estadoPackDe5Materias, cargarNotas
 
 def menuPrincipal():
-    print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n0- Salir\n")
+    print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de notas\n0- Salir\n")
     opcionElegida = int(input("Usuario: "))
     print("-----------------------------------------------------")
     return opcionElegida
-def eleccionDeMateria():
+
+def eleccionDeMateriaAnio():
     print("Ingrese el año de la materia (1-5): ")
     anioElegido = int(input("Usuario: "))
     while estaDentroDelRango(1,5,anioElegido) == False:
         print("Año inválido. Por favor, ingrese un año válido (1-5).")
         print("Ingrese el año de la materia (1-5): ")
         anioElegido = int(input("Usuario: "))  
+    return anioElegido
+def eleccionDeMateriaCuatrimestre():
     print("Ingrese el cuatrimestre de la materia (1-2): ")
     cuatrimestreElegido = int(input("Usuario: "))
     while estaDentroDelRango(1,2,cuatrimestreElegido) == False:
         print("Cuatrimestre inválido. Por favor, ingrese un cuatrimestre válido (1-2).")
         print("Ingrese el cuatrimestre de la materia (1-2): ")
         cuatrimestreElegido = int(input("Usuario: "))
-    return anioElegido,cuatrimestreElegido    
+    return cuatrimestreElegido    
 def inicioDePrograma():
     opcionElegida = menuPrincipal()
     while opcionElegida != 0:
@@ -29,8 +32,9 @@ def inicioDePrograma():
             opcionElegida = menuPrincipal()
     #INSCRIPCION A MATERIA
         if opcionElegida == 1:
-            anioElegido,cuatrimestreElegido=eleccionDeMateria()
-            materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal)            
+            anioElegido = eleccionDeMateriaAnio()
+            cuatrimestreElegido = eleccionDeMateriaCuatrimestre()
+            materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal, True)            
             print(f"Ingrese el numero de la materia que desea inscribirse (1 a  {len(materiasDisponibles)}):")
             materiaElegida = int(input("Usuario: "))
             while estaDentroDelRango(1, len(materiasDisponibles), materiaElegida)==False:
@@ -49,19 +53,9 @@ def inicioDePrograma():
                 print("Vas a seleccionar 5 materias y el sistema automáticamente te inscribirá en días al azar.")
                 lista5Materias=[]
                 while len(lista5Materias) < 5:
-                    print("Ingrese el año de la materia (1-5): ")
-                    anioElegido = int(input("Usuario: "))
-                    while estaDentroDelRango(1,5,anioElegido) == False:
-                        print("Año inválido. Por favor, ingrese un año válido (1-5).")
-                        print("Ingrese el año de la materia (1-5): ")
-                        anioElegido = int(input("Usuario: "))  
-                    print("Ingrese el cuatrimestre de la materia (1-2): ")
-                    cuatrimestreElegido = int(input("Usuario: "))
-                    while estaDentroDelRango(1,2,cuatrimestreElegido) == False:
-                        print("Cuatrimestre inválido. Por favor, ingrese un cuatrimestre válido (1-2).")
-                        print("Ingrese el cuatrimestre de la materia (1-2): ")
-                        cuatrimestreElegido = int(input("Usuario: "))
-                    materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal)
+                    anioElegido = eleccionDeMateriaAnio()  
+                    cuatrimestreElegido = eleccionDeMateriaCuatrimestre()
+                    materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal, True)
                     print(f"Ingrese el numero de la materia que desea inscribirse (1 a  {len(materiasDisponibles)}):")
                     materiaElegida = int(input("Usuario: "))
                     while estaDentroDelRango(1, len(materiasDisponibles), materiaElegida)==False:
@@ -88,7 +82,6 @@ def inicioDePrograma():
             diaIngresado = int(input("Usuario: "))
             if calendario[diaIngresado-1] != -1:
                 cargarNotas(calendario[diaIngresado-1],p1,p2,finales,notaFinal,materias, calendario, diasCalendario, materiasAprobadas, materiasRecursar)
-                print(diasCalendario)
                 opcionElegida = menuPrincipal()
             else:
                 print("No hay materia asignada para ese día. Volviendo al menú principal.")
@@ -122,26 +115,38 @@ def inicioDePrograma():
     # VER CALENDARIO
         if opcionElegida == 5:
             verCalendario(calendario, materias)
-            opcionElegida = menuPrincipal()
-            
-    #VER NOTAS  
+            inicioDePrograma()
+
+    # VER NOTAS
         if opcionElegida == 6:
-            print("1. Ver notas de una materia\n2. Ver promedio general\n0. Volver al menú principal")
-            opcion= int(input("Usuario: "))
-            while estaDentroDelRango(0,2,opcion) == False:
-                print("Opción inválida. Por favor, elija una opción válida.")
-                print("1. Ver notas de una materia\n2. Ver promedio general\n0. Volver al menú principal")
-                opcion= int(input("Usuario: "))
-            if opcion == 0:
-                opcionElegida = menuPrincipal()
-            elif opcion == 1:
-                print("Notas")
-                ##VER NOTAS DE UNA MATERIA
-                opcionElegida = menuPrincipal()
-            elif opcion == 2:
-                promedioCursada(notaFinal)
-                opcionElegida = menuPrincipal()
-                
+            anioElegido = eleccionDeMateriaAnio()
+            cuatrimestreElegido = eleccionDeMateriaCuatrimestre()
+            materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal, False)
+            print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a  {len(materiasDisponibles)}):")
+            materiaElegida = int(input("Usuario: "))
+            while estaDentroDelRango(1, len(materiasDisponibles), materiaElegida)==False:
+                print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
+                print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a {len(materiasDisponibles)}):")
+                materiaElegida = int(input("Usuario: "))
+            indiceMateria = materiasDisponibles[materiaElegida-1]
+            if notaFinal[indiceMateria] == 0:
+                print(f"No se encuentran notas cargadas para la materia {materias[indiceMateria].split(".")[2]}")
+            else:
+                print(f"Mostrando notas de la materia: {materias[indiceMateria].split(".")[2]}")
+                print(f"Primer Parcial: {p1[indiceMateria]}")
+                print(f"Segundo Parcial: {p2[indiceMateria]}")
+                print(f"Examen Final: {finales[indiceMateria]}")
+                print(f"Nota final: {notaFinal[indiceMateria]}")
+            opcionElegida = menuPrincipal()
+
+    #VER PROMEDIO CURSADA
+        if opcionElegida == 7:
+    
+            print("Notas")
+            promedioCursada(notaFinal)
+            opcionElegida = menuPrincipal()
+
+               
 
 if __name__ == "__main__":
     diasCalendario = [0,1,2,3,4]

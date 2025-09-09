@@ -1,6 +1,6 @@
 from ManejoDeDatos.vallidacionDeDatos import estaDentroDelRango, tieneNotasParciales, tieneNotaParcial1
 
-def mostrarMateriasDisponibles(anio, cuatrimestre, materias, calendario, notaFinal):
+def mostrarMateriasDisponibles(anio, cuatrimestre, materias, calendario, notaFinal, necesitaCorrelativas):
     print(f"Mostrando materias disponibles para el año {anio}, cuatrimestre {cuatrimestre}:")
     indiceEnMaterias = 0
     contMateriasDisponibles = 1
@@ -9,10 +9,15 @@ def mostrarMateriasDisponibles(anio, cuatrimestre, materias, calendario, notaFin
         materia = materia.split(".", 3)
         anioMateria= materia[0]
         cuatrimestreMateria= materia[1]
-        if int(anioMateria) == anio and int(cuatrimestreMateria) == cuatrimestre and indiceEnMaterias not in calendario and notaFinal[indiceEnMaterias] == 0:
-            print(f"{contMateriasDisponibles}- {materia[2]}")
-            indices.append(indiceEnMaterias)
-            contMateriasDisponibles+=1
+        if int(anioMateria) == anio and int(cuatrimestreMateria) == cuatrimestre:
+            if necesitaCorrelativas and indiceEnMaterias not in calendario and notaFinal[indiceEnMaterias] == 0:
+                print(f"{contMateriasDisponibles}- {materia[2]}")
+                indices.append(indiceEnMaterias)
+                contMateriasDisponibles+=1
+            elif necesitaCorrelativas == False:
+                print(f"{contMateriasDisponibles}- {materia[2]}")
+                indices.append(indiceEnMaterias)
+                contMateriasDisponibles+=1
         indiceEnMaterias += 1
     return indices
 
@@ -174,3 +179,4 @@ def promedioCursada(notaFinal):
     else:
         prom=promedio(notas)
         print("el promedio de la cursada es de",prom)
+
