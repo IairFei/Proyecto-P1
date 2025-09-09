@@ -179,3 +179,13 @@ def promedioCursada(notaFinal):
         prom=promedio(notas)
         print("El promedio de la cursada es de",prom)
 
+def obtenerMateriasPackDe5(materiasAprobadas, materias, correlativas, notaFinal):
+    materiasPackDe5=[]
+    indice=0
+    while len(materiasPackDe5)<5 and indice<len(materiasAprobadas):
+        if materiasAprobadas[indice]==0 and tieneCorrelativasAprobadas(indice,materias,notaFinal,correlativas)==True:
+            materiasPackDe5.append(indice)
+        indice+=1
+    return materiasPackDe5
+
+

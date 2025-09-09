@@ -1,6 +1,6 @@
 from ManejoDeDatos.vallidacionDeDatos import estaDentroDelRango, charValido
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
-from Entidades.materias import mostrarMateriasDisponibles, promedioCursada, tieneCorrelativasAprobadas, estadoPackDe5Materias, cargarNotas
+from Entidades.materias import mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
 
 def menuPrincipal():
     print("-----------------------------------------------------")
@@ -50,27 +50,21 @@ def inicioDePrograma():
             estado = estadoPackDe5Materias(calendario, materiasRecursar)
             if estado == True:
                 print("Cumple con las condiciones para el 'Pack de 5 materias'.")
-                print("Vas a seleccionar 5 materias y el sistema automáticamente te inscribirá en días al azar.")
-                lista5Materias=[]
-                while len(lista5Materias) < 5:
-                    anioElegido = eleccionDeMateriaAnio()  
-                    cuatrimestreElegido = eleccionDeMateriaCuatrimestre()
-                    materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal, True)
-                    print(f"Ingrese el numero de la materia que desea inscribirse (1 a  {len(materiasDisponibles)}):")
-                    materiaElegida = int(input("Usuario: "))
-                    while estaDentroDelRango(1, len(materiasDisponibles), materiaElegida)==False:
-                        print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
-                        print(f"Ingrese el numero de la materia que desea inscribirse (1 a {len(materiasDisponibles)}):")
-                        materiaElegida = int(input("Usuario: "))
-                    correlativasMateria = tieneCorrelativasAprobadas(materiasDisponibles[materiaElegida-1], materias, notaFinal, correlativas)
-                    if correlativasMateria == True:
-                        lista5Materias.append(materiasDisponibles[materiaElegida-1])
-                    else:
-                        print("No se cumplen las correlativas para la materia seleccionada. Elegí otra.")
-                for i in range(5):
-                    inscribirseAMateria(lista5Materias[i], materias, diasCalendario,calendario, notaFinal, correlativas)
-                print("Inscripción al 'Pack de 5 materias' completada. Tu calendario quedó así:")
-                verCalendario(calendario, materias)
+                print("¿Querés que te anotemos en las próximas 5 materias siguiendo el plan de estudios? (s/n): ")
+                respuesta = input("Usuario: ")
+                while charValido(respuesta) == False:
+                    print("Caracter inválido. Por favor, ingrese 's' para sí o 'n' para no.")
+                    print("¿Querés que te anotemos en las próximas 5 materias siguiendo el plan de estudios? (s/n): ")
+                    respuesta = input("Usuario: ")
+                if respuesta.lower().strip() == 'n':
+                    print("Operacion cancelada. Volviendo al menú principal.")
+                    opcionElegida = menuPrincipal()
+                else:
+                    lista5Materias = obtenerMateriasPackDe5(materiasAprobadas, materias, correlativas, notaFinal)
+                    for i in range(len(lista5Materias)):
+                        inscribirseAMateria(lista5Materias[i], materias, diasCalendario,calendario, notaFinal, correlativas)
+                    print("Inscripción al 'Pack de 5 materias' completada. Tu calendario quedó así:")
+                    verCalendario(calendario, materias)
             else:
                 print("No cumple con las condiciones para el 'Pack de 5 materias'.")
             opcionElegida = menuPrincipal()
@@ -115,7 +109,7 @@ def inicioDePrograma():
     # VER CALENDARIO
         if opcionElegida == 5:
             verCalendario(calendario, materias)
-            inicioDePrograma()
+            opcionElegida = menuPrincipal()
 
     # VER NOTAS
         if opcionElegida == 6:
@@ -150,8 +144,7 @@ def inicioDePrograma():
             print("Notas")
             promedioCursada(notaFinal)
             opcionElegida = menuPrincipal()
-
-               
+          
 
 if __name__ == "__main__":
     diasCalendario = [0,1,2,3,4]
