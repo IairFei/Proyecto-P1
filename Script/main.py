@@ -1,6 +1,6 @@
 from ManejoDeDatos.vallidacionDeDatos import estaDentroDelRango, charValido, esCero
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
-from Entidades.materias import mostrarMateriasDisponibles, tieneCorrelativasAprobadas, estadoPackDe5Materias, cargarNotas
+from Entidades.materias import mostrarMateriasDisponibles, promedioCursada, tieneCorrelativasAprobadas, estadoPackDe5Materias, cargarNotas
 
 def menuPrincipal():
     print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n0- Salir\n")
@@ -126,10 +126,26 @@ def inicioDePrograma():
     # VER CALENDARIO
         if opcionElegida == 5:
             verCalendario(calendario, materias)
-            inicioDePrograma()
+            opcionElegida = menuPrincipal()
             
-
-        
+    #VER NOTAS  
+        if opcionElegida == 6:
+            print("1. Ver notas de una materia\n2. Ver promedio general\n0. Volver al menú principal")
+            opcion= int(input("Usuario: "))
+            while estaDentroDelRango(0,2,opcion) == False:
+                print("Opción inválida. Por favor, elija una opción válida.")
+                print("1. Ver notas de una materia\n2. Ver promedio general\n0. Volver al menú principal")
+                opcion= int(input("Usuario: "))
+            if opcion == 0:
+                opcionElegida = menuPrincipal()
+            elif opcion == 1:
+                print("Notas")
+                ##VER NOTAS DE UNA MATERIA
+                opcionElegida = menuPrincipal()
+            elif opcion == 2:
+                promedioCursada(notaFinal)
+                opcionElegida = menuPrincipal()
+                
 
 if __name__ == "__main__":
     diasCalendario = [0,1,2,3,4]
