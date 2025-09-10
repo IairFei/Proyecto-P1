@@ -127,7 +127,8 @@ def cargarNotas(indiceMateria,p1,p2,finales,notaFinal,materias, calendario, dias
                     print("Ingrese la nota del segundo parcial (0-10):")
                     notaP2 = int(input("Usuario: "))
                 p2[indiceMateria] = notaP2
-                if p2[indiceMateria] < 4 and notaP1 < 4:
+                if p2[indiceMateria] < 4 and p1[indiceMateria] < 4:
+                    materiasRecursar[indiceMateria] = 1
                     print("Materia para recursar.")
                     eliminarMateriaDelCalendario(indiceMateria,calendario,diasCalendario)
                     cond = 0
@@ -144,6 +145,7 @@ def cargarNotas(indiceMateria,p1,p2,finales,notaFinal,materias, calendario, dias
                 finales[indiceMateria] = notaFinalInput
                 if finales[indiceMateria] >= 4:
                     notaFinal[indiceMateria] = calcularNotaFinal(p1,p2,finales,indiceMateria)
+                    materiasRecursar[indiceMateria] = 0
                     materiasAprobadas[indiceMateria] = 1
                     print("Materia aprobada.")
                     eliminarMateriaDelCalendario(indiceMateria,calendario,diasCalendario)
