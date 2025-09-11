@@ -4,7 +4,7 @@ Universidad Argentina de la Empresa (UADE)
 Departamento de Tecnología – Informática  
 Programación I / Algoritmos y Estructura de Datos I  
 Profesor: Ing. María Eugenia Varando  
-Día de cursada: Miercoles
+Día de cursada: Miercoles  
 Turno: Tarde
 
 ---
