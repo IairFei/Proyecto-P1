@@ -1,0 +1,49 @@
+{
+    "1":{
+        "id": 1,
+        "usuario": "jsampieri",
+        "nombre": "Juan",
+        "apellido": "Sampieri",
+        "pack5materias": false,
+        "notas": {
+            "0": { // ID de la materia
+                "parcial1": 8,
+                "parcial2": 7,
+                "final": 9,
+                "nota_final": 8,
+                "aprobada": true,
+                "recursa": false
+            },
+            "4": { // ID de la materia
+                "parcial1": 6,
+                "parcial2": 5,
+                "final": null,
+                "nota_final": null,
+                "aprobada": false,
+                "recursa": false
+            }
+        },
+        "calendario": {
+            "lunes": null,
+            "martes": 4, // ID de la materia
+            "miercoles": null,
+            "jueves": null,
+            "viernes": null
+        }
+    },
+    "2":{
+        "id": 2,
+        "usuario": "mrodriguez",
+        "nombre": "Maria",
+        "apellido": "Rodriguez",
+        "pack5materias": true,
+        "notas": {},
+        "calendario": {
+            "lunes": null,
+            "martes": null,
+            "miercoles": null,
+            "jueves": null,
+            "viernes": null
+        }
+    }
+}
