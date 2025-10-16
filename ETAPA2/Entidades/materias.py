@@ -1,4 +1,4 @@
-from ETAPA2.ManejoDeDatos.validacionDeDatos import estaDentroDelRango, tieneNotasParciales, tieneNotaParcial1
+from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, tieneNotasParciales, tieneNotaParcial1
 
 def mostrarMateriasDisponibles(anio, cuatrimestre, materias, calendario, notaFinal, mostrarTodas=False):
     print(f"Mostrando materias disponibles para el año {anio}, cuatrimestre {cuatrimestre}:")
