@@ -23,7 +23,6 @@ def altaEnSistema(usuario, nombreAlumno, apellidoAlumno):
         with open('ETAPA2/Archivos/usuarios.json', 'r') as users:
             datos_sistema = json.load(users)
             cantidad_usuarios = len(datos_sistema['usuarios'])
-            print(cantidad_usuarios)
             cantidad_usuarios+=1
         cantidad_usuarios = {
             "id": f"{cantidad_usuarios}",
@@ -59,11 +58,7 @@ def altaUsuario():
             if existeUsuario is not None:
                 nombreUsuarioRepetido(nombreAlumno, apellidoAlumno)
             contrasena = input("Ingrese la contraseña: ").strip()
-            tipo_usuario = int(input("Ingrese el tipo de usuario (1- Administrator/2- Standard): "))
-            if tipo_usuario == 1:
-                tipo_usuario = "Administrator"
-            else:
-                tipo_usuario = "User"
+            tipo_usuario = "User"
             print(f"Usuario: {usuario}, Contraseña: {contrasena}, Tipo de usuario: {tipo_usuario}")
             archivo.writelines(f"{usuario},{contrasena},{tipo_usuario}\n")
             dadoDeAlta = altaEnSistema(usuario,nombreAlumno,apellidoAlumno)
