@@ -1,9 +1,10 @@
 import json
 
+#Alta en archivo JSON
 def altaEnSistema(usuario, nombreAlumno, apellidoAlumno):
     try:
-        with open('ETAPA2/Archivos/usuarios.json', 'r') as archivo:
-            datos_sistema = json.load(archivo)
+        with open('ETAPA2/Archivos/usuarios.json', 'r') as users:
+            datos_sistema = json.load(users)
             cantidad_usuarios = len(datos_sistema['usuarios'])
             print(cantidad_usuarios)
             cantidad_usuarios+=1
@@ -23,8 +24,8 @@ def altaEnSistema(usuario, nombreAlumno, apellidoAlumno):
             }
         }
         datos_sistema['usuarios'].append(cantidad_usuarios)
-        with open('ETAPA2/Archivos/usuarios.json', 'w') as archivo:
-            json.dump(datos_sistema, archivo, indent=4)
+        with open('ETAPA2/Archivos/usuarios.json', 'w') as users:
+            json.dump(datos_sistema, users, indent=4)
         return True
         
     except Exception as e: 
