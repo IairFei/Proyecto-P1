@@ -1,6 +1,7 @@
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
 from Entidades.materias import mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
+
 from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
 
@@ -38,6 +39,7 @@ def eleccionDeMateriaCuatrimestre(usuario):
 
 def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario):
     try:
+        usuarioActual = getUsuarioPorNombreUsuario(usuario)
         opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         while opcionElegida != 0:
             while estaDentroDelRango(0,7,opcionElegida) == False:
