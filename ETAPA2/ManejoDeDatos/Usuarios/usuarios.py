@@ -1,30 +1,37 @@
+def validarNombreUsuarioEnSistema(usuario):
+    try:
+        datosEncontrados = None
+        with open('ETAPA2/Archivos/usuarios.csv', 'r') as usuarios:
+            usuarios_lineas = usuarios.readlines()
+            for linea in usuarios_lineas[1:]:
+                datos = linea.strip().split(',')
+                if len(datos) >= 2:
+                    usuario_archivo = datos[0].strip()
+                    if usuario == usuario_archivo:
+                        datosEncontrados = datos
+        return datosEncontrados
+    except (FileNotFoundError, Exception) as e:
+        print(f"Error: {e}")
+        return None
+
 def tipoUsuario(usuario):
     try:
         tipo_usuario_encontrado = None
-        with open("ETAPA2/Archivos/usuarios.csv", mode="r") as archivo:
-            lineas = archivo.readlines()
-            for linea in lineas[1:]:
-                datos = linea.strip().split(',')
-                if len(datos) >= 2:
-                    usuario_archivo, tipo_usuario = datos[0].strip(), datos[2].strip()
-                    if usuario == usuario_archivo:
-                        tipo_usuario_encontrado = tipo_usuario
+        datos = validarNombreUsuarioEnSistema(usuario)
+        if datos is not None:
+            tipo_usuario_encontrado = datos[2].strip()
         return tipo_usuario_encontrado
     except (FileNotFoundError, Exception) as e:
         print(f"Error: {e}")
         return None
 
-
 def validarLogin(usuario, contrasena):
     try:
-        with open("ETAPA2/Archivos/usuarios.csv", mode="r") as archivo:
-            lineas = archivo.readlines()
-            for linea in lineas[1:]:
-                datos = linea.strip().split(',')
-                if len(datos) >= 2:
-                    usuario_archivo, contrasena_archivo = datos[0].strip(), datos[1].strip()
-                    if usuario == usuario_archivo and contrasena == contrasena_archivo:
-                        usuario = usuario_archivo
+        datos = validarNombreUsuarioEnSistema(usuario)
+        if datos is not None:
+            contrasena_archivo = datos[1].strip()
+            if contrasena == contrasena_archivo:
+                usuario = datos[0].strip()
         return usuario
     except (FileNotFoundError, Exception) as e:
         print(f"Error: {e}")
