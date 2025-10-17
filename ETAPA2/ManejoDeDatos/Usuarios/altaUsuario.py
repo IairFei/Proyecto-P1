@@ -1,8 +1,32 @@
+import json
+
 def altaEnSistema(usuario, nombreAlumno, apellidoAlumno):
     try:
-        with open('ETAPA2/Archivos/usuarios.json', 'a') as archivo:
-            print(archivo)
-            #archivo.write(f"{usuario},{nombreAlumno},{apellidoAlumno}\n")
+        with open('ETAPA2/Archivos/usuarios.json', 'r') as archivo:
+            datos_sistema = json.load(archivo)
+            cantidad_usuarios = len(datos_sistema['usuarios'])
+            print(cantidad_usuarios)
+            cantidad_usuarios+=1
+        cantidad_usuarios = {
+            "id": f"{cantidad_usuarios}",
+            "usuario": f"{usuario}",
+            "nombre": f"{nombreAlumno}",
+            "apellido": f"{apellidoAlumno}",
+            "pack5materias": True,
+            "notas": {},
+            "calendario": {
+                "Lunes": None,
+                "Martes": None,
+                "Miercoles": None,
+                "Jueves": None,
+                "Viernes": None
+            }
+        }
+        datos_sistema['usuarios'].append(cantidad_usuarios)
+        with open('ETAPA2/Archivos/usuarios.json', 'w') as archivo:
+            json.dump(datos_sistema, archivo, indent=4)
+        return True
+        
     except Exception as e: 
         print(f"Error: {e}")
         return None
@@ -22,7 +46,11 @@ def altaUsuario():
                 tipo_usuario = "User"
             print(f"Usuario: {usuario}, Contraseña: {contrasena}, Tipo de usuario: {tipo_usuario}")
             archivo.writelines(f"{usuario},{contrasena},{tipo_usuario}\n")
-            #dadoDeAlta = altaEnSistema(usuario,nombreAlumno,apellidoAlumno)
+            dadoDeAlta = altaEnSistema(usuario,nombreAlumno,apellidoAlumno)
+            if dadoDeAlta == False or dadoDeAlta is None:
+                print("No se pudo dar de alta al usuario en el sistema.")
+                archivo.detach
+                usuario = None
             return usuario
     except Exception as e:
         print(f"Error: {e}")

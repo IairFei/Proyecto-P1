@@ -7,8 +7,8 @@ from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario
 
 def menuPrincipal(usuario):
     print("-----------------------------------------------------")
-    tipoUsuario = tipoUsuario(usuario)
-    if tipoUsuario == "Administrator":
+    tipoUsuarioEncontrado = tipoUsuario(usuario)
+    if tipoUsuarioEncontrado == "Administrator":
         print("Menú Principal - Usuario Administrador")
         print("Elija una opción:\n1- Ver calendario\n2- Ver notas\n3- Ver promedio de carrera\n4- Baja de usuario\n0- Salir\n")
     else:
@@ -16,7 +16,7 @@ def menuPrincipal(usuario):
         print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n0- Salir\n")
     opcionElegida = int(input(f"{usuario}: "))
     print("-----------------------------------------------------")
-    return opcionElegida, tipoUsuario
+    return opcionElegida, tipoUsuarioEncontrado
 
 def eleccionDeMateriaAnio(usuario):
     print("Ingrese el año de la materia (1-5): ")
@@ -37,13 +37,13 @@ def eleccionDeMateriaCuatrimestre(usuario):
 
 def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario):
     try:
-        opcionElegida, tipoUsuario = menuPrincipal(usuario)
+        opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         while opcionElegida != 0:
             while estaDentroDelRango(0,7,opcionElegida) == False:
                 print("Opción inválida. Por favor, elija una opción válida.")
                 opcionElegida = menuPrincipal(usuario)
         #INSCRIPCION A MATERIA
-            if opcionElegida == 1 and tipoUsuario == "User":
+            if opcionElegida == 1 and tipoUsuarioEncontrado == "User":
                 anioElegido = eleccionDeMateriaAnio(usuario)
                 cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuario)
                 materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal)            
@@ -56,12 +56,11 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                 inscribirseAMateria(materiasDisponibles[materiaElegida-1], materias, diasCalendario,calendario, notaFinal, correlativas)
                 opcionElegida = menuPrincipal(usuario)
             else:
-                if opcionElegida == 1 and tipoUsuario == "Administrator":
-                    print("Funcionalidad de 'Ver calendario' para Administradores no implementada aún.")
-                    opcionElegida = menuPrincipal(usuario)
+                print("Funcionalidad de 'Ver calendario' para Administradores no implementada aún.")
+                opcionElegida = menuPrincipal(usuario)
 
         #PACK DE 5 MATERIAS
-            if opcionElegida == 2 and tipoUsuario == "User":
+            if opcionElegida == 2 and tipoUsuarioEncontrado == "User":
                 estado = estadoPackDe5Materias(calendario, materiasRecursar)
                 if estado == True:
                     print("Cumple con las condiciones para el 'Pack de 5 materias'.")
@@ -88,7 +87,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                     opcionElegida = menuPrincipal(usuario)
 
         #CARGA DE NOTAS
-            if opcionElegida == 3 and tipoUsuario == "User":
+            if opcionElegida == 3 and tipoUsuarioEncontrado == "User":
                 print("Ingrese el numero del dia de la materia que desea cargar la nota:")
                 verCalendario(calendario, materias)
                 diaIngresado = int(input(f"{usuario}: "))
@@ -103,7 +102,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                 opcionElegida = menuPrincipal(usuario)
         
         #DAR DE BAJA
-            if opcionElegida == 4 and tipoUsuario == "User":
+            if opcionElegida == 4 and tipoUsuarioEncontrado == "User":
                 print("Ingrese el numero del dia de la materia que desea dar de baja:")
                 verCalendario(calendario, materias)
                 diaIngresado = int(input(f"{usuario}: "))
@@ -195,6 +194,7 @@ def menuLoginPrincipal():
 def inicioDeSesion(usuario=None):
     try:
         if usuario is None:
+            usuario = login()
             intentosRestantes = 3
             while usuario == None and intentosRestantes > 0:
                 print("Acceso denegado. Inténtelo de nuevo.")
@@ -219,6 +219,11 @@ def menuLogin(opcionElegida):
                 inicioSesion = input("¿Desea iniciar sesión ahora? (s/n): ")
             if inicioSesion.lower().strip() == 's':
                 usuarioEncontrado = usuario
+            else:
+                main()
+        else:
+            print("Saliendo del programa. ¡Hasta luego!")
+            exit()
         return usuarioEncontrado
     except Exception as e:
         print(f"Error: {e}")
@@ -239,6 +244,9 @@ def main():
     try:
         opcionElegida = menuLoginPrincipal()
         usuario = menuLogin(opcionElegida)
+        if usuario is None:
+            print("Inicio de sesión fallido. Saliendo del programa.")
+            return
     except (Exception, KeyboardInterrupt) as e:
         print(f"Ocurrió un error durante el inicio de sesión: {e}")
         return
@@ -247,8 +255,4 @@ def main():
         menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario)
         
 if __name__ == "__main__":
-    try:
-        main()
-    except (KeyboardInterrupt, SystemExit, ModuleNotFoundError, ImportError) as e:
-        print(f"El programa ha sido interrumpido: {e}")
-
+    main()
