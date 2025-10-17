@@ -1,7 +1,8 @@
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
 from Entidades.materias import mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
-from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, getUsuarioPorNombreUsuario
+
+from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
 
 
@@ -11,7 +12,7 @@ def menuPrincipal(usuario):
     print(f"Tipo de usuario: {tipoUsuarioEncontrado}")
     if tipoUsuarioEncontrado == "Administrator":
         print("Menú Principal - Usuario Administrador")
-        print("Elija una opción:\n1- Ver calendario\n2- Ver notas\n3- Ver promedio de carrera\n4- Baja de usuario\n0- Salir\n")
+        print("Elija una opción:\n1- Ver calendario\n2- Ver notas\n3- Ver promedio de carrera\n4- Baja de usuario\n5- Cambiar rol de usuario\n0- Salir\n")
     else:
         print("Menú Principal - Usuario Estándar")
         print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n0- Salir\n")
@@ -57,7 +58,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                     materiaElegida = int(input(f"{usuario}: "))
                 inscribirseAMateria(materiasDisponibles[materiaElegida-1], materias, diasCalendario,calendario, notaFinal, correlativas)
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
-            else:
+            elif opcionElegida == 1 and tipoUsuarioEncontrado == "Administrator":
                 print("Funcionalidad de 'Ver calendario' para Administradores no implementada aún.")
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
 
@@ -134,6 +135,27 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
         # VER CALENDARIO
             if opcionElegida == 5 and tipoUsuarioEncontrado == "User":
                 verCalendario(calendario, materias)
+                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+            elif opcionElegida == 5 and tipoUsuarioEncontrado == "Administrator":
+                usuarioACambiar= input("Ingrese el nombre de usuario al que desea cambiar el rol: ").strip().lower()
+                usuarioACambiar = validarNombreUsuarioEnSistema(usuarioACambiar)
+                while usuarioACambiar is None:
+                    print("El usuario ingresado no existe. Por favor, ingrese un usuario válido.")
+                    usuarioACambiar = input("Ingrese el nombre de usuario al que desea cambiar el rol: ").strip().lower()
+                    usuarioACambiar = validarNombreUsuarioEnSistema(usuarioACambiar)
+                nuevoRol = int(input("Ingrese el nuevo rol para el usuario (1- User/2-Administrator): "))
+                while not estaDentroDelRango(1, 2, nuevoRol):
+                    print("Opción inválida. Por favor, ingrese 1 para User o 2 para Administrator.")
+                    nuevoRol = int(input("Ingrese el nuevo rol para el usuario (1- User/2-Administrator): "))
+                if nuevoRol == 1:
+                    nuevoRol = "User"
+                else:
+                    nuevoRol = "Administrator"
+                resultadoCambioDeRol = cambiarRol(nuevoRol, usuarioACambiar)
+                if resultadoCambioDeRol:
+                    print(f"El rol del usuario {usuarioACambiar[0].strip()} ha sido cambiado a {nuevoRol}.")
+                else:
+                    print("No se pudo cambiar el rol del usuario.")
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
 
         # VER NOTAS

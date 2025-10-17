@@ -1,5 +1,24 @@
 import json
 
+
+def cambiarRol(nuevoRol, usuario):
+    seModficoEnCSV = False
+    datos = []
+    try:
+        with open('ETAPA2/Archivos/usuarios.csv', 'r') as usuarios:
+            for linea in usuarios:
+                datos.append(linea.strip().split(','))
+        for dato in datos:
+            if dato[0].strip() == usuario[0].strip():
+                dato[2] = nuevoRol
+        with open('ETAPA2/Archivos/usuarios.csv', 'w') as usuarios:
+            for dato in datos:
+                usuarios.write(','.join(dato) + '\n')
+        seModficoEnCSV = True
+        return seModficoEnCSV
+    except (FileNotFoundError, Exception) as e:
+        print(f"Error: {e}")
+        return None
 def validarNombreUsuarioEnSistema(usuario):
     try:
         datosEncontrados = None
