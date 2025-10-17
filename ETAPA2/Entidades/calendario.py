@@ -2,7 +2,7 @@
 import random
 from Entidades.materias import tieneCorrelativasAprobadas, darDeBajaNotas
 
-def verCalendario(calendario, materias):
+def verCalendario(calendario, materias, usuario):
     """
     Muestra el calendario de materias como matriz formateada
     calendario: matriz donde cada fila es [codigo_materia, parcial1, parcial2, nota_final]
@@ -28,6 +28,8 @@ def verCalendario(calendario, materias):
     print("-" * 50)
     print("✨ Fin del calendario ✨")
     print("=" * 50)
+
+
 
 def inscribirseAMateria(indice, materias, diasCalendario, calendario, notaFinal, correlativas):
     materiaAInscribirse = materias[indice].split(".",3)
