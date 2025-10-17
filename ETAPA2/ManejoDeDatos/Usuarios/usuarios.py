@@ -2,13 +2,11 @@ def validarNombreUsuarioEnSistema(usuario):
     try:
         datosEncontrados = None
         with open('ETAPA2/Archivos/usuarios.csv', 'r') as usuarios:
-            usuarios_lineas = usuarios.readlines()
-            for linea in usuarios_lineas[1:]:
+            for linea in usuarios:
                 datos = linea.strip().split(',')
-                if len(datos) >= 2:
-                    usuario_archivo = datos[0].strip()
-                    if usuario == usuario_archivo:
-                        datosEncontrados = datos
+                if datos[0].strip() == usuario:
+                    datosEncontrados = datos
+                    break
         return datosEncontrados
     except (FileNotFoundError, Exception) as e:
         print(f"Error: {e}")
@@ -26,13 +24,14 @@ def tipoUsuario(usuario):
         return None
 
 def validarLogin(usuario, contrasena):
+    concidencia = False
     try:
         datos = validarNombreUsuarioEnSistema(usuario)
         if datos is not None:
             contrasena_archivo = datos[1].strip()
             if contrasena == contrasena_archivo:
-                usuario = datos[0].strip()
-        return usuario
+                concidencia = True
+        return concidencia
     except (FileNotFoundError, Exception) as e:
         print(f"Error: {e}")
         return None
@@ -52,7 +51,11 @@ def login():
             print("La contraseña no puede estar vacía. Por favor, ingrésela nuevamente.")
             contrasena = input("Contraseña: ").strip()
         validacion = validarLogin(usuario, contrasena)
-        return validacion
+        if validacion:
+            print("Inicio de sesión exitoso.")
+        else:
+            print("Nombre de usuario o contraseña incorrectos.")
+        return validacion, usuario
     except Exception as e:
         print(f"Error: {e}")
         return None 
