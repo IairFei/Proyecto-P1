@@ -63,6 +63,55 @@ def crearDiccionarioUsuarioManual(usuario_original):
     
     return usuario_copia
 
+def guardarUsuario(usuarioActual):
+    """
+    Actualiza un usuario específico en el archivo JSON manteniendo los demás usuarios
+    """
+    try:
+        with open('ETAPA2/Archivos/usuarios.json', 'r') as usuarios:
+            datos_sistema = json.load(usuarios)
+        
+        usuario_encontrado = False
+        for i in range(len(datos_sistema['usuarios'])):
+            if datos_sistema['usuarios'][i]['usuario'] == usuarioActual['usuario']:
+                datos_sistema['usuarios'][i]['id'] = usuarioActual['id']
+                datos_sistema['usuarios'][i]['nombre'] = usuarioActual['nombre']
+                datos_sistema['usuarios'][i]['apellido'] = usuarioActual['apellido']
+                datos_sistema['usuarios'][i]['pack5materias'] = usuarioActual['pack5materias']
+                
+                datos_sistema['usuarios'][i]['notas'] = {}
+                for materia_id, nota_data in usuarioActual['notas'].items():
+                    datos_sistema['usuarios'][i]['notas'][materia_id] = {
+                        'parcial1': nota_data['parcial1'],
+                        'parcial2': nota_data['parcial2'],
+                        'final': nota_data['final'],
+                        'nota_final': nota_data['nota_final'],
+                        'aprobada': nota_data['aprobada'],
+                        'recursa': nota_data['recursa']
+                    }
+                
+                datos_sistema['usuarios'][i]['calendario'] = {
+                    'Lunes': usuarioActual['calendario']['Lunes'],
+                    'Martes': usuarioActual['calendario']['Martes'],
+                    'Miercoles': usuarioActual['calendario']['Miercoles'],
+                    'Jueves': usuarioActual['calendario']['Jueves'],
+                    'Viernes': usuarioActual['calendario']['Viernes']
+                }
+                
+                usuario_encontrado = True
+        
+        if not usuario_encontrado:
+            print(f"Error: Usuario {usuarioActual['usuario']} no encontrado en el archivo")
+            return False
+        
+        with open('ETAPA2/Archivos/usuarios.json', 'w') as usuarios:
+            json.dump(datos_sistema, usuarios, indent=4)
+        
+        return True
+    except (FileNotFoundError, Exception) as e:
+        print(f"Error: {e}")
+        return False
+
 def getUsuarioPorNombreUsuario(nombreUsuario):
     try:
         datosEncontrados = None
