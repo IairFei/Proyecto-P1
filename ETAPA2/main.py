@@ -4,6 +4,7 @@ from Entidades.materias import mostrarMateriasDisponibles, promedioCursada, obte
 from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
 from ManejoDeArchivos.verificarArchvos import verificarArchivos
+from Logs.logs import log
 
 
 def menuPrincipal(usuario):
@@ -18,6 +19,7 @@ def menuPrincipal(usuario):
         print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n0- Salir\n")
     opcionElegida = int(input(f"{usuario}: "))
     print("-----------------------------------------------------")
+    log("menuPrincipal", "INFO", f"Usuario {usuario} seleccionó la opción {opcionElegida} en el menú principal.")
     return opcionElegida, tipoUsuarioEncontrado
 
 def eleccionDeMateriaAnio(usuario):
@@ -26,7 +28,8 @@ def eleccionDeMateriaAnio(usuario):
     while estaDentroDelRango(1,5,anioElegido) == False:
         print("Año inválido. Por favor, ingrese un año válido (1-5).")
         print("Ingrese el año de la materia (1-5): ")
-        anioElegido = int(input(f"{usuario}: "))  
+        anioElegido = int(input(f"{usuario}: "))
+    log("eleccionDeMateriaAnio", "INFO", f"Usuario {usuario} eligió el año {anioElegido} para la materia.")  
     return anioElegido
 def eleccionDeMateriaCuatrimestre(usuario):
     print("Ingrese el cuatrimestre de la materia (1-2): ")
@@ -35,6 +38,7 @@ def eleccionDeMateriaCuatrimestre(usuario):
         print("Cuatrimestre inválido. Por favor, ingrese un cuatrimestre válido (1-2).")
         print("Ingrese el cuatrimestre de la materia (1-2): ")
         cuatrimestreElegido = int(input(f"{usuario}: "))
+    log("eleccionDeMateriaCuatrimestre", "INFO", f"Usuario {usuario} eligió el cuatrimestre {cuatrimestreElegido} para la materia.")
     return cuatrimestreElegido
 
 def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario):
@@ -53,6 +57,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                 materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal)            
                 print(f"Ingrese el numero de la materia que desea inscribirse (1 a  {len(materiasDisponibles)}):")
                 materiaElegida = int(input(f"{usuario}: "))
+                log("menuInicial", "INFO", f"Usuario {usuario} eligió la materia número {materiaElegida} para inscribirse.")
                 while estaDentroDelRango(1, len(materiasDisponibles), materiaElegida)==False:
                     print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
                     print(f"Ingrese el numero de la materia que desea inscribirse (1 a {len(materiasDisponibles)}):")
@@ -66,25 +71,31 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
         #PACK DE 5 MATERIAS
             if opcionElegida == 2 and tipoUsuarioEncontrado == "User":
                 estado = estadoPackDe5Materias(calendario, materiasRecursar)
+                log("menuInicial", "INFO", f"Usuario {usuario} consultó el estado del 'Pack de 5 materias': {estado}.")
                 if estado == True:
                     print("Cumple con las condiciones para el 'Pack de 5 materias'.")
                     print("¿Querés que te anotemos en las próximas 5 materias siguiendo el plan de estudios? (s/n): ")
                     respuesta = input(f"{usuario}: ")
+                    log("menuInicial", "INFO", f"Usuario {usuario} respondió '{respuesta}' a la inscripción al 'Pack de 5 materias'.")
                     while charValido(respuesta) == False:
                         print("Caracter inválido. Por favor, ingrese 's' para sí o 'n' para no.")
                         print("¿Querés que te anotemos en las próximas 5 materias siguiendo el plan de estudios? (s/n): ")
                         respuesta = input(f"{usuario}: ")
+                        log("menuInicial", "INFO", f"Usuario {usuario} respondió '{respuesta}' a la inscripción al 'Pack de 5 materias'.")
                     if respuesta.lower().strip() == 'n':
                         print("Operacion cancelada. Volviendo al menú principal.")
+                        log("menuInicial", "INFO", f"Usuario {usuario} canceló la inscripción al 'Pack de 5 materias'.")
                         opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
                     else:
                         lista5Materias = obtenerMateriasPackDe5(materiasAprobadas, materias, correlativas, notaFinal)
                         for i in range(len(lista5Materias)):
                             inscribirseAMateria(lista5Materias[i], materias, diasCalendario,calendario, notaFinal, correlativas)
                         print("Inscripción al 'Pack de 5 materias' completada. Tu calendario quedó así:")
+                        log("menuInicial", "INFO", f"Usuario {usuario} se inscribió al 'Pack de 5 materias': {lista5Materias}.")
                         verCalendario(calendario, materias)
                 else:
                     print("No cumple con las condiciones para el 'Pack de 5 materias'.")
+                    log("menuInicial", "INFO", f"Usuario {usuario} no cumple con las condiciones para el 'Pack de 5 materias'.")
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
             elif opcionElegida == 2 and tipoUsuarioEncontrado == "Administrator":
                 print("Funcionalidad de 'Ver notas' para Administradores no implementada aún.")
@@ -95,11 +106,13 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                 print("Ingrese el numero del dia de la materia que desea cargar la nota:")
                 verCalendario(calendario, materias)
                 diaIngresado = int(input(f"{usuario}: "))
+                log("menuInicial", "INFO", f"Usuario {usuario} eligió el día {diaIngresado} para cargar la nota.")
                 if calendario[diaIngresado-1] != -1:
-                    cargarNotas(calendario[diaIngresado-1],p1,p2,finales,notaFinal,materias, calendario, diasCalendario, materiasAprobadas, materiasRecursar)
+                    cargarNotas(calendario[diaIngresado-1],p1,p2,finales,notaFinal,materias, calendario, diasCalendario, materiasAprobadas, materiasRecursar, usuario)
                     opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
                 else:
                     print("No hay materia asignada para ese día. Volviendo al menú principal.")
+                    log("menuInicial", "INFO", f"Usuario {usuario} intentó cargar nota en un día sin materia asignada. Volviendo al menú principal.")
                     opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
             elif opcionElegida == 3 and tipoUsuarioEncontrado == "Administrator":
                 print("Funcionalidad de 'Ver promedio de carrera' para Administradores no implementada aún.")
