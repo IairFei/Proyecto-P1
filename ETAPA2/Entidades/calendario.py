@@ -1,8 +1,9 @@
 
 import random
 from Entidades.materias import tieneCorrelativasAprobadas, darDeBajaNotas
+from Logs.logs import log
 
-def verCalendario(calendario, materias, usuario):
+def verCalendario(calendario, materias):
     """
     Muestra el calendario de materias como matriz formateada
     calendario: matriz donde cada fila es [codigo_materia, parcial1, parcial2, nota_final]
@@ -34,19 +35,24 @@ def verCalendario(calendario, materias, usuario):
 def inscribirseAMateria(indice, materias, diasCalendario, calendario, notaFinal, correlativas):
     materiaAInscribirse = materias[indice].split(".",3)
     print(f"Inscribiendose a la materia: {materiaAInscribirse[2]}")
+    log("inscribirseAMateria", "INFO", f"Intentando inscribir a la materia: {materiaAInscribirse[2]}")
     if tieneCorrelativasAprobadas(indice, materias, notaFinal, correlativas) and indice not in calendario:
         if len(diasCalendario) > 0:
             diaElegido = random.choice(diasCalendario)
             calendario[diaElegido] = indice
             diasCalendario.remove(diaElegido)
+            log("inscribirseAMateria", "INFO", f"Inscripto a la materia {materiaAInscribirse[2]} el dia {diaElegido+1}")
         else:
             print("No se pudo inscribir a la materia, todos los dias estan ocupados.")
+            log("inscribirseAMateria", "INFO", f"No se pudo inscribir a la materia, todos los dias estan ocupados: {materiaAInscribirse[2]}")
     else:
         print("No se cumplen las correlativas o ya estas inscripto en la materia.")
+        log("inscribirseAMateria", "INFO", f"No se cumplen las correlativas o ya esta inscripto en la materia: {materiaAInscribirse[2]}")
 
 def darDeBajaMateria(diaIngresado,calendario,diasCalendario,p1,p2,notaFinal):
     indiceMateria = calendario[diaIngresado-1]
     calendario[diaIngresado-1] = -1
     diasCalendario.append(diaIngresado-1)
     diasCalendario.sort()
+    log("darDeBajaMateria", "INFO", f"Materia dada de baja: {indiceMateria} en el dia {diaIngresado}")
     darDeBajaNotas(indiceMateria,p1,p2,notaFinal)
