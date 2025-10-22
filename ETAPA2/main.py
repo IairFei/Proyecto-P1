@@ -40,7 +40,6 @@ def eleccionDeMateriaCuatrimestre(usuario):
 def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario):
     try:
         usuarioActual = getUsuarioPorNombreUsuario(usuario)
-        usuarioActual["nombre"] = "aaaaa"
         guardarUsuario(usuarioActual)
         opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         while opcionElegida != 0:
