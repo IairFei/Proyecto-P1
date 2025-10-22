@@ -1,4 +1,5 @@
 import json
+from ..validacionDeDatos import verificarSeguridadContraseña
 from ManejoDeDatos.Usuarios.usuarios import validarNombreUsuarioEnSistema
 from faker import Faker
 fake = Faker()
@@ -55,9 +56,19 @@ def altaUsuario():
             print("Ingrese los datos del nuevo usuario:")
             usuario = nombreAlumno[0].lower() + apellidoAlumno.lower()
             existeUsuario = validarNombreUsuarioEnSistema(usuario)
+            print("Existe usuario:", existeUsuario)
             if existeUsuario is not None:
                 nombreUsuarioRepetido(nombreAlumno, apellidoAlumno)
             contrasena = input("Ingrese la contraseña: ").strip()
+            while True:
+                status =  verificarSeguridadContraseña(contrasena)
+                if status[1] == True:
+                    print(status[0])
+                    break
+                else:
+                    print(status[0])
+                    contrasena = input("Ingrese la contraseña: ").strip()
+                    continue
             tipo_usuario = "User"
             print(f"Usuario: {usuario}, Contraseña: {contrasena}, Tipo de usuario: {tipo_usuario}")
             archivo.writelines(f"{usuario},{contrasena},{tipo_usuario}\n")
