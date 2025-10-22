@@ -35,13 +35,13 @@ def verificarSeguridadContraseña(contraseña):
         if caracter in caracteresEspeciales:
             contieneEspecial = True
             break
-    if len(contraseña) < 3:
-        error = "minimo 3 caracteres!"
-        message = "" + error
+    if len(contraseña) < 6:
+        error = "debe contener minimo 6 caracteres!"
+        message = "Contraseña poco segura, " + error
         return(message, False)
     if not contieneEspecial:
-        error = "no contiene caracteres especiales!"
-        message = "Contraseña poco Segura, " + error
+        error = "debe contener al menos 1 caracter especial!"
+        message = "Contraseña poco segura, " + error
         
         return (message, False)
 
@@ -54,7 +54,7 @@ def verificarSeguridadContraseña(contraseña):
             continue
 
     if not contieneNumeros:
-        error = "no contiene numeros"
+        error = "debe contener al menos un numero"
         message = "Contraseña poco Segura, " + error
         
         return (message, False)
