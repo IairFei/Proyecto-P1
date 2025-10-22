@@ -17,7 +17,7 @@ def menuPrincipal(usuario):
         print("Elija una opción:\n1- Ver calendario\n2- Ver notas\n3- Ver promedio de carrera\n4- Baja de usuario\n5- Cambiar rol de usuario\n0- Salir\n")
     else:
         print("Menú Principal - Usuario Estándar")
-        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n0- Salir\n")
+        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n8-Practicar con Flashcards\n0- Salir\n")
     opcionElegida = int(input(f"{usuario}: "))
     print("-----------------------------------------------------")
     log("menuPrincipal", "INFO", f"Usuario {usuario} seleccionó la opción {opcionElegida} en el menú principal.")
