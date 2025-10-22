@@ -1,6 +1,7 @@
-Usuario, contraseña
-jsampieri, contrasenia123
-mjones, password456
-adoe, qwerty789
-bsmith, abcdefg123
-ifeigelman, admin
+Usuario,Contraseña,Role
+jsampieri,contrasenia123,Administrator
+mjones,password456,User
+adoe,qwerty789,User
+bsmith,abcdefg123,User
+ifeigelman,admin,Administrator
+mmendez,1234,Administrator

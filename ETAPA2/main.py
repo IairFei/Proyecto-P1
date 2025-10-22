@@ -1,16 +1,27 @@
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
 from Entidades.materias import mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
-from ManejoDeDatos.Usuarios.usuarios import login
 from Entidades.flashcards import menuFlashcard
+from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario
+from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
+from ManejoDeArchivos.verificarArchvos import verificarArchivos
+from Logs.logs import log
 
 
 def menuPrincipal(usuario):
     print("-----------------------------------------------------")
-    print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n8- Menu de flashcards\n0- Salir\n")
+    tipoUsuarioEncontrado = tipoUsuario(usuario)
+    print(f"Tipo de usuario: {tipoUsuarioEncontrado}")
+    if tipoUsuarioEncontrado == "Administrator":
+        print("Menú Principal - Usuario Administrador")
+        print("Elija una opción:\n1- Ver calendario\n2- Ver notas\n3- Ver promedio de carrera\n4- Baja de usuario\n5- Cambiar rol de usuario\n0- Salir\n")
+    else:
+        print("Menú Principal - Usuario Estándar")
+        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n0- Salir\n")
     opcionElegida = int(input(f"{usuario}: "))
     print("-----------------------------------------------------")
-    return opcionElegida
+    log("menuPrincipal", "INFO", f"Usuario {usuario} seleccionó la opción {opcionElegida} en el menú principal.")
+    return opcionElegida, tipoUsuarioEncontrado
 
 def eleccionDeMateriaAnio(usuario):
     print("Ingrese el año de la materia (1-5): ")
@@ -18,7 +29,8 @@ def eleccionDeMateriaAnio(usuario):
     while estaDentroDelRango(1,5,anioElegido) == False:
         print("Año inválido. Por favor, ingrese un año válido (1-5).")
         print("Ingrese el año de la materia (1-5): ")
-        anioElegido = int(input(f"{usuario}: "))  
+        anioElegido = int(input(f"{usuario}: "))
+    log("eleccionDeMateriaAnio", "INFO", f"Usuario {usuario} eligió el año {anioElegido} para la materia.")  
     return anioElegido
 def eleccionDeMateriaCuatrimestre(usuario):
     print("Ingrese el cuatrimestre de la materia (1-2): ")
@@ -27,67 +39,88 @@ def eleccionDeMateriaCuatrimestre(usuario):
         print("Cuatrimestre inválido. Por favor, ingrese un cuatrimestre válido (1-2).")
         print("Ingrese el cuatrimestre de la materia (1-2): ")
         cuatrimestreElegido = int(input(f"{usuario}: "))
+    log("eleccionDeMateriaCuatrimestre", "INFO", f"Usuario {usuario} eligió el cuatrimestre {cuatrimestreElegido} para la materia.")
     return cuatrimestreElegido
 
 def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario):
     try:
-        opcionElegida = menuPrincipal(usuario)
+        usuarioActual = getUsuarioPorNombreUsuario(usuario)
+        guardarUsuario(usuarioActual)
+        opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         while opcionElegida != 0:
             while estaDentroDelRango(0,8,opcionElegida) == False:
                 print("Opción inválida. Por favor, elija una opción válida.")
-                opcionElegida = menuPrincipal(usuario)
+                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         #INSCRIPCION A MATERIA
-            if opcionElegida == 1:
+            if opcionElegida == 1 and tipoUsuarioEncontrado == "User":
                 anioElegido = eleccionDeMateriaAnio(usuario)
                 cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuario)
                 materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal)            
                 print(f"Ingrese el numero de la materia que desea inscribirse (1 a  {len(materiasDisponibles)}):")
                 materiaElegida = int(input(f"{usuario}: "))
+                log("menuInicial", "INFO", f"Usuario {usuario} eligió la materia número {materiaElegida} para inscribirse.")
                 while estaDentroDelRango(1, len(materiasDisponibles), materiaElegida)==False:
                     print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
                     print(f"Ingrese el numero de la materia que desea inscribirse (1 a {len(materiasDisponibles)}):")
                     materiaElegida = int(input(f"{usuario}: "))
                 inscribirseAMateria(materiasDisponibles[materiaElegida-1], materias, diasCalendario,calendario, notaFinal, correlativas)
-                opcionElegida = menuPrincipal(usuario)
+                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+            elif opcionElegida == 1 and tipoUsuarioEncontrado == "Administrator":
+                print("Funcionalidad de 'Ver calendario' para Administradores no implementada aún.")
+                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
 
         #PACK DE 5 MATERIAS
-            if opcionElegida == 2:
+            if opcionElegida == 2 and tipoUsuarioEncontrado == "User":
                 estado = estadoPackDe5Materias(calendario, materiasRecursar)
+                log("menuInicial", "INFO", f"Usuario {usuario} consultó el estado del 'Pack de 5 materias': {estado}.")
                 if estado == True:
                     print("Cumple con las condiciones para el 'Pack de 5 materias'.")
                     print("¿Querés que te anotemos en las próximas 5 materias siguiendo el plan de estudios? (s/n): ")
                     respuesta = input(f"{usuario}: ")
+                    log("menuInicial", "INFO", f"Usuario {usuario} respondió '{respuesta}' a la inscripción al 'Pack de 5 materias'.")
                     while charValido(respuesta) == False:
                         print("Caracter inválido. Por favor, ingrese 's' para sí o 'n' para no.")
                         print("¿Querés que te anotemos en las próximas 5 materias siguiendo el plan de estudios? (s/n): ")
                         respuesta = input(f"{usuario}: ")
+                        log("menuInicial", "INFO", f"Usuario {usuario} respondió '{respuesta}' a la inscripción al 'Pack de 5 materias'.")
                     if respuesta.lower().strip() == 'n':
                         print("Operacion cancelada. Volviendo al menú principal.")
-                        opcionElegida = menuPrincipal(usuario)
+                        log("menuInicial", "INFO", f"Usuario {usuario} canceló la inscripción al 'Pack de 5 materias'.")
+                        opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
                     else:
                         lista5Materias = obtenerMateriasPackDe5(materiasAprobadas, materias, correlativas, notaFinal)
                         for i in range(len(lista5Materias)):
                             inscribirseAMateria(lista5Materias[i], materias, diasCalendario,calendario, notaFinal, correlativas)
                         print("Inscripción al 'Pack de 5 materias' completada. Tu calendario quedó así:")
+                        log("menuInicial", "INFO", f"Usuario {usuario} se inscribió al 'Pack de 5 materias': {lista5Materias}.")
                         verCalendario(calendario, materias)
                 else:
                     print("No cumple con las condiciones para el 'Pack de 5 materias'.")
-                opcionElegida = menuPrincipal(usuario)
+                    log("menuInicial", "INFO", f"Usuario {usuario} no cumple con las condiciones para el 'Pack de 5 materias'.")
+                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+            elif opcionElegida == 2 and tipoUsuarioEncontrado == "Administrator":
+                print("Funcionalidad de 'Ver notas' para Administradores no implementada aún.")
+                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
 
         #CARGA DE NOTAS
-            if opcionElegida == 3:
+            if opcionElegida == 3 and tipoUsuarioEncontrado == "User":
                 print("Ingrese el numero del dia de la materia que desea cargar la nota:")
                 verCalendario(calendario, materias)
                 diaIngresado = int(input(f"{usuario}: "))
+                log("menuInicial", "INFO", f"Usuario {usuario} eligió el día {diaIngresado} para cargar la nota.")
                 if calendario[diaIngresado-1] != -1:
-                    cargarNotas(calendario[diaIngresado-1],p1,p2,finales,notaFinal,materias, calendario, diasCalendario, materiasAprobadas, materiasRecursar)
-                    opcionElegida = menuPrincipal(usuario)
+                    cargarNotas(calendario[diaIngresado-1],p1,p2,finales,notaFinal,materias, calendario, diasCalendario, materiasAprobadas, materiasRecursar, usuario)
+                    opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
                 else:
                     print("No hay materia asignada para ese día. Volviendo al menú principal.")
-                    opcionElegida = menuPrincipal(usuario)
+                    log("menuInicial", "INFO", f"Usuario {usuario} intentó cargar nota en un día sin materia asignada. Volviendo al menú principal.")
+                    opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+            elif opcionElegida == 3 and tipoUsuarioEncontrado == "Administrator":
+                print("Funcionalidad de 'Ver promedio de carrera' para Administradores no implementada aún.")
+                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         
         #DAR DE BAJA
-            if opcionElegida == 4:
+            if opcionElegida == 4 and tipoUsuarioEncontrado == "User":
                 print("Ingrese el numero del dia de la materia que desea dar de baja:")
                 verCalendario(calendario, materias)
                 diaIngresado = int(input(f"{usuario}: "))
@@ -102,22 +135,44 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                         respuesta = input(f"{usuario}: ")
                     if respuesta.lower().strip() == 'n':
                         print("Operacion cancelada. Volviendo al menú principal.")
-                        opcionElegida = menuPrincipal(usuario)
+                        opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
                     else:
                         darDeBajaMateria(diaIngresado,calendario,diasCalendario,p1,p2,notaFinal)                    
-                        opcionElegida = menuPrincipal(usuario)
+                        opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
                 else:
                     print("No hay materia asignada para ese día. Volviendo al menú principal.")
-                    opcionElegida = menuPrincipal(usuario)
-
-
+                    opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+            elif opcionElegida == 4 and tipoUsuarioEncontrado == "Administrator":
+                print("Funcionalidad de 'Baja de usuario' para Administradores no implementada aún.")
+                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         # VER CALENDARIO
-            if opcionElegida == 5:
+            if opcionElegida == 5 and tipoUsuarioEncontrado == "User":
                 verCalendario(calendario, materias)
-                opcionElegida = menuPrincipal(usuario)
+                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+            elif opcionElegida == 5 and tipoUsuarioEncontrado == "Administrator":
+                usuarioACambiar= input("Ingrese el nombre de usuario al que desea cambiar el rol: ").strip().lower()
+                usuarioACambiar = validarNombreUsuarioEnSistema(usuarioACambiar)
+                while usuarioACambiar is None:
+                    print("El usuario ingresado no existe. Por favor, ingrese un usuario válido.")
+                    usuarioACambiar = input("Ingrese el nombre de usuario al que desea cambiar el rol: ").strip().lower()
+                    usuarioACambiar = validarNombreUsuarioEnSistema(usuarioACambiar)
+                nuevoRol = int(input("Ingrese el nuevo rol para el usuario (1- User/2-Administrator): "))
+                while not estaDentroDelRango(1, 2, nuevoRol):
+                    print("Opción inválida. Por favor, ingrese 1 para User o 2 para Administrator.")
+                    nuevoRol = int(input("Ingrese el nuevo rol para el usuario (1- User/2-Administrator): "))
+                if nuevoRol == 1:
+                    nuevoRol = "User"
+                else:
+                    nuevoRol = "Administrator"
+                resultadoCambioDeRol = cambiarRol(nuevoRol, usuarioACambiar)
+                if resultadoCambioDeRol:
+                    print(f"El rol del usuario {usuarioACambiar[0].strip()} ha sido cambiado a {nuevoRol}.")
+                else:
+                    print("No se pudo cambiar el rol del usuario.")
+                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
 
         # VER NOTAS
-            if opcionElegida == 6:
+            if opcionElegida == 6 and tipoUsuarioEncontrado == "User":
                 notaMateria = []
                 anioElegido = eleccionDeMateriaAnio(usuario)
                 cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuario)
@@ -147,26 +202,75 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                         notaMateria.append(notaFinal[indiceMateria])
                         print(f"Nota final: {notaFinal[indiceMateria]}")
                     print(f"La nota más alta es: {max(notaMateria)} y la más baja es: {min(notaMateria)}")
-                opcionElegida = menuPrincipal(usuario)
-
-
-
+                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         #VER PROMEDIO CURSADA
-            if opcionElegida == 7:
+            if opcionElegida == 7 and tipoUsuarioEncontrado == "User":
                 print("Notas")
                 promedioCursada(notaFinal)
                 opcionElegida = menuPrincipal(usuario)
 
         #VER OPCIONES FLASHCARDS  
-            if opcionElegida == 8:
+            if opcionElegida == 8 and tipoUsuarioEncontrado == "User":
                 menuFlashcard()
                 opcionElegida = menuPrincipal() 
+                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         print("Gracias por usar el sistema. ¡Hasta luego!")
     except KeyboardInterrupt as ki:
         print("\nProceso interrumpido por el usuario.")
     except Exception as e:
-        print(f"Error: {e}")     
-            
+        print(f"Error: {e}")
+
+def menuLoginPrincipal():
+    try:
+        print("Bienvenido al sistema de gestión académica.")
+        print("Por favor, elija una de las siguientes opciones: \n1-Iniciar sesión\n2-Crear usuario\n3-Salir")
+        opcionElegida = int(input("Opción: "))
+        while estaDentroDelRango(1,3,opcionElegida) == False:
+            print("Opción inválida. Por favor, elija una opción válida.")
+            print("Por favor, elija una de las siguientes opciones: \n1-Iniciar sesión\n2-Crear usuario\n3-Salir")
+            opcionElegida = int(input("Opción: "))
+        return opcionElegida
+    except Exception as e:
+        print(f"Error: {e}")
+        
+def inicioDeSesion(usuario=None):
+    inicioDeSesionExitoso = False
+    try:
+        if usuario is None:
+            inicioDeSesionExitoso, usuario = login()
+            intentosRestantes = 3
+            while inicioDeSesionExitoso == False and intentosRestantes > 0:
+                print("Acceso denegado. Inténtelo de nuevo.")
+                intentosRestantes -= 1
+                print(f"Le quedan {intentosRestantes} intentos.")
+                if intentosRestantes == 0:
+                    print("Ha agotado todos los intentos. Saliendo del programa.")
+                    raise Exception("Acceso denegado.")
+                inicioDeSesionExitoso, usuario = login()               
+        return inicioDeSesionExitoso, usuario
+    except Exception as e:
+        print(f"Error: {e}")
+def menuLogin(opcionElegida):
+    inicioDeSesionExitoso = False
+    try:
+        if opcionElegida == 1:
+            inicioDeSesionExitoso, usuario = inicioDeSesion()            
+        elif opcionElegida == 2:
+            usuario = altaUsuario()
+            inicioSesion = input("¿Desea iniciar sesión ahora? (s/n): ")
+            if charValido(inicioSesion) == False:
+                print("Caracter inválido. Por favor, ingrese 's' para sí o 'n' para no.")
+                inicioSesion = input("¿Desea iniciar sesión ahora? (s/n): ")
+            if inicioSesion.lower().strip() == 's':
+                inicioDeSesionExitoso = True
+            else:
+                main()
+        else:
+            print("Saliendo del programa. ¡Hasta luego!")
+            exit()
+        return inicioDeSesionExitoso, usuario
+    except Exception as e:
+        print(f"Error: {e}")
 def main():
     # Inicialización de variables
 
@@ -182,30 +286,21 @@ def main():
     correlativas=[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
     
     try:
-        usuario = login()
-        intentosRestantes = 3
-        while usuario == None and intentosRestantes > 0:
-            print("Acceso denegado. Inténtelo de nuevo.")
-            intentosRestantes -= 1
-            print(f"Le quedan {intentosRestantes} intentos.")
-            if intentosRestantes == 0:
-                print("Ha agotado todos los intentos. Saliendo del programa.")
-                return
-            usuario = login()
-    except KeyboardInterrupt:
-        print("\nProceso interrumpido por el usuario. Saliendo del programa.")
+        #inicializarUsuariosFake()
+        opcionElegida = menuLoginPrincipal()
+        inicioDeSesionExitoso, usuario = menuLogin(opcionElegida)
+        print(usuario)
+        print(inicioDeSesionExitoso)
+        if usuario is None or inicioDeSesionExitoso is False:
+            print("Inicio de sesión fallido. Saliendo del programa.")
+            return
+    except (Exception, KeyboardInterrupt) as e:
+        print(f"Ocurrió un error durante el inicio de sesión: {e}")
         return
-    except FileNotFoundError:
-        print("Error: El archivo de usuarios no se encontró.")
-        return
-    except Exception as e:
-        print(f"Error durante el proceso de login: {e}")
-        return
-
-    print(f"Acceso concedido. Bienvenido {usuario}.")
-    menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario)
+    else:
+        print(f"Acceso concedido. Bienvenido {usuario}.")
+        menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario)
         
 if __name__ == "__main__":
+    verificarArchivos()
     main()
-
-

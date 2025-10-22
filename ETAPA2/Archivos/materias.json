@@ -4,7 +4,7 @@
         "nombre": "Álgebra y Geometría Analítica",
         "año": 1,
         "cuatrimestre": 1,
-        "correlativas": [],  // IDs de materias correlativas   
+        "correlativas": [],  
         "flashcards": [
             {
                 "pregunta": "¿Cuál es la derivada de x^2?",
