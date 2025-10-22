@@ -236,11 +236,13 @@ def inicioDeSesion(usuario=None):
             inicioDeSesionExitoso, usuario = login()
             intentosRestantes = 3
             while inicioDeSesionExitoso == False and intentosRestantes > 0:
+                log("inicioDeSesion", "WARNING", f"Intento fallido de inicio de sesión para el usuario {usuario}. Intentos restantes: {intentosRestantes-1}.")
                 print("Acceso denegado. Inténtelo de nuevo.")
                 intentosRestantes -= 1
                 print(f"Le quedan {intentosRestantes} intentos.")
                 if intentosRestantes == 0:
                     print("Ha agotado todos los intentos. Saliendo del programa.")
+                    log("inicioDeSesion", "WARNING", f"Usuario {usuario} ha agotado todos los intentos de inicio de sesión.")
                     raise Exception("Acceso denegado.")
                 inicioDeSesionExitoso, usuario = login()               
         return inicioDeSesionExitoso, usuario
@@ -284,17 +286,19 @@ def main():
     try:
         #inicializarUsuariosFake()
         opcionElegida = menuLoginPrincipal()
+        log("main", "INFO", f"Opción elegida en el menú de login: {opcionElegida}")
         inicioDeSesionExitoso, usuario = menuLogin(opcionElegida)
-        print(usuario)
-        print(inicioDeSesionExitoso)
         if usuario is None or inicioDeSesionExitoso is False:
             print("Inicio de sesión fallido. Saliendo del programa.")
+            log("main", "INFO", "Inicio de sesión fallido.")
             return
     except (Exception, KeyboardInterrupt) as e:
         print(f"Ocurrió un error durante el inicio de sesión: {e}")
+        log("main", "ERROR", f"Ocurrió un error durante el inicio de sesión: {e}")
         return
     else:
         print(f"Acceso concedido. Bienvenido {usuario}.")
+        log("main", "INFO", f"Usuario {usuario} ha iniciado sesión correctamente.")
         menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario)
         
 if __name__ == "__main__":

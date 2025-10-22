@@ -1,5 +1,5 @@
 import json
-
+from Logs.logs import log
 
 def cambiarRol(nuevoRol, usuario):
     seModficoEnCSV = False
@@ -164,14 +164,20 @@ def login():
     try:
         print("Ingrese su nombre de usuario:")
         usuario = input("Usuario: ").strip().lower()
+        log("login", "INFO", f"Intento de login para el usuario: {usuario}")
         while usuario is None or usuario == "":
             print("El nombre de usuario no puede estar vacío. Por favor, ingréselo nuevamente.")
-            usuario = input("Usuario: ").strip().lower()                
+            log("login", "WARNING", "Nombre de usuario vacío en intento de login.")
+            usuario = input("Usuario: ").strip().lower()
+            log("login", "INFO", f"Nuevo intento de login para el usuario: {usuario}")                
         print("Ingrese su contraseña:")
         contrasena = input("Contraseña: ").strip()
+        log("login", "INFO", f"Intento de login para el usuario: {usuario} con contraseña proporcionada.")
         while contrasena is None or contrasena == "":
+            log("login", "WARNING", f"Contraseña vacía en intento de login para el usuario: {usuario}.")
             print("La contraseña no puede estar vacía. Por favor, ingrésela nuevamente.")
             contrasena = input("Contraseña: ").strip()
+            log("login", "INFO", f"Nuevo intento de login para el usuario: {usuario} con contraseña proporcionada.")
         validacion = validarLogin(usuario, contrasena)
         if validacion:
             print("Inicio de sesión exitoso.")
