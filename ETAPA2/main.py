@@ -2,9 +2,8 @@ from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
 from Entidades.materias import mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
 from Entidades.flashcards import menuFlashcard
-from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario
+from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario,menuAjustes
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
-from ManejoDeDatos.Usuarios.ajustesUsuario import menuAjustes
 from ManejoDeArchivos.verificarArchvos import verificarArchivos
 from Logs.logs import log
 
