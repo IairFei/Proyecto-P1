@@ -61,6 +61,21 @@
                 "Jueves": null,
                 "Viernes": null
             }
+        },
+        {
+            "id": "4",
+            "usuario": "iholm",
+            "nombre": "Ian",
+            "apellido": "Holm",
+            "pack5materias": true,
+            "notas": {},
+            "calendario": {
+                "Lunes": null,
+                "Martes": null,
+                "Miercoles": null,
+                "Jueves": null,
+                "Viernes": null
+            }
         }
     ]
 }
