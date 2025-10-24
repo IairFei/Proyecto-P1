@@ -4,6 +4,7 @@ from Entidades.materias import mostrarMateriasDisponibles, promedioCursada, obte
 from Entidades.flashcards import menuFlashcard
 from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
+from ManejoDeDatos.Usuarios.ajustesUsuario import menuAjustes
 from ManejoDeArchivos.verificarArchvos import verificarArchivos
 from Logs.logs import log
 
@@ -17,7 +18,7 @@ def menuPrincipal(usuario):
         print("Elija una opción:\n1- Ver calendario\n2- Ver notas\n3- Ver promedio de carrera\n4- Baja de usuario\n5- Cambiar rol de usuario\n0- Salir\n")
     else:
         print("Menú Principal - Usuario Estándar")
-        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n8-Practicar con Flashcards\n0- Salir\n")
+        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n8- Practicar con Flashcards\n9- Ajustes\n0- Salir\n")
     opcionElegida = int(input(f"{usuario}: "))
     print("-----------------------------------------------------")
     log("menuPrincipal", "INFO", f"Usuario {usuario} seleccionó la opción {opcionElegida} en el menú principal.")
@@ -48,7 +49,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
         guardarUsuario(usuarioActual)
         opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         while opcionElegida != 0:
-            while estaDentroDelRango(0,8,opcionElegida) == False:
+            while estaDentroDelRango(0,9,opcionElegida) == False:
                 print("Opción inválida. Por favor, elija una opción válida.")
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         #INSCRIPCION A MATERIA
@@ -212,6 +213,12 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
         #VER OPCIONES FLASHCARDS  
             if opcionElegida == 8 and tipoUsuarioEncontrado == "User":
                 menuFlashcard()
+                opcionElegida = menuPrincipal() 
+                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+        
+        #AJUSTES DE LA CUENTA (CAMBIO DE CONTRASEÑA)
+            if opcionElegida == 9 and tipoUsuarioEncontrado == "User":
+                menuAjustes(usuario)
                 opcionElegida = menuPrincipal() 
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         print("Gracias por usar el sistema. ¡Hasta luego!")

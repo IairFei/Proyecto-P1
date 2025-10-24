@@ -33,6 +33,20 @@ def validarNombreUsuarioEnSistema(usuario):
         print(f"Error: {e}")
         return None
 
+def validarContrasena(usuario,contrasena):
+    try:
+        datosEncontrados = None
+        with open('ETAPA2/Archivos/usuarios.csv', 'r') as usuarios:
+            for linea in usuarios:
+                datos = linea.strip().split(',')
+                if datos[0].strip() == usuario and datos[1].strip() == contrasena:
+                    datosEncontrados = datos
+                    break
+        return datosEncontrados
+    except (FileNotFoundError, Exception) as e:
+        print(f"Error: {e}")
+        return None
+
 def tipoUsuario(usuario):
     try:
         tipo_usuario_encontrado = None
@@ -157,7 +171,7 @@ def validarLogin(usuario, contrasena):
     except (FileNotFoundError, Exception) as e:
         print(f"Error: {e}")
         return None
-        
+
         
 def login():
     validacion = None
@@ -187,3 +201,6 @@ def login():
     except Exception as e:
         print(f"Error: {e}")
         return None 
+
+
+    
