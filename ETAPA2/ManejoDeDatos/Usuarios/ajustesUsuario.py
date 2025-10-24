@@ -5,6 +5,7 @@ from Logs.logs import log
 
 def cambioContrasena(usuario):
     try:
+        print("-----------------------------------------------------")
         intentos = 3
         log("ajusteUsuario", "INFO", "Iniciando proceso de cambio contraseña.")
         exContrasena = input("Ingrese su contraseña actual: ").strip()
@@ -33,9 +34,11 @@ def cambioContrasena(usuario):
         status = contrasenaActualizada(usuario,exContrasena,contrasenaNueva)
         if status == True:   
             print("Contraseña actualizada.\nVolviendo al Menu")
+            log("ajusteUsuario", "INFO", f"Se actualizo la contraseña del usuario: {usuario}.")
             print("-----------------------------------------------------")
         else:
             print("Ocurrio un error mientras se actualizaba la contraseña.")
+            log("ajusteUsuario", "WARNING", f"Se actualizo la contraseña del usuario: {usuario}.")
         return None
     except Exception as e:
         print(f"Error: {e}")
@@ -68,12 +71,12 @@ def menuAjustes(usuario):
             print("1- Cambiar contraseña\n0- Salir\n")
             opcion=int(input(f"{usuario}: "))
             
-            if estaDentroDelRango(1,0,opcion)==False:
+            if estaDentroDelRango(0,1,opcion)==False:
                 raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
             if opcion==1:
                 cambioContrasena(usuario) 
             else:
                 break
-            
         except ValueError:
             print("El valor ingresado no es correcto,intente nuevamente")
+    return None

@@ -213,13 +213,11 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
         #VER OPCIONES FLASHCARDS  
             if opcionElegida == 8 and tipoUsuarioEncontrado == "User":
                 menuFlashcard()
-                opcionElegida = menuPrincipal() 
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         
         #AJUSTES DE LA CUENTA (CAMBIO DE CONTRASEÑA)
             if opcionElegida == 9 and tipoUsuarioEncontrado == "User":
                 menuAjustes(usuario)
-                opcionElegida = menuPrincipal() 
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         print("Gracias por usar el sistema. ¡Hasta luego!")
     except KeyboardInterrupt as ki:
