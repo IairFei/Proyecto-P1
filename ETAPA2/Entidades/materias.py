@@ -1,26 +1,43 @@
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, tieneNotasParciales, tieneNotaParcial1
 from Logs.logs import log
+import json
 
-def mostrarMateriasDisponibles(anio, cuatrimestre, materias, calendario, notaFinal, mostrarTodas=False):
-    print(f"Mostrando materias disponibles para el año {anio}, cuatrimestre {cuatrimestre}:")
-    indiceEnMaterias = 0
-    contMateriasDisponibles = 1
-    indices=[]
-    for materia in materias: 
-        materia = materia.split(".", 3)
-        anioMateria= materia[0]
-        cuatrimestreMateria= materia[1]
-        if int(anioMateria) == anio and int(cuatrimestreMateria) == cuatrimestre:
-            if mostrarTodas == False and indiceEnMaterias not in calendario and notaFinal[indiceEnMaterias] == 0:
-                print(f"{contMateriasDisponibles}- {materia[2]}")
-                indices.append(indiceEnMaterias)
-                contMateriasDisponibles+=1
-            elif mostrarTodas == True:
-                print(f"{contMateriasDisponibles}- {materia[2]}")
-                indices.append(indiceEnMaterias)
-                contMateriasDisponibles+=1
-        indiceEnMaterias += 1
-    return indices
+def mostrarMateriasDisponibles(anio, cuatrimestre, usuario, mostrarTodas=False):
+    try:
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            contMateriasDisponibles = 1
+            indices = []
+            calendario_dict = usuario.get('calendario', {})
+            notas_dict = usuario.get('notas', {})
+            materias_en_calendario = set()
+            for dia, idx in calendario_dict.items():
+                if idx is not None:
+                    materias_en_calendario.add(int(idx))
+            for idx, linea in enumerate(archivoMaterias):
+                try:
+                    materia = json.loads(linea.strip())
+                except Exception:
+                    continue
+                anioMateria = materia.get('año')
+                cuatrimestreMateria = materia.get('cuatrimestre')
+                nombreMateria = materia.get('nombre')
+                indice_materia = materia.get('id', idx)
+                if int(anioMateria) == anio and int(cuatrimestreMateria) == cuatrimestre:
+                    nota_info = notas_dict.get(str(indice_materia), {})
+                    aprobada = nota_info.get('aprobada', False)
+                    if not mostrarTodas:
+                        if indice_materia not in materias_en_calendario and not aprobada:
+                            print(f"{contMateriasDisponibles}- {nombreMateria}")
+                            indices.append(indice_materia)
+                            contMateriasDisponibles += 1
+                    else:
+                        print(f"{contMateriasDisponibles}- {nombreMateria}")
+                        indices.append(indice_materia)
+                        contMateriasDisponibles += 1
+            return indices
+    except Exception as e:
+        print(e)
+        return []
 
 def buscarNombreMateriaPorIndice(indice, materias):
     materia = materias[indice].split(".",3)

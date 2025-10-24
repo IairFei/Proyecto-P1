@@ -87,45 +87,48 @@ def guardarUsuario(usuarioActual):
     Actualiza un usuario específico en el archivo JSON manteniendo los demás usuarios
     """
     try:
-        with open('ETAPA2/Archivos/usuarios.json', 'r') as usuarios:
-            datos_sistema = json.load(usuarios)
-        
+        ruta = 'ETAPA2/Archivos/usuarios.json'
         usuario_encontrado = False
-        for i in range(len(datos_sistema['usuarios'])):
-            if datos_sistema['usuarios'][i]['usuario'] == usuarioActual['usuario']:
-                datos_sistema['usuarios'][i]['id'] = usuarioActual['id']
-                datos_sistema['usuarios'][i]['nombre'] = usuarioActual['nombre']
-                datos_sistema['usuarios'][i]['apellido'] = usuarioActual['apellido']
-                datos_sistema['usuarios'][i]['pack5materias'] = usuarioActual['pack5materias']
-                
-                datos_sistema['usuarios'][i]['notas'] = {}
-                for materia_id, nota_data in usuarioActual['notas'].items():
-                    datos_sistema['usuarios'][i]['notas'][materia_id] = {
-                        'parcial1': nota_data['parcial1'],
-                        'parcial2': nota_data['parcial2'],
-                        'final': nota_data['final'],
-                        'nota_final': nota_data['nota_final'],
-                        'aprobada': nota_data['aprobada'],
-                        'recursa': nota_data['recursa']
+        lineas_modificadas = []
+        with open(ruta, 'r', encoding='utf-8') as archivo:
+            for linea in archivo:
+                try:
+                    usuario = json.loads(linea)
+                except Exception:
+                    lineas_modificadas.append(linea)
+                    continue
+                if usuario.get('usuario') == usuarioActual['usuario']:
+                    # Actualizar los datos del usuario
+                    usuario['id'] = usuarioActual['id']
+                    usuario['nombre'] = usuarioActual['nombre']
+                    usuario['apellido'] = usuarioActual['apellido']
+                    usuario['pack5materias'] = usuarioActual['pack5materias']
+                    usuario['notas'] = {}
+                    for materia_id, nota_data in usuarioActual['notas'].items():
+                        usuario['notas'][materia_id] = {
+                            'parcial1': nota_data['parcial1'],
+                            'parcial2': nota_data['parcial2'],
+                            'final': nota_data['final'],
+                            'nota_final': nota_data['nota_final'],
+                            'aprobada': nota_data['aprobada'],
+                            'recursa': nota_data['recursa']
+                        }
+                    usuario['calendario'] = {
+                        'Lunes': usuarioActual['calendario']['Lunes'],
+                        'Martes': usuarioActual['calendario']['Martes'],
+                        'Miercoles': usuarioActual['calendario']['Miercoles'],
+                        'Jueves': usuarioActual['calendario']['Jueves'],
+                        'Viernes': usuarioActual['calendario']['Viernes']
                     }
-                
-                datos_sistema['usuarios'][i]['calendario'] = {
-                    'Lunes': usuarioActual['calendario']['Lunes'],
-                    'Martes': usuarioActual['calendario']['Martes'],
-                    'Miercoles': usuarioActual['calendario']['Miercoles'],
-                    'Jueves': usuarioActual['calendario']['Jueves'],
-                    'Viernes': usuarioActual['calendario']['Viernes']
-                }
-                
-                usuario_encontrado = True
-        
+                    lineas_modificadas.append(json.dumps(usuario, ensure_ascii=False) + '\n')
+                    usuario_encontrado = True
+                else:
+                    lineas_modificadas.append(linea if linea.endswith('\n') else linea + '\n')
         if not usuario_encontrado:
             print(f"Error: Usuario {usuarioActual['usuario']} no encontrado en el archivo")
             return False
-        
-        with open('ETAPA2/Archivos/usuarios.json', 'w') as usuarios:
-            json.dump(datos_sistema, usuarios, indent=4)
-        
+        with open(ruta, 'w', encoding='utf-8') as archivo:
+            archivo.writelines(lineas_modificadas)
         return True
     except (FileNotFoundError, Exception) as e:
         print(f"Error: {e}")
@@ -134,10 +137,13 @@ def guardarUsuario(usuarioActual):
 def getUsuarioPorNombreUsuario(nombreUsuario):
     try:
         datosEncontrados = None
-        with open('ETAPA2/Archivos/usuarios.json', 'r') as usuarios:
-            datos_sistema = json.load(usuarios)
-            for usuario in datos_sistema['usuarios']:
-                if usuario['usuario'] == nombreUsuario:
+        with open('ETAPA2/Archivos/usuarios.json', 'r', encoding='utf-8') as archivo:
+            for linea in archivo:
+                try:
+                    usuario = json.loads(linea)
+                except Exception:
+                    continue
+                if usuario.get('usuario') == nombreUsuario:
                     datosEncontrados = crearDiccionarioUsuarioManual(usuario)
                     break
         return datosEncontrados
