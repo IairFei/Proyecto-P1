@@ -1,6 +1,5 @@
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango
 
-
 def mostrarPreguntaFlashcard(pregunta):
     print("-"*5,"PREGUNTA","-"*5,"\n","\n")
     print(pregunta,"\n","\n")
@@ -8,6 +7,25 @@ def mostrarPreguntaFlashcard(pregunta):
 def mostrarRespuestaFlashcard(respuesta):
     print("-"*5,"RESPUESTA","-"*5,"\n","\n")
     print(respuesta,"\n","\n")
+
+def guardarFlashcard(flashcard):
+    while True:
+        try:
+            for clave in flashcard:
+                pregunta=str(clave)
+                respuesta=str(flashcard[clave][0])
+                puntaje=str(flashcard[clave][1])
+            #print(pregunta,respuesta,puntaje)
+            archFlash=open("ETAPA2/Archivos/flashcardsSinAprobar.csv", mode="at")
+            archFlash.write(str(pregunta+";"+respuesta+";"+puntaje+"\n"))
+            print("HASTA ACA LLEGAMOS LOL")
+        except OSError as msg:
+            print("ERROR:",msg)
+        else:
+            archFlash.close()
+            break
+   
+
 
 def ProponerFlashcard():
     flashcard={}
@@ -31,7 +49,6 @@ def masInfo():
           \n->Ingresando la opcion 2, se proponen nuevas flashcards para que los administradores puedan revisarla y habilitarla para el uso de todos los estudiantes\n---------------- """)
 
 
-
 def menuFlashcard():
     while True:
         try:
@@ -45,7 +62,7 @@ def menuFlashcard():
             if opcion==1:
                 estudiarFlashcard()
             elif opcion==2:
-                ProponerFlashcard()
+                guardarFlashcard(ProponerFlashcard())
             elif opcion==3:
                 masInfo()
             else:
