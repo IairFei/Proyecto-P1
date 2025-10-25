@@ -1,6 +1,6 @@
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
-from Entidades.materias import mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
+from Entidades.materias import buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
 from Entidades.flashcards import menuFlashcard
 from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario,menuAjustes
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
@@ -43,6 +43,7 @@ def eleccionDeMateriaCuatrimestre(usuario):
     return cuatrimestreElegido
 
 def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario):
+    dias=["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
     try:
         usuarioActual = getUsuarioPorNombreUsuario(usuario)
         opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
@@ -123,20 +124,19 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                 print("Ingrese el numero del dia de la materia que desea dar de baja:")
                 verCalendario(usuarioActual)
                 diaIngresado = int(input(f"{usuario}: "))
-                if calendario[diaIngresado-1] != -1:
-                    indiceMateria = calendario[diaIngresado-1]
-                    materia = materias[indiceMateria].split(".",3)
-                    print(f"¿Desea dar de baja la materia {materia[2]}? (s/n): ")
+                if usuarioActual["calendario"][dias[diaIngresado-1]] is not None:
+                    materia = buscarMateriaPorIndice(usuarioActual["calendario"][dias[diaIngresado-1]])
+                    print(f"¿Desea dar de baja la materia {materia['nombre']}? (s/n): ")
                     respuesta = input(f"{usuario}: ")
                     while charValido(respuesta) == False:
                         print("Caracter inválido. Por favor, ingrese 's' para sí o 'n' para no.")
-                        print(f"¿Desea dar de baja la materia {materia[2]}? (s/n): ")
+                        print(f"¿Desea dar de baja la materia {materia['nombre']}? (s/n): ")
                         respuesta = input(f"{usuario}: ")
                     if respuesta.lower().strip() == 'n':
                         print("Operacion cancelada. Volviendo al menú principal.")
                         opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
                     else:
-                        darDeBajaMateria(diaIngresado,calendario,diasCalendario,p1,p2,notaFinal)                    
+                        darDeBajaMateria(usuarioActual, diaIngresado)                    
                         opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
                 else:
                     print("No hay materia asignada para ese día. Volviendo al menú principal.")
