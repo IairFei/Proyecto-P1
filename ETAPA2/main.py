@@ -55,7 +55,12 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
             if opcionElegida == 1 and tipoUsuarioEncontrado == "User":
                 anioElegido = eleccionDeMateriaAnio(usuario)
                 cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuario)
-                materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,usuarioActual)           
+                materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,usuarioActual)
+                if len(materiasDisponibles)==0:
+                    print("No hay materias disponibles para inscribirse en este año y cuatrimestre.")
+                    log("menuInicial", "INFO", f"Usuario {usuario} no tiene materias disponibles para inscribirse en el año {anioElegido} y cuatrimestre {cuatrimestreElegido}.")
+                    opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                    continue
                 print(f"Ingrese el numero de la materia que desea inscribirse (1 a  {len(materiasDisponibles)}):")
                 materiaElegida = int(input(f"{usuario}: "))
                 log("menuInicial", "INFO", f"Usuario {usuario} eligió la materia número {materiaElegida} para inscribirse.")
@@ -71,7 +76,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
 
         #PACK DE 5 MATERIAS
             if opcionElegida == 2 and tipoUsuarioEncontrado == "User":
-                estado = estadoPackDe5Materias(calendario, materiasRecursar)
+                estado = estadoPackDe5Materias(usuarioActual)
                 log("menuInicial", "INFO", f"Usuario {usuario} consultó el estado del 'Pack de 5 materias': {estado}.")
                 if estado == True:
                     print("Cumple con las condiciones para el 'Pack de 5 materias'.")
@@ -88,12 +93,12 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                         log("menuInicial", "INFO", f"Usuario {usuario} canceló la inscripción al 'Pack de 5 materias'.")
                         opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
                     else:
-                        lista5Materias = obtenerMateriasPackDe5(materiasAprobadas, materias, correlativas, notaFinal)
+                        lista5Materias = obtenerMateriasPackDe5(usuarioActual)
                         for i in range(len(lista5Materias)):
-                            inscribirseAMateria(lista5Materias[i], materias, diasCalendario,calendario, notaFinal, correlativas)
+                            inscribirseAMateria(lista5Materias[i], usuarioActual)
                         print("Inscripción al 'Pack de 5 materias' completada. Tu calendario quedó así:")
                         log("menuInicial", "INFO", f"Usuario {usuario} se inscribió al 'Pack de 5 materias': {lista5Materias}.")
-                        verCalendario(calendario, materias)
+                        verCalendario(usuarioActual)
                 else:
                     print("No cumple con las condiciones para el 'Pack de 5 materias'.")
                     log("menuInicial", "INFO", f"Usuario {usuario} no cumple con las condiciones para el 'Pack de 5 materias'.")

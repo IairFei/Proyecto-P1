@@ -49,7 +49,7 @@ def inscribirseAMateria(materiaSeleccionada, usuarioActual):
             materia = None
             for linea in archivo_materias:
                 datos_materia = json.loads(linea)
-                if datos_materia['id'] == materiaSeleccionada:
+                if datos_materia['id'] == materiaSeleccionada and tieneCorrelativasAprobadas(usuarioActual, materiaSeleccionada):
                     materia = datos_materia
                     break
             if materia is None:
