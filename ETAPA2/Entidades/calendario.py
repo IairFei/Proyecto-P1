@@ -2,8 +2,10 @@
 import random
 from Entidades.materias import tieneCorrelativasAprobadas, darDeBajaNotas
 from Logs.logs import log
+import json
+from ManejoDeDatos.Usuarios.usuarios import guardarUsuario
 
-def verCalendario(calendario, materias):
+def verCalendario(usuarioActual):
     """
     Muestra el calendario de materias como matriz formateada
     calendario: matriz donde cada fila es [codigo_materia, parcial1, parcial2, nota_final]
@@ -15,44 +17,62 @@ def verCalendario(calendario, materias):
     
     print(f"{'DÍA':<12} {'MATERIA':<35}")
     print("-" * 50)
-    
-    dias = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
+
+    dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
+    calendario = usuarioActual["calendario"]
     for i in range(5):
         dia = dias[i]
-        materia = calendario[i]
-        if materia == -1:
+        materia_id = calendario[dia]
+        if materia_id is None or materia_id == -1:
             nombre_materia = "Libre"
         else:
-            nombre_materia = materias[materia].split(".", 2)[2]
+            nombre_materia = None
+            with open('ETAPA2/Archivos/materias.json', 'r', encoding='utf-8') as archivo_materias:
+                for linea in archivo_materias:
+                    datos_materia = json.loads(linea)
+                    if datos_materia['id'] == materia_id:
+                        nombre_materia = datos_materia['nombre']
+                        break
+            if nombre_materia is None:
+                nombre_materia = f"ID {materia_id} (no encontrada)"
         print(f"{dia:<12} {nombre_materia:<35}")
-    
+
     print("-" * 50)
     print("✨ Fin del calendario ✨")
     print("=" * 50)
 
 
 
-def inscribirseAMateria(indice, materias, diasCalendario, calendario, notaFinal, correlativas):
-    materiaAInscribirse = materias[indice].split(".",3)
-    print(f"Inscribiendose a la materia: {materiaAInscribirse[2]}")
-    log("inscribirseAMateria", "INFO", f"Intentando inscribir a la materia: {materiaAInscribirse[2]}")
-    if tieneCorrelativasAprobadas(indice, materias, notaFinal, correlativas) and indice not in calendario:
-        if len(diasCalendario) > 0:
-            diaElegido = random.choice(diasCalendario)
-            calendario[diaElegido] = indice
-            diasCalendario.remove(diaElegido)
-            log("inscribirseAMateria", "INFO", f"Inscripto a la materia {materiaAInscribirse[2]} el dia {diaElegido+1}")
-        else:
-            print("No se pudo inscribir a la materia, todos los dias estan ocupados.")
-            log("inscribirseAMateria", "INFO", f"No se pudo inscribir a la materia, todos los dias estan ocupados: {materiaAInscribirse[2]}")
-    else:
-        print("No se cumplen las correlativas o ya estas inscripto en la materia.")
-        log("inscribirseAMateria", "INFO", f"No se cumplen las correlativas o ya esta inscripto en la materia: {materiaAInscribirse[2]}")
+def inscribirseAMateria(materiaSeleccionada, usuarioActual):
+    try:
+        with open('ETAPA2/Archivos/materias.json', 'r', encoding='utf-8') as archivo_materias:
+            materia = None
+            for linea in archivo_materias:
+                datos_materia = json.loads(linea)
+                if datos_materia['id'] == materiaSeleccionada:
+                    materia = datos_materia
+                    break
+            if materia is None:
+                raise ValueError("Materia no encontrada.")
+        dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]  # Sin tilde en 'Miercoles'
+        calendario = usuarioActual["calendario"]
+        diasCalendario = [i for i in range(5) if calendario[dias[i]] is None]
+        print("Días disponibles para inscribirse: ", diasCalendario)
+        if not diasCalendario:
+            print("No hay días disponibles en el calendario para inscribirse en una nueva materia.")
+            return
+        diaElegido = random.choice(diasCalendario)
+        print(f"Inscribiéndose en la materia {materia['nombre']} el día {dias[diaElegido]}")
+        usuarioActual['calendario'][dias[diaElegido]] = materia['id']
+        guardarUsuario(usuarioActual)
+        verCalendario(usuarioActual)
+        return
+    except Exception as e:
+        print(f"Error al inscribirse en la materia: {e}")
 
-def darDeBajaMateria(diaIngresado,calendario,diasCalendario,p1,p2,notaFinal):
-    indiceMateria = calendario[diaIngresado-1]
-    calendario[diaIngresado-1] = -1
-    diasCalendario.append(diaIngresado-1)
-    diasCalendario.sort()
+def darDeBajaMateria(diaIngresado, usuarioActual):
+    dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
+    indiceMateria = usuarioActual["calendario"][dias[diaIngresado-1]]
+    usuarioActual["calendario"][dias[diaIngresado-1]] = None
     log("darDeBajaMateria", "INFO", f"Materia dada de baja: {indiceMateria} en el dia {diaIngresado}")
-    darDeBajaNotas(indiceMateria,p1,p2,notaFinal)
+    darDeBajaNotas(indiceMateria, usuarioActual)
