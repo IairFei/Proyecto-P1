@@ -54,25 +54,27 @@ def inscribirseAMateria(materiaSeleccionada, usuarioActual):
                     break
             if materia is None:
                 raise ValueError("Materia no encontrada.")
-        dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]  # Sin tilde en 'Miercoles'
+        dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]  
         calendario = usuarioActual["calendario"]
         diasCalendario = [i for i in range(5) if calendario[dias[i]] is None]
-        print("Días disponibles para inscribirse: ", diasCalendario)
         if not diasCalendario:
             print("No hay días disponibles en el calendario para inscribirse en una nueva materia.")
             return
         diaElegido = random.choice(diasCalendario)
         print(f"Inscribiéndose en la materia {materia['nombre']} el día {dias[diaElegido]}")
         usuarioActual['calendario'][dias[diaElegido]] = materia['id']
+        usuarioActual['notas'][materia['id']] = {"parcial1": None, "parcial2": None, "final": None, "nota_final": None, "aprobada": False, "recursa": False}
+        log("inscribirseAMateria", "INFO", f"Usuario {usuarioActual['usuario']} se inscribió en la materia {materia['nombre']} el día {dias[diaElegido]}")
         guardarUsuario(usuarioActual)
         verCalendario(usuarioActual)
         return
     except Exception as e:
         print(f"Error al inscribirse en la materia: {e}")
 
-def darDeBajaMateria(diaIngresado, usuarioActual):
+def darDeBajaMateria(usuarioActual, diaIngresado):
     dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
     indiceMateria = usuarioActual["calendario"][dias[diaIngresado-1]]
     usuarioActual["calendario"][dias[diaIngresado-1]] = None
     log("darDeBajaMateria", "INFO", f"Materia dada de baja: {indiceMateria} en el dia {diaIngresado}")
     darDeBajaNotas(indiceMateria, usuarioActual)
+    guardarUsuario(usuarioActual)

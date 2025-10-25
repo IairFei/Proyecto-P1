@@ -1,4 +1,4 @@
-{"id": 1, "usuario": "a", "nombre": "ALBERTO", "apellido": "Sampieri", "pack5materias": false, "notas": {}, "calendario": {"Lunes": null, "Martes": 4, "Miercoles": null, "Jueves": null, "Viernes": null}}
+{"id": 1, "usuario": "a", "nombre": "ALBERTO", "apellido": "Sampieri", "pack5materias": false, "notas": {}, "calendario": {"Lunes": null, "Martes": null, "Miercoles": null, "Jueves": null, "Viernes": null}}
 {"id": 2, "usuario": "mrodriguez", "nombre": "Maria", "apellido": "Rodriguez", "pack5materias": true, "notas": {}, "calendario": {"Lunes": null, "Martes": null, "Miercoles": null, "Jueves": null, "Viernes": null}}
 {"id": 3, "usuario": "vcinti", "nombre": "Valentino", "apellido": "Cinti", "pack5materias": true, "notas": {}, "calendario": {"Lunes": null, "Martes": null, "Miercoles": null, "Jueves": null, "Viernes": null}}
 {"id": 4, "usuario": "aab", "nombre": "ab", "apellido": "ab", "pack5materias": true, "notas": {}, "calendario": {"Lunes": null, "Martes": null, "Miercoles": null, "Jueves": null, "Viernes": null}}

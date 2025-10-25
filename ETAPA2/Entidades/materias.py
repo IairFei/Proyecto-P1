@@ -44,9 +44,19 @@ def buscarNombreMateriaPorIndice(indice, materias):
     nombreDeMateria = materia[2]
     return nombreDeMateria
 
-def buscarMateriaPorIndice(indice, materias):
-    materia = materias[indice].split(".",3)
-    return materia
+def buscarMateriaPorIndice(indice):
+    try:
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            for linea in archivoMaterias:
+                try:
+                    materia = json.loads(linea.strip())
+                    if materia.get('id') == indice:
+                        return materia
+                except Exception:
+                    continue
+    except (IndexError, FileNotFoundError) as e:
+        print(e)
+    return None
 
 def buscarMateriaPorNombre(nombre, materias):
     cont = 0
@@ -102,7 +112,8 @@ def estadoPackDe5Materias(calendario, materiasRecursar):
     return False
 
 def darDeBajaNotas(indicemateria, usuario):
-    usuario["notas"][indicemateria].delete()
+    del usuario['notas'][indicemateria]
+    log("darDeBajaNotas", "INFO", f"Notas de la materia {indicemateria} eliminadas del usuario {usuario['usuario']}.")
 
 def cargarNotas(indiceMateria,p1,p2,finales,notaFinal,materias, calendario, diasCalendario, materiasAprobadas, materiasRecursar, usuario):
     print(f"Cargando notas para la materia: {buscarNombreMateriaPorIndice(indiceMateria,materias)}")
