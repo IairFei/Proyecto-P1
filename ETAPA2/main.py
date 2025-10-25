@@ -45,7 +45,6 @@ def eleccionDeMateriaCuatrimestre(usuario):
 def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario):
     try:
         usuarioActual = getUsuarioPorNombreUsuario(usuario)
-        guardarUsuario(usuarioActual)
         opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         while opcionElegida != 0:
             while estaDentroDelRango(0,9,opcionElegida) == False:
@@ -55,7 +54,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
             if opcionElegida == 1 and tipoUsuarioEncontrado == "User":
                 anioElegido = eleccionDeMateriaAnio(usuario)
                 cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuario)
-                materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal)            
+                materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,usuarioActual)            
                 print(f"Ingrese el numero de la materia que desea inscribirse (1 a  {len(materiasDisponibles)}):")
                 materiaElegida = int(input(f"{usuario}: "))
                 log("menuInicial", "INFO", f"Usuario {usuario} eligió la materia número {materiaElegida} para inscribirse.")

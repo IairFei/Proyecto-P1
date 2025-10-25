@@ -23,14 +23,24 @@ def nombreUsuarioRepetido(nombreAlumno, apellidoAlumno):
         return usuario
     except Exception as e:
         print(f"Error: {e}")
+        
 def altaEnSistema(usuario, nombreAlumno, apellidoAlumno):
     try:
-        with open('ETAPA2/Archivos/usuarios.json', 'r') as users:
-            datos_sistema = json.load(users)
-            cantidad_usuarios = len(datos_sistema['usuarios'])
-            cantidad_usuarios+=1
-        cantidad_usuarios = {
-            "id": f"{cantidad_usuarios}",
+        # Leer el archivo línea por línea y cargar los datos
+        lista_usuarios = []
+        with open('ETAPA2/Archivos/usuarios.json', 'r', encoding='utf-8') as users:
+            try:
+                for linea in users:
+                    if linea.strip():
+                        lista_usuarios.append(json.loads(linea))
+            except Exception as e:
+                print(f"Error al leer el archivo JSON: {e}")
+                return None
+                
+
+        cantidad_usuarios = len(lista_usuarios) + 1
+        usuario_dict = {
+            "id": cantidad_usuarios,
             "usuario": f"{usuario}",
             "nombre": f"{nombreAlumno}",
             "apellido": f"{apellidoAlumno}",
@@ -44,11 +54,14 @@ def altaEnSistema(usuario, nombreAlumno, apellidoAlumno):
                 "Viernes": None
             }
         }
-        datos_sistema['usuarios'].append(cantidad_usuarios)
-        with open('ETAPA2/Archivos/usuarios.json', 'w') as users:
-            json.dump(datos_sistema, users, indent=4)
+        lista_usuarios.append(usuario_dict)
+
+        # Convertir cada usuario a una línea JSON y escribir todo de nuevo
+        with open('ETAPA2/Archivos/usuarios.json', 'w', encoding='utf-8') as users:
+            users.writelines([json.dumps(u, ensure_ascii=False) + '\n' for u in lista_usuarios])
+
         return True
-    except Exception as e: 
+    except Exception as e:
         print(f"Error: {e}")
         return None
 
