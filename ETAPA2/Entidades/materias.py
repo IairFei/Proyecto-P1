@@ -101,10 +101,8 @@ def estadoPackDe5Materias(calendario, materiasRecursar):
         return True
     return False
 
-def darDeBajaNotas(indiceMateria,p1,p2,notaFinal):
-    p1[indiceMateria] = 0
-    p2[indiceMateria] = 0
-    notaFinal[indiceMateria] = 0
+def darDeBajaNotas(indicemateria, usuario):
+    usuario["notas"][indicemateria].delete()
 
 def cargarNotas(indiceMateria,p1,p2,finales,notaFinal,materias, calendario, diasCalendario, materiasAprobadas, materiasRecursar, usuario):
     print(f"Cargando notas para la materia: {buscarNombreMateriaPorIndice(indiceMateria,materias)}")

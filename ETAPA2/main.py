@@ -54,7 +54,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
             if opcionElegida == 1 and tipoUsuarioEncontrado == "User":
                 anioElegido = eleccionDeMateriaAnio(usuario)
                 cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuario)
-                materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,usuarioActual)            
+                materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,usuarioActual)           
                 print(f"Ingrese el numero de la materia que desea inscribirse (1 a  {len(materiasDisponibles)}):")
                 materiaElegida = int(input(f"{usuario}: "))
                 log("menuInicial", "INFO", f"Usuario {usuario} eligió la materia número {materiaElegida} para inscribirse.")
@@ -62,7 +62,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                     print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
                     print(f"Ingrese el numero de la materia que desea inscribirse (1 a {len(materiasDisponibles)}):")
                     materiaElegida = int(input(f"{usuario}: "))
-                inscribirseAMateria(materiasDisponibles[materiaElegida-1], materias, diasCalendario,calendario, notaFinal, correlativas)
+                inscribirseAMateria(materiasDisponibles[materiaElegida-1], usuarioActual)
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
             elif opcionElegida == 1 and tipoUsuarioEncontrado == "Administrator":
                 print("Funcionalidad de 'Ver calendario' para Administradores no implementada aún.")
@@ -121,7 +121,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
         #DAR DE BAJA
             if opcionElegida == 4 and tipoUsuarioEncontrado == "User":
                 print("Ingrese el numero del dia de la materia que desea dar de baja:")
-                verCalendario(calendario, materias)
+                verCalendario(usuarioActual)
                 diaIngresado = int(input(f"{usuario}: "))
                 if calendario[diaIngresado-1] != -1:
                     indiceMateria = calendario[diaIngresado-1]
@@ -146,7 +146,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         # VER CALENDARIO
             if opcionElegida == 5 and tipoUsuarioEncontrado == "User":
-                verCalendario(calendario, materias)
+                verCalendario(usuarioActual)
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
             elif opcionElegida == 5 and tipoUsuarioEncontrado == "Administrator":
                 usuarioACambiar= input("Ingrese el nombre de usuario al que desea cambiar el rol: ").strip().lower()
