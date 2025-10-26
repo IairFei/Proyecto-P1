@@ -218,7 +218,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
             if opcionElegida == 9 and tipoUsuarioEncontrado == "User" or opcionElegida == 6 and tipoUsuarioEncontrado == "Administrator":
                 cierraSesion = menuAjustes(usuario)
                 if cierraSesion:
-                    print("Cerrando sesión.")
+                    print("Cerrando sesión.\n-----------------------------------------------------")
                     menuLoginPrincipal(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas)
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
 
