@@ -215,7 +215,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
 
         #VER OPCIONES FLASHCARDS  
             if opcionElegida == 8 and tipoUsuarioEncontrado == "User":
-                menuFlashcard()
+                menuFlashcard(usuario)
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         
         #AJUSTES DE LA CUENTA (CAMBIO DE CONTRASEÑA)
