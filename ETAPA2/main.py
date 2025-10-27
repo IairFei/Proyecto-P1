@@ -1,7 +1,7 @@
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
 from Entidades.materias import buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
-from Entidades.flashcards import menuFlashcard
+from Entidades.flashcards import menuFlashcard,aprobarFlashcards
 from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario,menuAjustes
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
 from ManejoDeArchivos.verificarArchvos import verificarArchivos
@@ -14,10 +14,10 @@ def menuPrincipal(usuario):
     print(f"Tipo de usuario: {tipoUsuarioEncontrado}")
     if tipoUsuarioEncontrado == "Administrator":
         print("Menú Principal - Usuario Administrador")
-        print("Elija una opción:\n1- Ver calendario\n2- Ver notas\n3- Ver promedio de carrera\n4- Baja de usuario\n5- Cambiar rol de usuario\n0- Salir\n")
+        print("Elija una opción:\n1- Ver calendario\n2- Ver notas\n3- Ver promedio de carrera\n4- Baja de usuario\n5- Cambiar rol de usuario\n6-Procesar flashcards\n0- Salir\n")
     else:
         print("Menú Principal - Usuario Estándar")
-        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n8- Practicar con Flashcards\n9- Ajustes\n0- Salir\n")
+        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n8- Menu Flashcards\n9- Ajustes\n0- Salir\n")
     opcionElegida = int(input(f"{usuario}: "))
     print("-----------------------------------------------------")
     log("menuPrincipal", "INFO", f"Usuario {usuario} seleccionó la opción {opcionElegida} en el menú principal.")
@@ -206,6 +206,9 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                         notaMateria.append(notaFinal[indiceMateria])
                         print(f"Nota final: {notaFinal[indiceMateria]}")
                     print(f"La nota más alta es: {max(notaMateria)} y la más baja es: {min(notaMateria)}")
+                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+            elif opcionElegida==6 and tipoUsuarioEncontrado=="Administrator":
+                aprobarFlashcards(usuario)
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         #VER PROMEDIO CURSADA
             if opcionElegida == 7 and tipoUsuarioEncontrado == "User":
