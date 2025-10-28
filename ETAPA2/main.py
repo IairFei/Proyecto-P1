@@ -44,6 +44,7 @@ def eleccionDeMateriaCuatrimestre(usuario):
     return cuatrimestreElegido
 
 def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario):
+    cierraSesion = False
     try:
         usuarioActual = getUsuarioPorNombreUsuario(usuario)
         opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
@@ -219,10 +220,16 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                 cierraSesion = menuAjustes(usuario)
                 if cierraSesion:
                     print("Cerrando sesión.\n-----------------------------------------------------")
-                    menuLoginPrincipal(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas)
-                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                    opcionElegida = 0
+                else:
+                    opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
 
-        print("Gracias por usar el sistema. ¡Hasta luego!")
+        if cierraSesion == True:
+            cierraSesion = False
+            menuLoginPrincipal(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas)
+        else:
+            print("Gracias por usar el sistema. ¡Hasta luego!")
+            
     except KeyboardInterrupt as ki:
         print("\nProceso interrumpido por el usuario.")
     except Exception as e:
