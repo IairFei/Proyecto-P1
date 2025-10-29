@@ -44,6 +44,7 @@ def eleccionDeMateriaCuatrimestre(usuario):
     return cuatrimestreElegido
 
 def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario):
+    dias=("Lunes", "Martes", "Miercoles", "Jueves", "Viernes")
     cierraSesion = False
     try:
         usuarioActual = getUsuarioPorNombreUsuario(usuario)
