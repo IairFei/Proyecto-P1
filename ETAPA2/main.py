@@ -1,6 +1,6 @@
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido, eleccionDeMateriaAnio, eleccionDeMateriaCuatrimestre
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
-from Entidades.materias import buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
+from Entidades.materias import verNotas,buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
 from Entidades.flashcards import menuFlashcard,aprobarFlashcards
 from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario,menuAjustes
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
@@ -172,18 +172,17 @@ def menuInicial(usuario):
                     materiaElegida = int(input(f"{usuario}: "))
                 materia= buscarMateriaPorIndice(materiasDisponibles[materiaElegida-1])
                 verNotas(usuarioActual, materia)
-                
+            elif opcionElegida == 6 and tipoUsuarioEncontrado == "Administrator":
+                aprobarFlashcards(usuario)
         
         #VER PROMEDIO CURSADA
             if opcionElegida == 7 and tipoUsuarioEncontrado == "User":
                 print("Notas")
                 #promedioCursada(notaFinal)
-                opcionElegida = menuPrincipal(usuario)
 
         #VER OPCIONES FLASHCARDS  
             if opcionElegida == 8 and tipoUsuarioEncontrado == "User":
                 menuFlashcard(usuario)
-                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         
         #AJUSTES DE LA CUENTA (CAMBIO DE CONTRASEÑA Y CERRAR SESION)
             if opcionElegida == 9 and tipoUsuarioEncontrado == "User" or opcionElegida == 6 and tipoUsuarioEncontrado == "Administrator":
