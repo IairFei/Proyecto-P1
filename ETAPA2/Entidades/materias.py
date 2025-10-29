@@ -9,11 +9,11 @@ def mostrarMateriasDisponibles(anio, cuatrimestre, usuario, mostrarTodas=False):
             indices = []
             calendario_dict = usuario.get('calendario', {})
             notas_dict = usuario.get('notas', {})
-            materias_en_calendario = set()
-            for dia, idx in calendario_dict.items():
-                if idx is not None:
-                    materias_en_calendario.add(int(idx))
-            for idx, linea in enumerate(archivoMaterias):
+            materias_en_calendario = []
+            for _,id in calendario_dict.items():
+                if id is not None:
+                    materias_en_calendario.append(int(id))
+            for linea in archivoMaterias:
                 try:
                     materia = json.loads(linea.strip())
                 except Exception:
@@ -21,12 +21,12 @@ def mostrarMateriasDisponibles(anio, cuatrimestre, usuario, mostrarTodas=False):
                 anioMateria = materia.get('año')
                 cuatrimestreMateria = materia.get('cuatrimestre')
                 nombreMateria = materia.get('nombre')
-                indice_materia = materia.get('id', idx)
+                indice_materia = materia.get('id')
                 if int(anioMateria) == anio and int(cuatrimestreMateria) == cuatrimestre:
                     nota_info = notas_dict.get(str(indice_materia), {})
                     aprobada = nota_info.get('aprobada', False)
                     if not mostrarTodas:
-                        if indice_materia not in materias_en_calendario and not aprobada:
+                        if indice_materia not in materias_en_calendario and not aprobada and tieneCorrelativasAprobadas(usuario, indice_materia):
                             print(f"{contMateriasDisponibles}- {nombreMateria}")
                             indices.append(indice_materia)
                             contMateriasDisponibles += 1
@@ -44,9 +44,19 @@ def buscarNombreMateriaPorIndice(indice, materias):
     nombreDeMateria = materia[2]
     return nombreDeMateria
 
-def buscarMateriaPorIndice(indice, materias):
-    materia = materias[indice].split(".",3)
-    return materia
+def buscarMateriaPorIndice(indice):
+    try:
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            for linea in archivoMaterias:
+                try:
+                    materia = json.loads(linea.strip())
+                    if materia.get('id') == indice:
+                        return materia
+                except Exception:
+                    continue
+    except (IndexError, FileNotFoundError) as e:
+        print(e)
+    return None
 
 def buscarMateriaPorNombre(nombre, materias):
     cont = 0
@@ -64,45 +74,64 @@ def buscarMateriaPorNombre(nombre, materias):
         print("No se encontro la materia.")
     return indiceEncontrado
 
-def tieneCorrelativasAprobadas(indiceMateria, materias, notasFinales, correlativas):
+def tieneCorrelativasAprobadas(usuarioActual, idMateria):
     contNoAprobadas = 0
     aproboCorrelativas = True
-    for i in range(len(correlativas[indiceMateria])):
-        if correlativas[indiceMateria][i]==1 and notasFinales[i] < 4:
-            print(f"Correlativa no aprobada: {materias[i]}")
-            contNoAprobadas += 1
-    if contNoAprobadas > 0:
-        aproboCorrelativas = False
-    return aproboCorrelativas
+    correlativas=[]
+    try:
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            for linea in archivoMaterias:
+                try:
+                    materia = json.loads(linea.strip())
+                    if materia.get('id') == idMateria:
+                        correlativas = materia.get('correlativas', [])
+                        break
+                except Exception:
+                    continue
+        if correlativas is None or len(correlativas) == 0:
+            return True
+        notas = usuarioActual.get('notas', {})
 
-def tieneRecursadas(materiasRecursar):
+        for correlativa in correlativas:
+            nota_info = notas.get(str(correlativa), {})
+            if nota_info['aprobada'] == False:
+                print(f"Correlativa de {materia['nombre']} no aprobada: {buscarMateriaPorIndice(correlativa)['nombre']}")
+                contNoAprobadas += 1
+
+        if contNoAprobadas > 0:
+            aproboCorrelativas = False
+        return aproboCorrelativas
+    except Exception as e:
+        print(f"Error al verificar correlativas: {e}")
+        aproboCorrelativas = False
+
+def tieneRecursadas(usuarioActual):
     tiene = False
-    i = 0
-    while i < len(materiasRecursar) and tiene == False:
-        if materiasRecursar[i] == 1:
+    notas= usuarioActual['notas'].keys()
+    for nota in notas:
+        if usuarioActual['notas'][nota]['recursa'] == True:
             tiene = True
-        i += 1
+            break
     return tiene
 
-def tieneCalendarioVacio(calendario):
+def tieneCalendarioVacio(usuarioCalendario):
     vacio = True
-    i = 0
-    while i < len(calendario) and vacio == True:
-        if calendario[i] != -1:
+    for dia in usuarioCalendario.keys():
+        if usuarioCalendario[dia] != None:
             vacio = False
-        i += 1
     return vacio
 
 
-def estadoPackDe5Materias(calendario, materiasRecursar):
-    vacio=tieneCalendarioVacio(calendario)
-    recursadas=tieneRecursadas(materiasRecursar)
+def estadoPackDe5Materias(usuarioActual):
+    vacio=tieneCalendarioVacio(usuarioActual['calendario'])
+    recursadas=tieneRecursadas(usuarioActual)
     if vacio==True and recursadas==False:
         return True
     return False
 
 def darDeBajaNotas(indicemateria, usuario):
-    usuario["notas"][indicemateria].delete()
+    del usuario['notas'][indicemateria]
+    log("darDeBajaNotas", "INFO", f"Notas de la materia {indicemateria} eliminadas del usuario {usuario['usuario']}.")
 
 def cargarNotas(indiceMateria,p1,p2,finales,notaFinal,materias, calendario, diasCalendario, materiasAprobadas, materiasRecursar, usuario):
     print(f"Cargando notas para la materia: {buscarNombreMateriaPorIndice(indiceMateria,materias)}")
@@ -215,13 +244,23 @@ def promedioCursada(notaFinal):
         prom=promedio(notas)
         print("El promedio de la cursada es de",prom)
 
-def obtenerMateriasPackDe5(materiasAprobadas, materias, correlativas, notaFinal):
+def obtenerMateriasPackDe5(usuarioActual):
     materiasPackDe5=[]
     indice=0
-    while len(materiasPackDe5)<5 and indice<len(materiasAprobadas):
-        if materiasAprobadas[indice]==0 and tieneCorrelativasAprobadas(indice,materias,notaFinal,correlativas)==True:
-            materiasPackDe5.append(indice)
-        indice+=1
+    try:
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            for linea in archivoMaterias:
+                try:
+                    materia = json.loads(linea.strip())
+                    if materia["id"] not in usuarioActual["notas"].keys():
+                        materiasPackDe5.append(materia["id"])
+                        if len(materiasPackDe5) == 5:
+                            break
+                except Exception:
+                    continue
+            return materiasPackDe5
+    except Exception as e:
+        print(f"Error al obtener materias pack de 5: {e}")
     return materiasPackDe5
 
 
