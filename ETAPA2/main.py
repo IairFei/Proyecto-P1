@@ -44,7 +44,7 @@ def eleccionDeMateriaCuatrimestre(usuario):
     return cuatrimestreElegido
 
 def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario):
-    dias=["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
+    dias=("Lunes", "Martes", "Miercoles", "Jueves", "Viernes")
     try:
         usuarioActual = getUsuarioPorNombreUsuario(usuario)
         opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
@@ -52,6 +52,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
             while estaDentroDelRango(0,9,opcionElegida) == False:
                 print("Opción inválida. Por favor, elija una opción válida.")
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+        
         #INSCRIPCION A MATERIA
             if opcionElegida == 1 and tipoUsuarioEncontrado == "User":
                 anioElegido = eleccionDeMateriaAnio(usuario)
@@ -111,16 +112,18 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
         #CARGA DE NOTAS
             if opcionElegida == 3 and tipoUsuarioEncontrado == "User":
                 print("Ingrese el numero del dia de la materia que desea cargar la nota:")
-                verCalendario(calendario, materias)
+                verCalendario(usuarioActual)
                 diaIngresado = int(input(f"{usuario}: "))
+                materia = buscarMateriaPorIndice(usuarioActual["calendario"][dias[diaIngresado-1]])
                 log("menuInicial", "INFO", f"Usuario {usuario} eligió el día {diaIngresado} para cargar la nota.")
-                if calendario[diaIngresado-1] != -1:
-                    cargarNotas(calendario[diaIngresado-1],p1,p2,finales,notaFinal,materias, calendario, diasCalendario, materiasAprobadas, materiasRecursar, usuario)
+                if usuarioActual["calendario"][dias[diaIngresado-1]] is not None:
+                    cargarNotas(usuarioActual,materia,diaIngresado)
                     opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
                 else:
-                    print("No hay materia asignada para ese día. Volviendo al menú principal.")
+                    print("No hay materia asignada a ese día. Volviendo al menú principal.")
                     log("menuInicial", "INFO", f"Usuario {usuario} intentó cargar nota en un día sin materia asignada. Volviendo al menú principal.")
                     opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+            
             elif opcionElegida == 3 and tipoUsuarioEncontrado == "Administrator":
                 print("Funcionalidad de 'Ver promedio de carrera' para Administradores no implementada aún.")
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
@@ -150,6 +153,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
             elif opcionElegida == 4 and tipoUsuarioEncontrado == "Administrator":
                 print("Funcionalidad de 'Baja de usuario' para Administradores no implementada aún.")
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                
         # VER CALENDARIO
             if opcionElegida == 5 and tipoUsuarioEncontrado == "User":
                 verCalendario(usuarioActual)
@@ -208,6 +212,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                         print(f"Nota final: {notaFinal[indiceMateria]}")
                     print(f"La nota más alta es: {max(notaMateria)} y la más baja es: {min(notaMateria)}")
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+        
         #VER PROMEDIO CURSADA
             if opcionElegida == 7 and tipoUsuarioEncontrado == "User":
                 print("Notas")
