@@ -41,8 +41,6 @@ def verCalendario(usuarioActual):
     print("✨ Fin del calendario ✨")
     print("=" * 50)
 
-
-
 def inscribirseAMateria(materiaSeleccionada, usuarioActual):
     try:
         with open('ETAPA2/Archivos/materias.json', 'r', encoding='utf-8') as archivo_materias:
