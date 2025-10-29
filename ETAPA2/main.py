@@ -1,6 +1,6 @@
-from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido
+from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido, eleccionDeMateriaAnio, eleccionDeMateriaCuatrimestre
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
-from Entidades.materias import buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
+from Entidades.materias import verNotas,buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
 from Entidades.flashcards import menuFlashcard
 from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario,menuAjustes
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
@@ -23,25 +23,6 @@ def menuPrincipal(usuario):
     log("menuPrincipal", "INFO", f"Usuario {usuario} seleccionó la opción {opcionElegida} en el menú principal.")
     return opcionElegida, tipoUsuarioEncontrado
 
-def eleccionDeMateriaAnio(usuario):
-    print("Ingrese el año de la materia (1-5): ")
-    anioElegido = int(input(f"{usuario}: "))
-    while estaDentroDelRango(1,5,anioElegido) == False:
-        print("Año inválido. Por favor, ingrese un año válido (1-5).")
-        print("Ingrese el año de la materia (1-5): ")
-        anioElegido = int(input(f"{usuario}: "))
-    log("eleccionDeMateriaAnio", "INFO", f"Usuario {usuario} eligió el año {anioElegido} para la materia.")  
-    return anioElegido
-
-def eleccionDeMateriaCuatrimestre(usuario):
-    print("Ingrese el cuatrimestre de la materia (1-2): ")
-    cuatrimestreElegido = int(input(f"{usuario}: "))
-    while estaDentroDelRango(1,2,cuatrimestreElegido) == False:
-        print("Cuatrimestre inválido. Por favor, ingrese un cuatrimestre válido (1-2).")
-        print("Ingrese el cuatrimestre de la materia (1-2): ")
-        cuatrimestreElegido = int(input(f"{usuario}: "))
-    log("eleccionDeMateriaCuatrimestre", "INFO", f"Usuario {usuario} eligió el cuatrimestre {cuatrimestreElegido} para la materia.")
-    return cuatrimestreElegido
 
 def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario):
     dias=("Lunes", "Martes", "Miercoles", "Jueves", "Viernes")
@@ -186,32 +167,17 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                 notaMateria = []
                 anioElegido = eleccionDeMateriaAnio(usuario)
                 cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuario)
-                materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal, True)
-                print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a  {len(materiasDisponibles)}):")
+                materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,usuarioActual, True)
+                print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a  {len(materiasDisponibles)}, 0 para volver atrás) :")
                 materiaElegida = int(input(f"{usuario}: "))
-                while estaDentroDelRango(1, len(materiasDisponibles), materiaElegida)==False:
+                while estaDentroDelRango(0, len(materiasDisponibles), materiaElegida)==False:
+                    if materiaElegida==0:
+                        opcionElegida, tipoUsuarioEncontrado= menuPrincipal(usuario)
                     print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
                     print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a {len(materiasDisponibles)}):")
                     materiaElegida = int(input(f"{usuario}: "))
-                indiceMateria = materiasDisponibles[materiaElegida-1]
-                Esvacio = lambda: p1[indiceMateria] + p2[indiceMateria] + finales[indiceMateria] + notaFinal[indiceMateria] == 0
-                if  Esvacio():
-                    print(f"No se encuentran notas cargadas para la materia {materias[indiceMateria].split(".")[2]}.")
-                else:
-                    print(f"Mostrando notas de la materia: {materias[indiceMateria].split(".")[2]}")
-                    if p1[indiceMateria] != 0:
-                        notaMateria.append(p1[indiceMateria])
-                        print(f"Primer Parcial: {p1[indiceMateria]}")
-                    if p2[indiceMateria] != 0:
-                        notaMateria.append(p2[indiceMateria])
-                        print(f"Segundo Parcial: {p2[indiceMateria]}")
-                    if finales[indiceMateria] != 0:
-                        notaMateria.append(finales[indiceMateria])
-                        print(f"Examen Final: {finales[indiceMateria]}")
-                    if notaFinal[indiceMateria] != 0:
-                        notaMateria.append(notaFinal[indiceMateria])
-                        print(f"Nota final: {notaFinal[indiceMateria]}")
-                    print(f"La nota más alta es: {max(notaMateria)} y la más baja es: {min(notaMateria)}")
+                materia= buscarMateriaPorIndice(materiasDisponibles[materiaElegida-1])
+                verNotas(usuarioActual, materia)
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         
         #VER PROMEDIO CURSADA

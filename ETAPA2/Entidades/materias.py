@@ -1,7 +1,8 @@
-from ManejoDeDatos.validacionDeDatos import estaDentroDelRango
+from ManejoDeDatos.validacionDeDatos import estaDentroDelRango,eleccionDeMateriaCuatrimestre, eleccionDeMateriaAnio
 from Logs.logs import log
 from ManejoDeDatos.Usuarios.usuarios import guardarUsuario
 import json
+
 
 def mostrarMateriasDisponibles(anio, cuatrimestre, usuario, mostrarTodas=False):
     try:
@@ -229,6 +230,53 @@ def eliminarMateriaDelCalendario(usuarioActual,diaIngresado):
     usuarioActual["calendario"][dias[diaIngresado-1]] = None
     guardarUsuario(usuarioActual)
     log("eliminarMateriaRecursada", "INFO", f"Materia del dia {dias[diaIngresado-1]} eliminada del calendario.")
+
+def verNotas(usuarioActual, materia):
+    while True:
+        id_materia = str(materia["id"])
+        notas = usuarioActual.get("notas", {})
+        if id_materia not in notas:
+            print(f"No hay notas cargadas para la materia '{materia['nombre']}'.")
+        else:
+            nota_materia = notas[id_materia]
+            print(f"Notas de {materia['nombre']}:")
+            print(f"  Primer parcial: {nota_materia.get('parcial1', 'Sin cargar')}")
+            print(f"  Segundo parcial: {nota_materia.get('parcial2', 'Sin cargar')}")
+            print(f"  Final: {nota_materia.get('final', 'Sin cargar')}")
+            print(f"  Nota final: {nota_materia.get('nota_final', 'Sin cargar')}")
+            print(f"  Aprobada: {'Sí' if nota_materia.get('aprobada', False) else 'No'}")
+            print(f"  Recursa: {'Sí' if nota_materia.get('recursa', False) else 'No'}")
+
+        opcion = input("¿Desea ver las notas de otra materia? (s/n): ").strip().lower()
+        if opcion != 's':
+            break
+        try:
+            anio = eleccionDeMateriaAnio(usuarioActual["usuario"])
+            cuatrimestre = eleccionDeMateriaCuatrimestre(usuarioActual["usuario"])
+        except ValueError:
+            print("Año o cuatrimestre inválido.")
+            continue
+        indices = mostrarMateriasDisponibles(anio, cuatrimestre, usuarioActual, mostrarTodas=True)
+        if not indices:
+            print("No hay materias disponibles para ese año y cuatrimestre.")
+            continue
+        print("Seleccione el número de la materia para ver sus notas:")
+        for i in range(len(indices)):
+            materia_info = buscarMateriaPorIndice(indices[i])
+            print(f"{i+1}- {materia_info['nombre']}")
+        try:
+            seleccion=int(input("Número de materia: "))
+            if estaDentroDelRango(1, len(indices), seleccion):
+                nueva_materia = buscarMateriaPorIndice(indices[seleccion - 1])
+                verNotas(usuarioActual, nueva_materia)  # recursividad
+                break
+            else:
+                print("Selección inválida.")
+                continue
+        except (ValueError, TypeError):
+            print("Selección inválida.")
+            continue
+    return
 
 #SACA PROMEDIOS
 promedio= lambda lista: sum(lista) / len(lista)
