@@ -61,7 +61,7 @@ def inscribirseAMateria(materiaSeleccionada, usuarioActual):
         diaElegido = random.choice(diasCalendario)
         print(f"Inscribiéndose en la materia {materia['nombre']} el día {dias[diaElegido]}")
         usuarioActual['calendario'][dias[diaElegido]] = materia['id']
-        usuarioActual['notas'][materia['id']] = {"parcial1": None, "parcial2": None, "final": None, "nota_final": None, "aprobada": False, "recursa": False}
+        usuarioActual['notas'][str(materia['id'])] = {"parcial1": None, "parcial2": None, "final": None, "nota_final": None, "aprobada": False, "recursa": False}
         log("inscribirseAMateria", "INFO", f"Usuario {usuarioActual['usuario']} se inscribió en la materia {materia['nombre']} el día {dias[diaElegido]}")
         guardarUsuario(usuarioActual)
         verCalendario(usuarioActual)
@@ -70,9 +70,12 @@ def inscribirseAMateria(materiaSeleccionada, usuarioActual):
         print(f"Error al inscribirse en la materia: {e}")
 
 def darDeBajaMateria(usuarioActual, diaIngresado):
-    dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
-    indiceMateria = usuarioActual["calendario"][dias[diaIngresado-1]]
-    usuarioActual["calendario"][dias[diaIngresado-1]] = None
-    log("darDeBajaMateria", "INFO", f"Materia dada de baja: {indiceMateria} en el dia {diaIngresado}")
-    darDeBajaNotas(indiceMateria, usuarioActual)
-    guardarUsuario(usuarioActual)
+    try:
+        dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
+        indiceMateria = usuarioActual["calendario"][dias[diaIngresado-1]]
+        usuarioActual["calendario"][dias[diaIngresado-1]] = None
+        log("darDeBajaMateria", "INFO", f"Materia dada de baja: {indiceMateria} en el dia {diaIngresado}")
+        darDeBajaNotas(indiceMateria, usuarioActual)
+        guardarUsuario(usuarioActual)
+    except Exception as e:
+        print(f"Error al dar de baja la materia: {e}")

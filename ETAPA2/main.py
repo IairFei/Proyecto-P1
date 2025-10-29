@@ -17,24 +17,23 @@ def menuPrincipal(usuario):
         print("Elija una opción:\n1- Ver calendario\n2- Ver notas\n3- Ver promedio de carrera\n4- Baja de usuario\n5- Cambiar rol de usuario\n6-Procesar flashcards\n0- Salir\n")
     else:
         print("Menú Principal - Usuario Estándar")
-        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n8- Menu Flashcards\n9- Ajustes\n0- Salir\n")
-    opcionElegida = int(input(f"{usuario}: "))
+        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n8- Practicar con Flashcards\n9- Ajustes\n0- Salir\n")
     print("-----------------------------------------------------")
-    log("menuPrincipal", "INFO", f"Usuario {usuario} seleccionó la opción {opcionElegida} en el menú principal.")
-    return opcionElegida, tipoUsuarioEncontrado
-
 
 def menuInicial(usuario):
     dias=("Lunes", "Martes", "Miercoles", "Jueves", "Viernes")
     cierraSesion = False
     try:
         usuarioActual = getUsuarioPorNombreUsuario(usuario)
-        opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
-        while opcionElegida != 0:
+        tipoUsuarioEncontrado = tipoUsuario(usuario)
+        while True:
+            print(usuarioActual)
+            menuPrincipal(usuario)
+            opcionElegida = int(input(f"{usuario}: "))
             while estaDentroDelRango(0,9,opcionElegida) == False:
                 print("Opción inválida. Por favor, elija una opción válida.")
-                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
-        
+                opcionElegida = int(input(f"{usuario}: "))
+
         #INSCRIPCION A MATERIA
             if opcionElegida == 1 and tipoUsuarioEncontrado == "User":
                 anioElegido = eleccionDeMateriaAnio(usuario)
@@ -43,7 +42,6 @@ def menuInicial(usuario):
                 if len(materiasDisponibles)==0:
                     print("No hay materias disponibles para inscribirse en este año y cuatrimestre.")
                     log("menuInicial", "INFO", f"Usuario {usuario} no tiene materias disponibles para inscribirse en el año {anioElegido} y cuatrimestre {cuatrimestreElegido}.")
-                    opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
                     continue
                 print(f"Ingrese el numero de la materia que desea inscribirse (1 a  {len(materiasDisponibles)}):")
                 materiaElegida = int(input(f"{usuario}: "))
@@ -53,10 +51,10 @@ def menuInicial(usuario):
                     print(f"Ingrese el numero de la materia que desea inscribirse (1 a {len(materiasDisponibles)}):")
                     materiaElegida = int(input(f"{usuario}: "))
                 inscribirseAMateria(materiasDisponibles[materiaElegida-1], usuarioActual)
-                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                
             elif opcionElegida == 1 and tipoUsuarioEncontrado == "Administrator":
                 print("Funcionalidad de 'Ver calendario' para Administradores no implementada aún.")
-                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                
 
         #PACK DE 5 MATERIAS
             if opcionElegida == 2 and tipoUsuarioEncontrado == "User":
@@ -75,7 +73,6 @@ def menuInicial(usuario):
                     if respuesta.lower().strip() == 'n':
                         print("Operacion cancelada. Volviendo al menú principal.")
                         log("menuInicial", "INFO", f"Usuario {usuario} canceló la inscripción al 'Pack de 5 materias'.")
-                        opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
                     else:
                         lista5Materias = obtenerMateriasPackDe5(usuarioActual)
                         for i in range(len(lista5Materias)):
@@ -86,10 +83,10 @@ def menuInicial(usuario):
                 else:
                     print("No cumple con las condiciones para el 'Pack de 5 materias'.")
                     log("menuInicial", "INFO", f"Usuario {usuario} no cumple con las condiciones para el 'Pack de 5 materias'.")
-                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                
             elif opcionElegida == 2 and tipoUsuarioEncontrado == "Administrator":
                 print("Funcionalidad de 'Ver notas' para Administradores no implementada aún.")
-                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                
 
         #CARGA DE NOTAS
             if opcionElegida == 3 and tipoUsuarioEncontrado == "User":
@@ -100,15 +97,13 @@ def menuInicial(usuario):
                 log("menuInicial", "INFO", f"Usuario {usuario} eligió el día {diaIngresado} para cargar la nota.")
                 if usuarioActual["calendario"][dias[diaIngresado-1]] is not None:
                     cargarNotas(usuarioActual,materia,diaIngresado)
-                    opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
                 else:
                     print("No hay materia asignada a ese día. Volviendo al menú principal.")
                     log("menuInicial", "INFO", f"Usuario {usuario} intentó cargar nota en un día sin materia asignada. Volviendo al menú principal.")
-                    opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
             
             elif opcionElegida == 3 and tipoUsuarioEncontrado == "Administrator":
                 print("Funcionalidad de 'Ver promedio de carrera' para Administradores no implementada aún.")
-                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                
         
         #DAR DE BAJA
             if opcionElegida == 4 and tipoUsuarioEncontrado == "User":
@@ -125,21 +120,21 @@ def menuInicial(usuario):
                         respuesta = input(f"{usuario}: ")
                     if respuesta.lower().strip() == 'n':
                         print("Operacion cancelada. Volviendo al menú principal.")
-                        opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                        
                     else:
                         darDeBajaMateria(usuarioActual, diaIngresado)                    
-                        opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                        
                 else:
                     print("No hay materia asignada para ese día. Volviendo al menú principal.")
-                    opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                    
             elif opcionElegida == 4 and tipoUsuarioEncontrado == "Administrator":
                 print("Funcionalidad de 'Baja de usuario' para Administradores no implementada aún.")
-                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                
                 
         # VER CALENDARIO
             if opcionElegida == 5 and tipoUsuarioEncontrado == "User":
                 verCalendario(usuarioActual)
-                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                
             elif opcionElegida == 5 and tipoUsuarioEncontrado == "Administrator":
                 usuarioACambiar= input("Ingrese el nombre de usuario al que desea cambiar el rol: ").strip().lower()
                 usuarioACambiar = validarNombreUsuarioEnSistema(usuarioACambiar)
@@ -160,7 +155,7 @@ def menuInicial(usuario):
                     print(f"El rol del usuario {usuarioACambiar[0].strip()} ha sido cambiado a {nuevoRol}.")
                 else:
                     print("No se pudo cambiar el rol del usuario.")
-                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                
 
         # VER NOTAS
             if opcionElegida == 6 and tipoUsuarioEncontrado == "User":
@@ -177,10 +172,8 @@ def menuInicial(usuario):
                     materiaElegida = int(input(f"{usuario}: "))
                 materia= buscarMateriaPorIndice(materiasDisponibles[materiaElegida-1])
                 verNotas(usuarioActual, materia)
-                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
-            elif opcionElegida==6 and tipoUsuarioEncontrado=="Administrator":
-                aprobarFlashcards(usuario)
-                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                
+        
         #VER PROMEDIO CURSADA
             if opcionElegida == 7 and tipoUsuarioEncontrado == "User":
                 print("Notas")
@@ -197,12 +190,11 @@ def menuInicial(usuario):
                 cierraSesion = menuAjustes(usuario)
                 if cierraSesion:
                     print("Cerrando sesión.\n-----------------------------------------------------")
-                    opcionElegida = 0
-                else:
-                    opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                    break
+            if opcionElegida == 0:
+                break       
 
         if cierraSesion == True:
-            cierraSesion = False
             menuLoginPrincipal()
         else:
             print("Gracias por usar el sistema. ¡Hasta luego!")
