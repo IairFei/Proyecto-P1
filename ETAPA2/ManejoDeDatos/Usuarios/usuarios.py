@@ -22,6 +22,7 @@ def cambiarRol(nuevoRol, usuario):
     except (FileNotFoundError, Exception) as e:
         print(f"Error: {e}")
         return None
+
 def validarNombreUsuarioEnSistema(usuario):
     try:
         datosEncontrados = None
@@ -181,7 +182,6 @@ def validarLogin(usuario, contrasena):
         print(f"Error: {e}")
         return None
 
-        
 def login():
     validacion = None
     try:
@@ -209,10 +209,7 @@ def login():
         return validacion, usuario
     except Exception as e:
         print(f"Error: {e}")
-        return None 
-
-
-    
+        return None
 
 def cambioContrasena(usuario):
     try:
@@ -275,19 +272,23 @@ def contrasenaActualizada(usuario,exContrasena,contrasenaNueva):
     return None
 
 def menuAjustes(usuario):
+    cierraSesion = False
     while True:
         try:
             print("Ingrese el numero de la opcion a elegir.")
             print("OPCIONES:")
-            print("1- Cambiar contraseña\n0- Salir\n")
+            print("1- Cambiar contraseña\n2- Cerrar Sesión\n0- Salir\n")
             opcion=int(input(f"{usuario}: "))
             
-            if estaDentroDelRango(0,1,opcion)==False:
+            if estaDentroDelRango(0,2,opcion)==False:
                 raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
             if opcion==1:
                 cambioContrasena(usuario) 
+            elif opcion == 2:
+                cierraSesion = True
+                break
             else:
                 break
         except ValueError:
             print("El valor ingresado no es correcto,intente nuevamente")
-    return None
+    return cierraSesion

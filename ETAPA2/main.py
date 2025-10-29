@@ -1,4 +1,4 @@
-from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido
+from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido, eleccionDeMateriaAnio, eleccionDeMateriaCuatrimestre
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
 from Entidades.materias import buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
 from Entidades.flashcards import menuFlashcard,aprobarFlashcards
@@ -23,27 +23,10 @@ def menuPrincipal(usuario):
     log("menuPrincipal", "INFO", f"Usuario {usuario} seleccionó la opción {opcionElegida} en el menú principal.")
     return opcionElegida, tipoUsuarioEncontrado
 
-def eleccionDeMateriaAnio(usuario):
-    print("Ingrese el año de la materia (1-5): ")
-    anioElegido = int(input(f"{usuario}: "))
-    while estaDentroDelRango(1,5,anioElegido) == False:
-        print("Año inválido. Por favor, ingrese un año válido (1-5).")
-        print("Ingrese el año de la materia (1-5): ")
-        anioElegido = int(input(f"{usuario}: "))
-    log("eleccionDeMateriaAnio", "INFO", f"Usuario {usuario} eligió el año {anioElegido} para la materia.")  
-    return anioElegido
-def eleccionDeMateriaCuatrimestre(usuario):
-    print("Ingrese el cuatrimestre de la materia (1-2): ")
-    cuatrimestreElegido = int(input(f"{usuario}: "))
-    while estaDentroDelRango(1,2,cuatrimestreElegido) == False:
-        print("Cuatrimestre inválido. Por favor, ingrese un cuatrimestre válido (1-2).")
-        print("Ingrese el cuatrimestre de la materia (1-2): ")
-        cuatrimestreElegido = int(input(f"{usuario}: "))
-    log("eleccionDeMateriaCuatrimestre", "INFO", f"Usuario {usuario} eligió el cuatrimestre {cuatrimestreElegido} para la materia.")
-    return cuatrimestreElegido
 
-def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario):
-    dias=["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
+def menuInicial(usuario):
+    dias=("Lunes", "Martes", "Miercoles", "Jueves", "Viernes")
+    cierraSesion = False
     try:
         usuarioActual = getUsuarioPorNombreUsuario(usuario)
         opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
@@ -51,6 +34,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
             while estaDentroDelRango(0,9,opcionElegida) == False:
                 print("Opción inválida. Por favor, elija una opción válida.")
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+        
         #INSCRIPCION A MATERIA
             if opcionElegida == 1 and tipoUsuarioEncontrado == "User":
                 anioElegido = eleccionDeMateriaAnio(usuario)
@@ -110,16 +94,18 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
         #CARGA DE NOTAS
             if opcionElegida == 3 and tipoUsuarioEncontrado == "User":
                 print("Ingrese el numero del dia de la materia que desea cargar la nota:")
-                verCalendario(calendario, materias)
+                verCalendario(usuarioActual)
                 diaIngresado = int(input(f"{usuario}: "))
+                materia = buscarMateriaPorIndice(usuarioActual["calendario"][dias[diaIngresado-1]])
                 log("menuInicial", "INFO", f"Usuario {usuario} eligió el día {diaIngresado} para cargar la nota.")
-                if calendario[diaIngresado-1] != -1:
-                    cargarNotas(calendario[diaIngresado-1],p1,p2,finales,notaFinal,materias, calendario, diasCalendario, materiasAprobadas, materiasRecursar, usuario)
+                if usuarioActual["calendario"][dias[diaIngresado-1]] is not None:
+                    cargarNotas(usuarioActual,materia,diaIngresado)
                     opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
                 else:
-                    print("No hay materia asignada para ese día. Volviendo al menú principal.")
+                    print("No hay materia asignada a ese día. Volviendo al menú principal.")
                     log("menuInicial", "INFO", f"Usuario {usuario} intentó cargar nota en un día sin materia asignada. Volviendo al menú principal.")
                     opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+            
             elif opcionElegida == 3 and tipoUsuarioEncontrado == "Administrator":
                 print("Funcionalidad de 'Ver promedio de carrera' para Administradores no implementada aún.")
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
@@ -149,6 +135,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
             elif opcionElegida == 4 and tipoUsuarioEncontrado == "Administrator":
                 print("Funcionalidad de 'Baja de usuario' para Administradores no implementada aún.")
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                
         # VER CALENDARIO
             if opcionElegida == 5 and tipoUsuarioEncontrado == "User":
                 verCalendario(usuarioActual)
@@ -177,35 +164,19 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
 
         # VER NOTAS
             if opcionElegida == 6 and tipoUsuarioEncontrado == "User":
-                notaMateria = []
                 anioElegido = eleccionDeMateriaAnio(usuario)
                 cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuario)
-                materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,materias,calendario, notaFinal, True)
-                print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a  {len(materiasDisponibles)}):")
+                materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,usuarioActual, True)
+                print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a  {len(materiasDisponibles)}, 0 para volver atrás) :")
                 materiaElegida = int(input(f"{usuario}: "))
-                while estaDentroDelRango(1, len(materiasDisponibles), materiaElegida)==False:
+                while estaDentroDelRango(0, len(materiasDisponibles), materiaElegida)==False:
+                    if materiaElegida==0:
+                        opcionElegida, tipoUsuarioEncontrado= menuPrincipal(usuario)
                     print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
                     print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a {len(materiasDisponibles)}):")
                     materiaElegida = int(input(f"{usuario}: "))
-                indiceMateria = materiasDisponibles[materiaElegida-1]
-                Esvacio = lambda: p1[indiceMateria] + p2[indiceMateria] + finales[indiceMateria] + notaFinal[indiceMateria] == 0
-                if  Esvacio():
-                    print(f"No se encuentran notas cargadas para la materia {materias[indiceMateria].split(".")[2]}.")
-                else:
-                    print(f"Mostrando notas de la materia: {materias[indiceMateria].split(".")[2]}")
-                    if p1[indiceMateria] != 0:
-                        notaMateria.append(p1[indiceMateria])
-                        print(f"Primer Parcial: {p1[indiceMateria]}")
-                    if p2[indiceMateria] != 0:
-                        notaMateria.append(p2[indiceMateria])
-                        print(f"Segundo Parcial: {p2[indiceMateria]}")
-                    if finales[indiceMateria] != 0:
-                        notaMateria.append(finales[indiceMateria])
-                        print(f"Examen Final: {finales[indiceMateria]}")
-                    if notaFinal[indiceMateria] != 0:
-                        notaMateria.append(notaFinal[indiceMateria])
-                        print(f"Nota final: {notaFinal[indiceMateria]}")
-                    print(f"La nota más alta es: {max(notaMateria)} y la más baja es: {min(notaMateria)}")
+                materia= buscarMateriaPorIndice(materiasDisponibles[materiaElegida-1])
+                verNotas(usuarioActual, materia)
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
             elif opcionElegida==6 and tipoUsuarioEncontrado=="Administrator":
                 aprobarFlashcards(usuario)
@@ -213,7 +184,7 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
         #VER PROMEDIO CURSADA
             if opcionElegida == 7 and tipoUsuarioEncontrado == "User":
                 print("Notas")
-                promedioCursada(notaFinal)
+                #promedioCursada(notaFinal)
                 opcionElegida = menuPrincipal(usuario)
 
         #VER OPCIONES FLASHCARDS  
@@ -221,11 +192,21 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
                 menuFlashcard(usuario)
                 opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         
-        #AJUSTES DE LA CUENTA (CAMBIO DE CONTRASEÑA)
-            if opcionElegida == 9 and tipoUsuarioEncontrado == "User":
-                menuAjustes(usuario)
-                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
-        print("Gracias por usar el sistema. ¡Hasta luego!")
+        #AJUSTES DE LA CUENTA (CAMBIO DE CONTRASEÑA Y CERRAR SESION)
+            if opcionElegida == 9 and tipoUsuarioEncontrado == "User" or opcionElegida == 6 and tipoUsuarioEncontrado == "Administrator":
+                cierraSesion = menuAjustes(usuario)
+                if cierraSesion:
+                    print("Cerrando sesión.\n-----------------------------------------------------")
+                    opcionElegida = 0
+                else:
+                    opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+
+        if cierraSesion == True:
+            cierraSesion = False
+            menuLoginPrincipal()
+        else:
+            print("Gracias por usar el sistema. ¡Hasta luego!")
+            
     except KeyboardInterrupt as ki:
         print("\nProceso interrumpido por el usuario.")
     except Exception as e:
@@ -233,16 +214,27 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
 
 def menuLoginPrincipal():
     try:
-        print("Bienvenido al sistema de gestión académica.")
-        print("Por favor, elija una de las siguientes opciones: \n1-Iniciar sesión\n2-Crear usuario\n3-Salir")
+        #inicializarUsuariosFake()
+        print("Bienvenido al sistema de gestión académica.\nPor favor, elija una de las siguientes opciones: \n1-Iniciar sesión\n2-Crear usuario\n3-Salir")
         opcionElegida = int(input("Opción: "))
         while estaDentroDelRango(1,3,opcionElegida) == False:
             print("Opción inválida. Por favor, elija una opción válida.")
             print("Por favor, elija una de las siguientes opciones: \n1-Iniciar sesión\n2-Crear usuario\n3-Salir")
             opcionElegida = int(input("Opción: "))
-        return opcionElegida
-    except Exception as e:
-        print(f"Error: {e}")
+        log("main", "INFO", f"Opción elegida en el menú de login: {opcionElegida}")
+        inicioDeSesionExitoso, usuario = menuLogin(opcionElegida)
+        if usuario is None or inicioDeSesionExitoso is False:
+            print("Inicio de sesión fallido. Saliendo del programa.")
+            log("main", "INFO", "Inicio de sesión fallido.")
+            return
+    except (Exception, KeyboardInterrupt) as e:
+        print(f"Ocurrió un error durante el inicio de sesión: {e}")
+        log("main", "ERROR", f"Ocurrió un error durante el inicio de sesión: {e}")
+        return
+    else:
+        print(f"Acceso concedido. Bienvenido {usuario}.")
+        log("main", "INFO", f"Usuario {usuario} ha iniciado sesión correctamente.")
+        menuInicial(usuario)
         
 def inicioDeSesion(usuario=None):
     inicioDeSesionExitoso = False
@@ -263,6 +255,7 @@ def inicioDeSesion(usuario=None):
         return inicioDeSesionExitoso, usuario
     except Exception as e:
         print(f"Error: {e}")
+
 def menuLogin(opcionElegida):
     inicioDeSesionExitoso = False
     try:
@@ -284,37 +277,9 @@ def menuLogin(opcionElegida):
         return inicioDeSesionExitoso, usuario
     except Exception as e:
         print(f"Error: {e}")
-def main():
-    # Inicialización de variables
 
-    diasCalendario = [0,1,2,3,4]
-    calendario=[-1,-1,-1,-1,-1]
-    materiasAprobadas = [0]*52
-    materiasRecursar = [0]*52
-    p1 = [0]*52
-    p2 = [0]*52
-    finales = [0]*52
-    notaFinal = [0]*52
-    materias = ["1.1.Fundamentos de Informatica", "1.1.Sistemas de Informacion I", "1.1.Pensamiento Critico y Comunicacion", "1.1.Teoria de Sistemas", "1.1.Elementos de Algebra y Geometria", "1.2.Programacion I", "1.2.Sistemas de Representacion", "1.2.Matematica Discreta", "1.2.Fundamentos de Quimica", "1.2.Arquitectura de Computadores", "1.2.Algebra", "2.1.Programacion II", "2.1.Sistemas de Informacion II", "2.1.Sistemas Operativos", "2.1.Fisica I", "2.1.Calculo I", "2.2.Programacion III", "2.2.Paradigma Orientado a Objetos", "2.2.Fundamentos de Telecomunicaciones", "2.2.Ingenieria de Datos I", "2.2.Calculo II", "3.1.Proceso de Desarrollo de Software", "3.1.Seminario de Integracion Profesional", "3.1.Teleinformatica y Redes", "3.1.Ingenieria de Datos II", "3.1.Probabilidad y Estadistica", "3.1.Examen de Ingles", "3.2.Aplicaciones Interactivas", "3.2.Ingenieria de Software", "3.2.Fisica II", "3.2.Teoria de la Computacion", "3.2.Estadistica Avanzada", "4.1.Desarrollo de Aplicaciones I", "4.1.Direccion de Proyectos Informaticos", "4.1.Ciencia de Datos", "4.1.Seguridad e Integridad de la Informacion", "4.1.Modelado y Simulacion", "4.2.Desarrollo de Aplicaciones II", "4.2.Evaluacion de Proyectos Informaticos", "4.2.Inteligencia Artificial", "4.2.Tecnologia y Medio Ambiente", "4.2.Practica Profesional Supervisada", "4.2.Optativa 1", "5.1.Arquitectura de Aplicaciones", "5.1.Tendencias Tecnologicas", "5.1.Proyecto Final de Ingenieria en Informatica", "5.1.Calidad de Software", "5.1.Optativa 2", "5.2.Negocios Tecnologicos", "5.2.Tecnologia e Innovacion", "5.2.Derecho Informatico", "5.2.Optativa 3"]
-    correlativas=[[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
-    
-    try:
-        #inicializarUsuariosFake()
-        opcionElegida = menuLoginPrincipal()
-        log("main", "INFO", f"Opción elegida en el menú de login: {opcionElegida}")
-        inicioDeSesionExitoso, usuario = menuLogin(opcionElegida)
-        if usuario is None or inicioDeSesionExitoso is False:
-            print("Inicio de sesión fallido. Saliendo del programa.")
-            log("main", "INFO", "Inicio de sesión fallido.")
-            return
-    except (Exception, KeyboardInterrupt) as e:
-        print(f"Ocurrió un error durante el inicio de sesión: {e}")
-        log("main", "ERROR", f"Ocurrió un error durante el inicio de sesión: {e}")
-        return
-    else:
-        print(f"Acceso concedido. Bienvenido {usuario}.")
-        log("main", "INFO", f"Usuario {usuario} ha iniciado sesión correctamente.")
-        menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal, materiasAprobadas, materiasRecursar, correlativas, usuario)
+def main():
+    menuLoginPrincipal()
         
 if __name__ == "__main__":
     verificarArchivos()
