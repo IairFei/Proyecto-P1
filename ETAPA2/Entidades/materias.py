@@ -136,7 +136,6 @@ def darDeBajaNotas(indicemateria, usuario):
 
 def cargarNotas(usuarioActual,materia,diaIngresado):
     usuario = usuarioActual['usuario']
-    print(usuarioActual["notas"])
     try:
         with open("ETAPA2/Archivos/usuarios.json", "a", encoding="utf-8") as archivoNotas:
             print(f"Cargando notas para la materia: {materia["nombre"]}.")
