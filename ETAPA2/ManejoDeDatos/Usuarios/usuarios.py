@@ -22,6 +22,7 @@ def cambiarRol(nuevoRol, usuario):
     except (FileNotFoundError, Exception) as e:
         print(f"Error: {e}")
         return None
+
 def validarNombreUsuarioEnSistema(usuario):
     try:
         datosEncontrados = None
@@ -181,7 +182,6 @@ def validarLogin(usuario, contrasena):
         print(f"Error: {e}")
         return None
 
-        
 def login():
     validacion = None
     try:
@@ -209,10 +209,7 @@ def login():
         return validacion, usuario
     except Exception as e:
         print(f"Error: {e}")
-        return None 
-
-
-    
+        return None
 
 def cambioContrasena(usuario):
     try:

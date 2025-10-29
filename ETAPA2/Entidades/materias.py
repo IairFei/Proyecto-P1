@@ -1,5 +1,6 @@
-from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, tieneNotasParciales, tieneNotaParcial1
+from ManejoDeDatos.validacionDeDatos import estaDentroDelRango
 from Logs.logs import log
+from ManejoDeDatos.Usuarios.usuarios import guardarUsuario
 import json
 
 def mostrarMateriasDisponibles(anio, cuatrimestre, usuario, mostrarTodas=False):
@@ -133,101 +134,102 @@ def darDeBajaNotas(indicemateria, usuario):
     del usuario['notas'][indicemateria]
     log("darDeBajaNotas", "INFO", f"Notas de la materia {indicemateria} eliminadas del usuario {usuario['usuario']}.")
 
-def cargarNotas(indiceMateria,p1,p2,finales,notaFinal,materias, calendario, diasCalendario, materiasAprobadas, materiasRecursar, usuario):
-    print(f"Cargando notas para la materia: {buscarNombreMateriaPorIndice(indiceMateria,materias)}")
-    log("cargarNotas", "INFO", f"Usuario {usuario} está cargando notas para la materia: {buscarNombreMateriaPorIndice(indiceMateria,materias)}")
-    cond = 1
-    while cond == 1:
-        print("¿Que nota desea cargar?")
-        print("1- Primer parcial")
-        print("2- Segundo parcial")
-        print("3- Final regular")
-        print("0- Volver al menu principal")
-        opcion = int(input("Usuario: "))
-        log("cargarNotas", "INFO", f"Usuario {usuario} seleccionó la opción {opcion} para cargar nota.")
-        while estaDentroDelRango(0,3,opcion) == False:
-            print("Opcion inválida. Por favor, ingrese una opcion válida (1-3).")
-            print("¿Que nota desea cargar?")
-            print("1- Primer parcial")
-            print("2- Segundo parcial")
-            print("3- Final regular")
-            print("0- Volver al menu principal")
-            opcion = int(input("Usuario: "))
-            log("cargarNotas", "INFO", f"Usuario {usuario} seleccionó la opción {opcion} para cargar nota.")
-        if opcion == 0:
-            cond = 0
-            log("cargarNotas", "INFO", f"Usuario decidió volver al menú principal")
-        elif opcion == 1:
-            print("Ingrese la nota del primer parcial (0-10):")
-            notaP1 = int(input("Usuario: "))
-            log("cargarNotas", "INFO", f"Usuario {usuario} ingresó la nota {notaP1} para el primer parcial.")
-            while estaDentroDelRango(0,10,notaP1) == False:
-                print("Nota inválida. Por favor, ingrese una nota válida (0-10).")
-                log("cargarNotas", "INFO", f"Usuario {usuario} ingresó una nota inválida {notaP1} para el primer parcial, se le pedirá ingresar otra nota.")
-                print("Ingrese la nota del primer parcial (0-10):")
-                notaP1 = int(input("Usuario: "))
-                log("cargarNotas", "INFO", f"Usuario {usuario} ingresó la nota {notaP1} para el primer parcial.")
-            p1[indiceMateria] = notaP1
-            log("cargarNotas", "INFO", f"Usuario {usuario} cargó la nota {notaP1} para el primer parcial.")
-        elif opcion == 2:
-            if tieneNotaParcial1(p1,indiceMateria) == False:
-                print("No se puede cargar nota de segundo parcial sin nota de primer parcial.")
-                log("cargarNotas", "INFO", f"Usuario {usuario} intentó cargar nota de segundo parcial sin tener nota de primer parcial.")
-            else:
-                print("Ingrese la nota del segundo parcial (0-10):")
-                notaP2 = int(input("Usuario: "))
-                log("cargarNotas", "INFO", f"Usuario {usuario} ingresó la nota {notaP2} para el segundo parcial.")
-                while estaDentroDelRango(0,10,notaP2) == False:
-                    print("Nota inválida. Por favor, ingrese una nota válida (0-10).")
-                    log("cargarNotas", "INFO", f"Usuario {usuario} ingresó una nota inválida {notaP2} para el segundo parcial, se le pedirá ingresar otra nota.")
-                    print("Ingrese la nota del segundo parcial (0-10):")
-                    notaP2 = int(input("Usuario: "))
-                    log("cargarNotas", "INFO", f"Usuario {usuario} ingresó la nota {notaP2} para el segundo parcial.")
-                p2[indiceMateria] = notaP2
-                if p2[indiceMateria] < 4 and p1[indiceMateria] < 4:
-                    materiasRecursar[indiceMateria] = 1
-                    print("Materia para recursar.")
-                    eliminarMateriaDelCalendario(indiceMateria,calendario,diasCalendario)
-                    cond = 0
-        else:
-            if tieneNotasParciales(p1,p2,indiceMateria) == False:
-                print("No se pueden cargar notas de final sin notas parciales.")
-            else:
-                print("Ingrese la nota final (0-10):")
-                notaFinalInput = int(input("Usuario: "))
-                log("cargarNotas", "INFO", f"Usuario {usuario} ingresó la nota {notaFinalInput} para el final.")
-                while estaDentroDelRango(0,10,notaFinalInput) == False:
-                    print("Nota inválida. Por favor, ingrese una nota válida (0-10).")
-                    log("cargarNotas", "INFO", f"Usuario {usuario} ingresó una nota inválida {notaFinalInput} para el final, se le pedirá ingresar otra nota.")
-                    print("Ingrese la nota final (0-10):")
-                    notaFinalInput = int(input("Usuario: "))
-                    log("cargarNotas", "INFO", f"Usuario {usuario} ingresó la nota {notaFinalInput} para el final.")
-                finales[indiceMateria] = notaFinalInput
-                if finales[indiceMateria] >= 4:
-                    notaFinal[indiceMateria] = calcularNotaFinal(p1,p2,finales,indiceMateria)
-                    materiasRecursar[indiceMateria] = 0
-                    materiasAprobadas[indiceMateria] = 1
-                    log("cargarNotas", "INFO", f"Usuario {usuario} aprobó la materia {buscarNombreMateriaPorIndice(indiceMateria,materias)} con nota final {notaFinal[indiceMateria]}.")
-                    print("Materia aprobada.")
-                    eliminarMateriaDelCalendario(indiceMateria,calendario,diasCalendario)
-                else:
-                    materiasRecursar[indiceMateria] = 1
-                    print("Materia para recursar.")
-                    log("cargarNotas", "INFO", f"Usuario {usuario} no aprobó la materia {buscarNombreMateriaPorIndice(indiceMateria,materias)} con nota final {finales[indiceMateria]}, deberá recursar.")
-                    eliminarMateriaDelCalendario(indiceMateria,calendario,diasCalendario)
-                cond = 0
+def cargarNotas(usuarioActual,materia,diaIngresado):
+    usuario = usuarioActual['usuario']
+    print(usuarioActual["notas"])
+    try:
+        with open("ETAPA2/Archivos/usuarios.json", "a", encoding="utf-8") as archivoNotas:
+            print(f"Cargando notas para la materia: {materia["nombre"]}.")
+            log("cargarNotas", "INFO", f"Usuario {usuario} está cargando notas para la materia: {materia["nombre"]}.")
+            while True:
+                try:
+                    print("¿Que nota desea cargar?\n1- Primer parcial\n2- Segundo parcial\n3- Final regular\n0- Volver al menu principal")
+                    opcion = int(input("Usuario: "))
+                    log("cargarNotas", "INFO", f"Usuario {usuario} seleccionó la opción {opcion} para cargar nota.")
+                    assert estaDentroDelRango(0,3,opcion)
+                    if opcion == 0:
+                        log("cargarNotas", "INFO", f"Usuario decidió volver al menú principal")
+                        guardarUsuario(usuarioActual)
+                        break
+                    
+                    elif opcion == 1:
+                        print("Ingrese la nota del primer parcial (0-10):")
+                        notaP1 = int(input("Usuario: "))
+                        log("cargarNotas", "INFO", f"Usuario {usuario} ingresó la nota {notaP1} para el primer parcial.")
+                        assert estaDentroDelRango(0,10,notaP1)
+                        usuarioActual["notas"][str(materia["id"])]["parcial1"] = notaP1
+                        log("cargarNotas", "INFO", f"Usuario {usuario} cargó la nota {notaP1} para el primer parcial.")
+                        guardarUsuario(usuarioActual)
+            
+                    elif opcion == 2:
+                        if usuarioActual["notas"][str(materia["id"])]["parcial1"] == None:
+                            print("No se puede cargar nota de segundo parcial sin nota de primer parcial.")
+                            log("cargarNotas", "INFO", f"Usuario {usuario} intentó cargar nota de segundo parcial sin tener nota de primer parcial.")
+                        else:
+                            print("Ingrese la nota del segundo parcial (0-10):")
+                            notaP2 = int(input("Usuario: "))
+                            log("cargarNotas", "INFO", f"Usuario {usuario} ingresó la nota {notaP2} para el segundo parcial.")
+                            assert estaDentroDelRango(0,10,notaP2)
+                            usuarioActual["notas"][str(materia["id"])]["parcial2"] = notaP2
+                            log("cargarNotas", "INFO", f"Usuario {usuario} cargó la nota {notaP2} para el segundo parcial.")
+                            if usuarioActual["notas"][str(materia["id"])]["parcial1"] < 4 or usuarioActual["notas"][str(materia["id"])]["parcial2"] < 4:
+                                usuarioActual["notas"][str(materia["id"])]["recursa"] = True
+                                usuarioActual["notas"][str(materia["id"])]["parcial1"] = None
+                                usuarioActual["notas"][str(materia["id"])]["parcial2"] = None
+                                usuarioActual["notas"][str(materia["id"])]["final"] = None
+                                print("Materia asignada a recursar y eliminada del calendario.")
+                                eliminarMateriaDelCalendario(usuarioActual,diaIngresado)
+                                break
+                            guardarUsuario(usuarioActual)
+                            
+                    else:
+                        if usuarioActual["notas"][str(materia["id"])]["parcial1"] == None or usuarioActual["notas"][str(materia["id"])]["parcial2"] == None:
+                            print("No se pueden cargar notas de final sin notas parciales.")
+                        else:
+                            print("Ingrese la nota final (0-10):")
+                            notaFinalInput = int(input("Usuario: "))
+                            log("cargarNotas", "INFO", f"Usuario {usuario} ingresó la nota {notaFinalInput} para el final.")
+                            assert estaDentroDelRango(0,10,notaFinalInput)
+                            usuarioActual["notas"][str(materia["id"])]["final"] = notaFinalInput
+                            log("cargarNotas", "INFO", f"Usuario {usuario} cargó la nota {notaFinalInput} para el final.")   
+                            usuarioActual["notas"][str(materia["id"])]["final"] = notaFinalInput
 
-def calcularNotaFinal(p1,p2,finales,indiceMateria):
-    notaFinal = (p1[indiceMateria] + p2[indiceMateria] + finales[indiceMateria])//3
+                            if usuarioActual["notas"][str(materia["id"])]["final"] >= 4:
+                                usuarioActual["notas"][str(materia["id"])]["nota_final"] = calcularNotaFinal(usuarioActual,materia)
+                                usuarioActual["notas"][str(materia["id"])]["recursa"] = False
+                                usuarioActual["notas"][str(materia["id"])]["aprobada"] = True
+                                log("cargarNotas", "INFO", f"Usuario {usuario} aprobó la materia {materia["id"]} con promedio final {usuarioActual["notas"][str(materia["id"])]["nota_final"]}.")
+                                print("Materia aprobada.")
+                                eliminarMateriaDelCalendario(usuarioActual,diaIngresado)
+                            else:
+                                usuarioActual["notas"][str(materia["id"])]["recursa"] = True
+                                usuarioActual["notas"][str(materia["id"])]["parcial1"] = None
+                                usuarioActual["notas"][str(materia["id"])]["parcial2"] = None
+                                usuarioActual["notas"][str(materia["id"])]["final"] = None
+                                print("Materia asignada a recursar y eliminada del calendario.")
+                                log("cargarNotas", "INFO", f"Usuario {usuario} no aprobó la materia {materia["id"]} con nota final {usuarioActual["notas"][str(materia["id"])]["final"]}, deberá recursar.")
+                                eliminarMateriaDelCalendario(usuarioActual,diaIngresado)
+                            guardarUsuario(usuarioActual)
+                            break
+                    
+                except (AssertionError,ValueError):
+                    print("Opcion inválida. Por favor, ingrese una opcion válida.\n")            
+    except (IOError,OSError):
+        print("Error al abrir el archivo de notas.")
+
+
+def calcularNotaFinal(usuarioActual,materia):
+    p1 = usuarioActual["notas"][str(materia["id"])]["parcial1"]
+    p2 = usuarioActual["notas"][str(materia["id"])]["parcial2"]
+    final = usuarioActual["notas"][str(materia["id"])]["final"]
+    notaFinal = ((p1+p2)/2+final)/2
     return notaFinal
 
-def eliminarMateriaDelCalendario(indiceMateria,calendario,diasCalendario):
-    for i in range(len(calendario)):
-        if calendario[i] == indiceMateria:
-            calendario[i] = -1
-            diasCalendario.append(i)
-            diasCalendario.sort()
-    log("eliminarMateriaDelCalendario", "INFO", f"Materia {indiceMateria} eliminada del calendario.")
+def eliminarMateriaDelCalendario(usuarioActual,diaIngresado):
+    dias=("Lunes", "Martes", "Miercoles", "Jueves", "Viernes")
+    usuarioActual["calendario"][dias[diaIngresado-1]] = None
+    guardarUsuario(usuarioActual)
+    log("eliminarMateriaRecursada", "INFO", f"Materia del dia {dias[diaIngresado-1]} eliminada del calendario.")
 
 #SACA PROMEDIOS
 promedio= lambda lista: sum(lista) / len(lista)
@@ -262,5 +264,3 @@ def obtenerMateriasPackDe5(usuarioActual):
     except Exception as e:
         print(f"Error al obtener materias pack de 5: {e}")
     return materiasPackDe5
-
-
