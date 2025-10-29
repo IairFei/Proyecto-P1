@@ -1,5 +1,6 @@
 import json
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango
+from Entidades.materias import mostrarMateriasDisponibles
 #+from Entidades.materias import promedio 
 
 def mostrarPreguntaFlashcard(pregunta):
@@ -50,7 +51,8 @@ def agregar_flashcard_a_materia(materia_id, nueva_flashcard): #le tengo que pasa
 
     
 #para usar, asignar el nombre del archivo, pasar la flashcard y el usuario que la propone.
-def guardarFlashcard(archivo,flashcard,usuario): #FALTA QUE ELIJA LA MATERIAAAA
+def guardarFlashcard(flashcard,usuario):
+    archivo="ETAPA2/Archivos/flashcardsSinAprobar.csv"
     while True:
         try:
             for clave in flashcard:
@@ -67,7 +69,7 @@ def guardarFlashcard(archivo,flashcard,usuario): #FALTA QUE ELIJA LA MATERIAAAA
             break
    
 
-def ProponerFlashcard(usuario):
+def ProponerFlashcard(usuario,idMateria):
     flashcard={}
     while True:
         try:
@@ -77,7 +79,7 @@ def ProponerFlashcard(usuario):
             print("ERROR:",msg)
         else:
             break
-    materia=1 #por ahora, para testear
+    materia=idMateria
     print("ingrese la pregunta para la flashcard: ")
     pregunta=input(f"{usuario}: ")
     print("Ingrese la respuesta a la pregunta: ")
@@ -154,31 +156,4 @@ def masInfo():
     print("\n" + "=" * 50 + "\n")
 
 
-def menuFlashcard(usuario):
-    archivo="ETAPA2/Archivos/flashcardsSinAprobar.csv"
-    while True:
-        try:
-            print("=" * 35)
-            print("      🎯 MENÚ DE FLASHCARDS 🎯")
-            print("=" * 35)
-            print("│ 1. Estudiar Flashcards     │")
-            print("│ 2. Proponer Flashcards     │")
-            print("│ 3. Más Información         │")
-            print("│ 4. Salir                   │")
-            print("-" * 35)
-            opcion=int(input(f"{usuario}: "))
-            if estaDentroDelRango(1,4,opcion)==False:
-                raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
-            if opcion==1:
-                estudiarFlashcard()
-            elif opcion==2:
-                guardarFlashcard(archivo,ProponerFlashcard(usuario),usuario)
-                print(">>Flashcard propuesta exitosamente<<")
-            elif opcion==3:
-                masInfo()
-            else:
-                break
-            
-        except ValueError:
-            print("El valor ingresado no es correcto,intente nuevamente")
-
+#zawdef menuFlashcard(usuario):

@@ -1,7 +1,7 @@
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
 from Entidades.materias import buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
-from Entidades.flashcards import menuFlashcard,aprobarFlashcards
+from Entidades.flashcards import estudiarFlashcard,aprobarFlashcards,masInfo,guardarFlashcard,ProponerFlashcard
 from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario,menuAjustes
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
 from ManejoDeArchivos.verificarArchvos import verificarArchivos
@@ -218,8 +218,41 @@ def menuInicial(diasCalendario, calendario, materias, p1, p2, finales, notaFinal
 
         #VER OPCIONES FLASHCARDS  
             if opcionElegida == 8 and tipoUsuarioEncontrado == "User":
-                menuFlashcard(usuario)
-                opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                    while True:
+                        try:
+                            print("=" * 35)
+                            print("      🎯 MENÚ DE FLASHCARDS 🎯")
+                            print("=" * 35)
+                            print("│ 1. Estudiar Flashcards     │")
+                            print("│ 2. Proponer Flashcards     │")
+                            print("│ 3. Más Información         │")
+                            print("│ 4. Salir                   │")
+                            print("-" * 35)
+                            opcion=int(input(f"{usuario}: "))
+                            if estaDentroDelRango(1,4,opcion)==False:
+                                raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
+                            if opcion==1:
+                                estudiarFlashcard()
+                            elif opcion==2:
+                                print("A continuacion, por favor elija para que materia va a ser la flashcard:")
+                                anioElegido = eleccionDeMateriaAnio(usuario)
+                                cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuario)
+                                materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,usuarioActual,mostrarTodas=True)
+                                print(f"Ingrese el numero de la materia a la que corresponde la flashcard (1 a  {len(materiasDisponibles)}):")
+                                idMateria = int(input(f"{usuario}: "))
+                                while estaDentroDelRango(1, len(materiasDisponibles), idMateria)==False:
+                                    print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
+                                    print(f"Ingrese el numero de la materia a la que corresponde la flashcard (1 a {len(materiasDisponibles)}):")
+                                    idMateria = int(input(f"{usuario}: "))
+                                guardarFlashcard(ProponerFlashcard(usuario,idMateria),usuario)
+                                print(">>Flashcard propuesta exitosamente<<")
+                            elif opcion==3:
+                                masInfo()
+                            else:
+                                break
+                        except ValueError:
+                            print("El valor ingresado no es correcto,intente nuevamente")
+                    opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         
         #AJUSTES DE LA CUENTA (CAMBIO DE CONTRASEÑA)
             if opcionElegida == 9 and tipoUsuarioEncontrado == "User":
