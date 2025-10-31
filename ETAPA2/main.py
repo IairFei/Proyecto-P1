@@ -14,10 +14,10 @@ def menuPrincipal(usuario):
     print(f"Tipo de usuario: {tipoUsuarioEncontrado}")
     if tipoUsuarioEncontrado == "Administrator":
         print("Menú Principal - Usuario Administrador")
-        print("Elija una opción:\n1- Ver calendario\n2- Ver notas\n3- Ver promedio de carrera\n4- Baja de usuario\n5- Cambiar rol de usuario\n6-Procesar flashcards\n0- Salir\n")
+        print("Elija una opción:\n1- Ver calendario\n2- Ver notas\n3- Ver promedio de carrera\n4- Baja de usuario\n5- Cambiar rol de usuario\n6- Procesar flashcards\n0- Salir\n")
     else:
         print("Menú Principal - Usuario Estándar")
-        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n8- Practicar con Flashcards\n9- Ajustes\n0- Salir\n")
+        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n8- Menu Flashcards\n9- Ajustes\n0- Salir\n")
     print("-----------------------------------------------------")
 
 def menuInicial(usuario):
@@ -174,7 +174,7 @@ def menuInicial(usuario):
                 verNotas(usuarioActual, materia)
             elif opcionElegida == 6 and tipoUsuarioEncontrado == "Administrator":
                 aprobarFlashcards(usuario)
-        
+            opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
         #VER PROMEDIO CURSADA
             if opcionElegida == 7 and tipoUsuarioEncontrado == "User":
                 print("Notas")
@@ -203,11 +203,12 @@ def menuInicial(usuario):
                                 cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuario)
                                 materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,usuarioActual,mostrarTodas=True)
                                 print(f"Ingrese el numero de la materia a la que corresponde la flashcard (1 a  {len(materiasDisponibles)}):")
-                                idMateria = int(input(f"{usuario}: "))
-                                while estaDentroDelRango(1, len(materiasDisponibles), idMateria)==False:
+                                Materia = int(input(f"{usuario}: "))
+                                while estaDentroDelRango(1, len(materiasDisponibles), Materia)==False:
                                     print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
                                     print(f"Ingrese el numero de la materia a la que corresponde la flashcard (1 a {len(materiasDisponibles)}):")
-                                    idMateria = int(input(f"{usuario}: "))
+                                    Materia = int(input(f"{usuario}: "))
+                                idMateria=materiasDisponibles[Materia-1]
                                 guardarFlashcard(ProponerFlashcard(usuario,idMateria),usuario)
                                 print(">>Flashcard propuesta exitosamente<<")
                             elif opcion==3:

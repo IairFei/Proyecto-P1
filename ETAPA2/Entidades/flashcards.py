@@ -71,14 +71,6 @@ def guardarFlashcard(flashcard,usuario):
 
 def ProponerFlashcard(usuario,idMateria):
     flashcard={}
-    while True:
-        try:
-            print("ingrese para que materia es la flashcard:")
-            materia=int(input(f"{usuario}:"))
-        except ValueError as msg:
-            print("ERROR:",msg)
-        else:
-            break
     materia=idMateria
     print("ingrese la pregunta para la flashcard: ")
     pregunta=input(f"{usuario}: ")
@@ -111,27 +103,25 @@ def aprobarFlashcards(usuario):
                 print("¿Que desea hacer?")
                 print("│ 1. Aprobar la Flashcard     │")
                 print("│ 2. Desaprobar la Flashcard  │")
-                print("│ 3. Salir                    │")
                 while True:
                     try:
                         opcion=int(input(f"{usuario}: "))
-                        if estaDentroDelRango(1,3,opcion)==False:
+                        if estaDentroDelRango(1,2,opcion)==False:
                             raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
                         if opcion==1:
                             flashcard={}
-                            flashcard[pregunta]=usuario,pregunta,respuesta,puntaje
+                            flashcard[pregunta]=usuario,respuesta,puntaje
                             agregar_flashcard_a_materia(materia, flashcard)
                             print("Flashcard aprobada exitosamente")
                             break
                         elif opcion==2:
                             print("Flashcard desaprobada exitosamente")
                             break
-                        else:
-                            break
                     except ValueError:
                         print("El valor ingresado no es correcto,intente nuevamente")
                 cantidad=cantidad-1
             print(">>Flashcards procesadas exitosamente<<")
+            
         except OSError as msg:
             print("ERROR:",msg)
         else:

@@ -1,11 +1,11 @@
-{"id": 1, "nombre": "Fundamentos de Informatica", "a\u00f1o": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": [{"abc": ["a", "abc", "dfg", []]}]}
+{"id": 1, "nombre": "Fundamentos de Informatica", "a\u00f1o": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
 {"id": 2, "nombre": "Sistemas de Informacion I", "a\u00f1o": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
 {"id": 3, "nombre": "Pensamiento Critico y Comunicacion", "a\u00f1o": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
 {"id": 4, "nombre": "Teoria de Sistemas", "a\u00f1o": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
 {"id": 5, "nombre": "Elementos de Algebra y Geometria", "a\u00f1o": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
 {"id": 6, "nombre": "Programacion I", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
 {"id": 7, "nombre": "Sistemas de Representacion", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 8, "nombre": "Matematica Discreta", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 8, "nombre": "Matematica Discreta", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": [{"como se representa la compuerta or en circuitos?": ["a", "como se representa la compuerta or en circuitos?", "D", []]}]}
 {"id": 9, "nombre": "Fundamentos de Quimica", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
 {"id": 10, "nombre": "Arquitectura de Computadores", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
 {"id": 11, "nombre": "Algebra", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
