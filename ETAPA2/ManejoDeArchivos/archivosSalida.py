@@ -42,8 +42,9 @@ def generarArchivosSalida(data):
         path = "ETAPA2/ArchivosSalida/" + data[0] + ".csv"
         with open( path, 'w') as archivo:
             for datos in data[1]:
-                restructedDatos = str(datos) + "\n"
-                archivo.write(restructedDatos)
+                for dato in datos:
+                    restructedDatos = str(dato) + "\n"
+                    archivo.write(restructedDatos)
                 
         print(f"datos extraidos, en: {path}")
     except (FileNotFoundError, Exception) as e:
@@ -70,8 +71,7 @@ def porcentajeXMateria():
         for materiaId in PorcentajeDeMaterias.keys():
             materia = buscarMateriaPorIndice(int(materiaId))
             nombreMateria = materia["nombre"]
-            datosAsubir.append(nombreMateria + ": ")
-            datosAsubir.append(str(PorcentajeDeMaterias[materiaId]["Porcentaje"]) + "%")
+            datosAsubir.append((nombreMateria + ": ",str(PorcentajeDeMaterias[materiaId]["Porcentaje"]) + "%"))
         return ("PorcentajeDeAprobacionXMateria",datosAsubir)
 
     except Exception as e:
@@ -91,11 +91,8 @@ def cantEstudiantePack5():
                     sinPack +=1
             
         datosAsubir = []
-        datosAsubir.append("Estudiantes que usan Pack 5 materias: ")
-        datosAsubir.append(f"{conPack}")
-        datosAsubir.append("Estudiantes que no usan Pack 5 materias: ")
-        datosAsubir.append(f"{sinPack}")
-        print(datosAsubir)
+        datosAsubir.append(("Estudiantes que usan Pack 5 materias: ", f"{conPack}"))
+        datosAsubir.append(("Estudiantes que no usan Pack 5 materias: ", f"{sinPack}"))
         return ("cantEstudiantesUsanPack5Materias",datosAsubir)
              
     except Exception as e:
@@ -120,20 +117,23 @@ def calcularPorcentaje(datos):
         
     return resultados
 
-import json
+
 
 def rankingMateriaFlashcards():
-    datos1 = []
+    datosMaterias = []
     try:
+    
         with open("ETAPA2/Archivos/materias.json", 'r', encoding='utf-8') as archivo:
             for linea in archivo:
-                materia = json.loads(linea.strip())
-                nombre = materia["nombre"]
-                cantFlashcards = len(materia["flashcards"])
-                datos1.append((nombre, cantFlashcards))
-            print(datos1)
-        return ("rankingMateriasFlashcards", datos1)
+                linea = linea.strip()
+                if linea:
+                    materia = json.loads(linea)
+                    nombre = materia["nombre"]
+                    cantFlashcards = len(materia["flashcards"])
+                    datosMaterias.append((nombre, cantFlashcards))
+        return ("rankingMateriasFlashcards", datosMaterias)
 
     except Exception as e:
         print(f"Error: {e}")
         return None
+    
