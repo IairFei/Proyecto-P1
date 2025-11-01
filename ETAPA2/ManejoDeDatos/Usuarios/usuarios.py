@@ -23,6 +23,31 @@ def cambiarRol(nuevoRol, usuario):
         print(f"Error: {e}")
         return None
 
+def obtenerCantidadUsuarios():
+    try:
+        contador = 0
+        with open('ETAPA2/Archivos/usuarios.csv', 'r') as usuarios:
+            for linea in usuarios:
+                contador += 1
+    except IOError as e:
+        print(f"Error: {e}")
+        contador = -1
+    else:
+        return contador
+
+def obtenerUsuarioPorRol(rol):
+    try:
+        usuarios_encontrados = []
+        with open('ETAPA2/Archivos/usuarios.csv', 'r') as usuarios:
+            for linea in usuarios:
+                datos = linea.strip().split(',')
+                if datos[2].strip().lower() == rol.strip().lower():
+                    usuarios_encontrados.append(datos[0].strip())
+        return usuarios_encontrados
+    except (FileNotFoundError, Exception) as e:
+        print(f"Error: {e}")
+        return None
+    
 def validarNombreUsuarioEnSistema(usuario):
     try:
         datosEncontrados = None

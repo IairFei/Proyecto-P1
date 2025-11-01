@@ -46,6 +46,30 @@ def buscarNombreMateriaPorIndice(indice, materias):
     nombreDeMateria = materia[2]
     return nombreDeMateria
 
+def obtenerCantidadDeMaterias():
+    cantidad = 0
+    try:
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            for linea in archivoMaterias:
+                cantidad += 1
+    except Exception as e:
+        print(f"Error al obtener la cantidad de materias: {e}")
+    return cantidad
+
+def obtenerCantidadDeInscriptosEnMaterias():
+    cantidadInscriptosPorMateria = []
+    try:
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            for linea in archivoMaterias:
+                try:
+                    materia = json.loads(linea.strip())
+                    cantidadInscriptosPorMateria.append((materia.get('nombre'), materia.get('inscriptos', 0)))
+                except Exception:
+                    continue
+    except IOError as e:
+        print(f"Error al obtener la cantidad de inscriptos en materias: {e}")
+    return cantidadInscriptosPorMateria
+
 def buscarMateriaPorIndice(indice):
     try:
         with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:

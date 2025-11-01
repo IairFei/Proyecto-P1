@@ -1,8 +1,8 @@
-{"id": 1, "nombre": "Fundamentos de Informatica", "año": 1, "cuatrimestre": 1, "inscriptos": 2, "correlativas": [], "flashcards": [["bbb", "bbb", [4, 4], "a"], ["sdgsdgs", "asfsdf", [3], "a"]]}
-{"id": 2, "nombre": "Sistemas de Informacion I", "año": 1, "cuatrimestre": 1, "inscriptos": 1, "correlativas": [], "flashcards": [["ggg", "fff", [2, 3], "a"]]}
-{"id": 3, "nombre": "Pensamiento Critico y Comunicacion", "año": 1, "cuatrimestre": 1, "inscriptos": 2, "correlativas": [], "flashcards": [["aa", "aa", [], "a"]]}
-{"id": 4, "nombre": "Teoria de Sistemas", "año": 1, "cuatrimestre": 1, "inscriptos": 1, "correlativas": [], "flashcards": []}
-{"id": 5, "nombre": "Elementos de Algebra y Geometria", "año": 1, "cuatrimestre": 1, "inscriptos": 2, "correlativas": [], "flashcards": []}
+{"id": 1, "nombre": "Fundamentos de Informatica", "año": 1, "cuatrimestre": 1, "inscriptos": 10, "correlativas": [], "flashcards": [["bbb", "bbb", [4, 4], "a"], ["sdgsdgs", "asfsdf", [3], "a"]]}
+{"id": 2, "nombre": "Sistemas de Informacion I", "año": 1, "cuatrimestre": 1, "inscriptos": 30, "correlativas": [], "flashcards": [["ggg", "fff", [2, 3], "a"]]}
+{"id": 3, "nombre": "Pensamiento Critico y Comunicacion", "año": 1, "cuatrimestre": 1, "inscriptos": 4, "correlativas": [], "flashcards": [["aa", "aa", [], "a"]]}
+{"id": 4, "nombre": "Teoria de Sistemas", "año": 1, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
+{"id": 5, "nombre": "Elementos de Algebra y Geometria", "año": 1, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
 {"id": 6, "nombre": "Programacion I", "año": 1, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
 {"id": 7, "nombre": "Sistemas de Representacion", "año": 1, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
 {"id": 8, "nombre": "Matematica Discreta", "año": 1, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}

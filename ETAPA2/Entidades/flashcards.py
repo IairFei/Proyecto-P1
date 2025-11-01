@@ -20,6 +20,53 @@ def contarFlashcards(archivo):
     arch.close()
     return count
 
+def obtenerCantdadDeFlashcards():
+    totalFlashcards = 0
+    try:
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            for linea in archivoMaterias:
+                materia = json.loads(linea.strip())
+                flashcards = materia.get('flashcards', [])
+                totalFlashcards += len(flashcards)
+    except IOError as e:
+        print(f"Error al obtener la cantidad total de flashcards: {e}")
+    return totalFlashcards
+
+def obtenerCantidadDeFlashcardsEnMaterias():
+    cantidadFlashcardsPorMateria = []
+    try:
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            for linea in archivoMaterias:
+                try:
+                    materia = json.loads(linea.strip())
+                    flashcards = materia.get('flashcards', [])
+                    cantidadFlashcardsPorMateria.append((materia.get('nombre'), len(flashcards)))
+                except Exception:
+                    continue
+    except IOError as e:
+        print(f"Error al obtener la cantidad de flashcards en materias: {e}")
+    return cantidadFlashcardsPorMateria
+
+def obtenerCantidadDeFlashcardsPorCreador():
+    flashcardsPorCreador = {}
+    try:
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            for linea in archivoMaterias:
+                try:
+                    materia = json.loads(linea.strip())
+                    flashcards = materia.get('flashcards', [])
+                    for flashcard in flashcards:
+                        creador = flashcard[3]
+                        if creador in flashcardsPorCreador:
+                            flashcardsPorCreador[creador] += 1
+                        else:
+                            flashcardsPorCreador[creador] = 1
+                except Exception:
+                    continue
+    except IOError as e:
+        print(f"Error al obtener la cantidad de flashcards por creador: {e}")
+    return flashcardsPorCreador
+
 def agregar_flashcard_a_materia(materia_id, nueva_flashcard): #le tengo que pasar el id de alguna manera.
     arch = 'ETAPA2/Archivos/materias.json' 
     lineas_modificadas = []
