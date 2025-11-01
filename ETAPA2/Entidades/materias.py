@@ -308,12 +308,11 @@ def verNotas(usuarioActual, materia):
 #SACA PROMEDIOS
 promedio= lambda lista: sum(lista) / len(lista)
 
-def promedioCursada(notaFinal):
+def promedioCursada(usuarioActual):
     notas=[]
-    for i in range(len(notaFinal)):
-        if notaFinal[i]!=0:
-            notas.append(notaFinal[i])
-            print()
+    for materiaID, materiaNotas in usuarioActual['notas'].items():
+        if materiaNotas['nota_final'] is not None:
+            notas.append(materiaNotas['nota_final'])
     if len(notas)==0:
         print("No hay ninguna materia con nota final cargada")
     else:
