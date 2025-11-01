@@ -14,6 +14,27 @@ def estaDentroDelRango(nMinimo, nLimite, datoAValidar):
         estaEnElRango = False
     return estaEnElRango
 
+def validarEntero(min, max):
+    while True:
+        try:
+            entrada = int(input("Usuario: "))
+            if entrada>max or entrada<min:
+                raise ValueError
+            break
+        except:
+            print("Entrada inválida. Intente nuevamente.")
+    return entrada
+
+def validarTexto(opciones):
+    while True:
+        try:
+            entrada = input("Usuario: ").lower().strip()
+            if entrada not in opciones:
+                raise ValueError
+            break
+        except ValueError:
+            print("Entrada inválida. Intente nuevamente.")
+    return entrada
 
 def charValido(char):
     try:
@@ -73,7 +94,7 @@ def verificarSeguridadContrasena(contrasena):
         mensaje = "Contraseña segura."
         contrasenaCorrecta = True
     return (mensaje, contrasenaCorrecta)
-    
+
 def eleccionDeMateriaAnio(usuario):
     print("Ingrese el año de la materia (1-5): ")
     anioElegido = int(input(f"{usuario}: "))
