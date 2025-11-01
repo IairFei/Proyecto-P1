@@ -5,6 +5,7 @@ from Entidades.flashcards import estudiarFlashcard,aprobarFlashcards,masInfo,gua
 from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario,menuAjustes,darDeBajaUsuario
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
 from ManejoDeArchivos.archivosSalida import generarReporte
+from ManejoDeArchivos.archivosSalida import generarReporte
 from Logs.logs import log
 
 def menuPrincipal(usuario):
@@ -144,9 +145,12 @@ def menuInicial(usuario):
                 print("Seleccione el reporte que desea generar:\n1- Reporte de materias\n2- Reporte de pack5materias\n3- Report de mejores flashcards\n4- Report de materias con mas flashcards\n5- Reporte de usuarios")
                 opcionElegida = int(input(f"{usuario}: "))
                 while estaDentroDelRango(1,5,opcionElegida) == False:
+                while estaDentroDelRango(1,5,opcionElegida) == False:
                     print("Opción inválida. Por favor, elija una opción válida.")
                     print("Seleccione el reporte que desea generar:\n1- Reporte de materias\n2- Reporte de pack5materias\n3- Report de mejores flashcards\n4- Report de materias con mas flashcards\n5- Reporte de usuarios")
+                    print("Seleccione el reporte que desea generar:\n1- Reporte de materias\n2- Reporte de pack5materias\n3- Report de mejores flashcards\n4- Report de materias con mas flashcards\n5- Reporte de usuarios")
                     opcionElegida = int(input(f"{usuario}: "))
+                seGeneroReporte = generarReporte(opcionElegida)
                 seGeneroReporte = generarReporte(opcionElegida)
                 if seGeneroReporte:
                     print("Reporte generado exitosamente.")

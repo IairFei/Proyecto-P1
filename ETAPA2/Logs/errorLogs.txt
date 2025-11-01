@@ -1,1 +1,6 @@
 Registro de errores:
+
+Fecha y hora: 2025-11-01 13:37:28.289949
+Error: <class 'Exception'>
+Detalles del error: 'getset_descriptor' object is not callable
+--------------------------------------------------
