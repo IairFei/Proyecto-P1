@@ -65,13 +65,13 @@ def porcentajeXMateria():
                     temp[materia]["total"] += 1
                     if usuario["notas"][materia]["aprobada"]:
                         temp[materia]["Porcentaje"] += 1
-        PorcentajeDeMaterias = calcularPorcentaje(temp)
+        # PorcentajeDeMaterias = calcularPorcentaje(temp)
         datosAsubir = []
 
-        for materiaId in PorcentajeDeMaterias.keys():
+        for materiaId in temp.keys():
             materia = buscarMateriaPorIndice(int(materiaId))
             nombreMateria = materia["nombre"]
-            datosAsubir.append((nombreMateria + ": ",str(PorcentajeDeMaterias[materiaId]["Porcentaje"]) + "%"))
+            datosAsubir.append((nombreMateria + ": ", "aprobados",f"{temp[materiaId]["Porcentaje"]}","total:",f"{temp[materiaId]["total"]}"))
         return ("PorcentajeDeAprobacionXMateria",datosAsubir)
 
     except Exception as e:
