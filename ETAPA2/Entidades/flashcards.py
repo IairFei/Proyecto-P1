@@ -1,5 +1,7 @@
 import json
-from ManejoDeDatos.validacionDeDatos import estaDentroDelRango
+from Entidades.materias import buscarMateriaPorIndice, guardarMateria, mostrarMateriasDisponibles
+from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, eleccionDeMateriaAnio, eleccionDeMateriaCuatrimestre
+import random
 #+from Entidades.materias import promedio 
 
 def mostrarPreguntaFlashcard(pregunta):
@@ -14,7 +16,7 @@ def contarFlashcards(archivo):
     arch=open(archivo,mode="rt")
     count=0
     for lines in arch:
-        count=+1
+        count+=1
     arch.close()
     return count
 
@@ -28,18 +30,16 @@ def agregar_flashcard_a_materia(materia_id, nueva_flashcard): #le tengo que pasa
                 try:
                     materia = json.loads(linea)
                 except Exception:
-                    if linea.strip():
-                        lineas_modificadas.append(linea)
+                    lineas_modificadas.append(linea)
                     continue
                 if str(materia.get('id')) == str(materia_id):
                     materia_encontrada = True
                     materia['flashcards'].append(nueva_flashcard)
-                linea_para_guardar = json.dumps(materia) + '\n'
+                linea_para_guardar = json.dumps(materia, ensure_ascii=False) + '\n'
                 lineas_modificadas.append(linea_para_guardar)
         if materia_encontrada:
             with open(arch, 'w', encoding='utf-8') as archivo:
                 archivo.writelines(lineas_modificadas)
-            print(f"¡Éxito! Flashcard agregada a la materia con id {materia_id}.")
         else:
             print(f"Error: Se leyó el archivo, pero no se encontró ninguna materia con el id {materia_id}.")
     except FileNotFoundError:
@@ -47,19 +47,37 @@ def agregar_flashcard_a_materia(materia_id, nueva_flashcard): #le tengo que pasa
     except Exception as e:
         print(f"Ocurrió un error inesperado durante la operación: {e}")
 
+def eliminarDeListaPorAprobar(flashcard):
+    arch = 'ETAPA2/Archivos/flashcardsSinAprobar.csv'
+    lineas_modificadas = []
+    flashcard_encontrada = False
+    try:
+        with open(arch, 'r', encoding='utf-8') as archivo:
+            for linea in archivo:
+                usuarioCreador, pregunta, respuesta, materia_id = linea.strip().split(";")
+                if pregunta != flashcard[0] or respuesta != flashcard[1] or usuarioCreador != flashcard[3]:
+                    lineas_modificadas.append(linea)
+                else:
+                    flashcard_encontrada = True
+        if flashcard_encontrada:
+            with open(arch, 'w', encoding='utf-8') as archivo:
+                archivo.writelines(lineas_modificadas)
+            print(f"¡Éxito! Flashcard eliminada de la lista de por aprobar.")
+        else:
+            print(f"Error: Se leyó el archivo, pero no se encontró la flashcard.")
+    except FileNotFoundError:
+        print(f"Error: El archivo no existe en la ruta: {arch}")
+    except Exception as e:
+        print(f"Ocurrió un error inesperado durante la operación: {e}")
 
-    
-#para usar, asignar el nombre del archivo, pasar la flashcard y el usuario que la propone.
-def guardarFlashcard(archivo,flashcard,usuario): #FALTA QUE ELIJA LA MATERIAAAA
+def guardarFlashcard(archivo,flashcard,usuario): 
     while True:
         try:
-            for clave in flashcard:
-                pregunta=str(clave)
-                respuesta=str(flashcard[clave][0])
-                materia=flashcard[clave][1]
-            #print(pregunta,respuesta,puntaje)
+            pregunta=flashcard[0]
+            respuesta=flashcard[1]
+            materia=flashcard[2]
             archFlash=open(archivo, mode="at")
-            archFlash.write(f"{usuario};{pregunta};{respuesta};{materia}\n")
+            archFlash.write(f"{usuario["usuario"]};{pregunta};{respuesta};{materia}\n")
         except OSError as msg:
             print("ERROR:",msg)
         else:
@@ -68,22 +86,25 @@ def guardarFlashcard(archivo,flashcard,usuario): #FALTA QUE ELIJA LA MATERIAAAA
    
 
 def ProponerFlashcard(usuario):
-    flashcard={}
+    
     while True:
         try:
-            print("ingrese para que materia es la flashcard:")
-            materia=int(input(f"{usuario}:"))
+            anio=eleccionDeMateriaAnio(usuario["usuario"])
+            cuatrimestre=eleccionDeMateriaCuatrimestre(usuario["usuario"])
+            materias=mostrarMateriasDisponibles(anio,cuatrimestre, usuario, mostrarTodas=True)
+            materiaSeleccionada=int(input(f"{usuario["usuario"]}:"))
+            while estaDentroDelRango(1,len(materias),materiaSeleccionada)==False:
+                raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
+            materiaID=materias[materiaSeleccionada-1]
+            break
         except ValueError as msg:
             print("ERROR:",msg)
-        else:
-            break
-    materia=1 #por ahora, para testear
     print("ingrese la pregunta para la flashcard: ")
-    pregunta=input(f"{usuario}: ")
+    pregunta=input(f"{usuario["usuario"]}: ")
     print("Ingrese la respuesta a la pregunta: ")
-    respuesta=input(f"{usuario}: ")
+    respuesta=input(f"{usuario["usuario"]}: ")
     print("flashcard creada con exito: \n")
-    flashcard[pregunta]=respuesta,materia
+    flashcard=(pregunta,respuesta,materiaID)
     mostrarPreguntaFlashcard(pregunta)
     mostrarRespuestaFlashcard(respuesta)
     return flashcard
@@ -93,17 +114,18 @@ def aprobarFlashcards(usuario):
     while True:
         try:
             archFlash=open("ETAPA2/Archivos/flashcardsSinAprobar.csv", mode="rt")
-            next(archFlash)
             cantidad=contarFlashcards("ETAPA2/Archivos/flashcardsSinAprobar.csv")
             for flashcard in archFlash:
                 print("Quedan un total de",cantidad,"flashcards para aprobar")
                 campos=flashcard.strip().split(";")
-                usuario=campos[0]
+                usuarioCreador=campos[0]
                 pregunta=campos[1]
                 respuesta=campos[2]
-                materia=campos[3]
+                materia=buscarMateriaPorIndice(int(campos[3].strip()))
                 puntaje=[]
-                print("flashcard creada por:",usuario)
+                flashcard=(pregunta, respuesta, [] , usuarioCreador)
+                print("flashcard creada por:",usuarioCreador)
+                print("Materia asociada a la flashcard:",materia["nombre"])
                 mostrarPreguntaFlashcard(pregunta)
                 mostrarRespuestaFlashcard(respuesta)
                 print("¿Que desea hacer?")
@@ -116,13 +138,13 @@ def aprobarFlashcards(usuario):
                         if estaDentroDelRango(1,3,opcion)==False:
                             raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
                         if opcion==1:
-                            flashcard={}
-                            flashcard[pregunta]=usuario,pregunta,respuesta,puntaje
-                            agregar_flashcard_a_materia(materia, flashcard)
-                            print("Flashcard aprobada exitosamente")
+                            agregar_flashcard_a_materia(materia["id"], flashcard)
+                            eliminarDeListaPorAprobar(flashcard)
+                            print(f"Flashcard para la materia {materia['nombre']} aprobada exitosamente")
                             break
                         elif opcion==2:
-                            print("Flashcard desaprobada exitosamente")
+                            print(f"Flashcard para la materia {materia['nombre']} desaprobada exitosamente")
+                            eliminarDeListaPorAprobar(flashcard)
                             break
                         else:
                             break
@@ -136,8 +158,63 @@ def aprobarFlashcards(usuario):
             archFlash.close()
             break
 
-def estudiarFlashcard():
-    print("testing")
+def estudiarFlashcard(usuarioActual):
+    while True:
+        try:
+            anio=eleccionDeMateriaAnio(usuarioActual["usuario"])
+            cuatrimestre=eleccionDeMateriaCuatrimestre(usuarioActual["usuario"])
+            materias=mostrarMateriasDisponibles(anio,cuatrimestre, usuarioActual, mostrarTodas=True)
+            if len(materias)==0:
+                print("No hay materias con flashcards aprobadas en este año y cuatrimestre")
+                return
+            materiaSeleccionada=int(input(f"{usuarioActual["usuario"]}:"))
+            while estaDentroDelRango(1,len(materias),materiaSeleccionada)==False:
+                raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
+            materiaID=materias[materiaSeleccionada-1]
+            materia=buscarMateriaPorIndice(int(materiaID))
+            flashcards=materia["flashcards"]
+            if len(flashcards)==0:
+                print("No hay flashcards aprobadas para esta materia")
+                return
+            flashcardsDeSesion=[]
+            while True:
+                if len(flashcardsDeSesion)==len(flashcards):
+                    print(">>Ha estudiado todas las flashcards disponibles para esta materia<<")
+                    break
+                while True:
+                    elegida=random.randint(0,len(flashcards)-1)
+                    if elegida not in flashcardsDeSesion:
+                        break
+                flashcardsDeSesion.append(elegida)
+                flashcard = flashcards[elegida]
+                pregunta = flashcard[0]
+                respuesta = flashcard[1]
+                puntajes = flashcard[2]
+                usuarioCreador = flashcard[3]
+                print(f"Flashcard creada por: {usuarioCreador}")
+                mostrarPreguntaFlashcard(pregunta)
+                input("Presione ENTER para ver la respuesta...")
+                mostrarRespuestaFlashcard(respuesta)
+                while True:
+                    try:
+                        puntaje = int(input("Ingrese un puntaje del 1 al 5 para esta flashcard (0 para no puntuar): "))
+                        while estaDentroDelRango(0, 5, puntaje) == False:
+                            raise ValueError("Puntaje fuera de rango.")
+                        if puntaje != 0:
+                            puntajes.append(puntaje)
+                            flashcard[2] = puntajes
+                            materia["flashcards"][elegida] = flashcard
+                            guardarMateria(materia)
+                        break
+                    except ValueError:
+                        print("Puntaje inválido, intente nuevamente.")
+                seguir = input("¿Desea seguir estudiando? (s/n): ").strip().lower()
+                if seguir != "s":
+                    print(">>Fin de la sesión de estudio<<")
+                    break
+            break
+        except ValueError as msg:
+            print("ERROR:",msg)
 
 def masInfo():
     print("\n" + "*" * 50)
@@ -166,11 +243,11 @@ def menuFlashcard(usuario):
             print("│ 3. Más Información         │")
             print("│ 4. Salir                   │")
             print("-" * 35)
-            opcion=int(input(f"{usuario}: "))
+            opcion=int(input(f"{usuario["usuario"]}: "))
             if estaDentroDelRango(1,4,opcion)==False:
                 raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
             if opcion==1:
-                estudiarFlashcard()
+                estudiarFlashcard(usuario)
             elif opcion==2:
                 guardarFlashcard(archivo,ProponerFlashcard(usuario),usuario)
                 print(">>Flashcard propuesta exitosamente<<")

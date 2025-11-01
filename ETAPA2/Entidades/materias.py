@@ -311,3 +311,23 @@ def obtenerMateriasPackDe5(usuarioActual):
     except Exception as e:
         print(f"Error al obtener materias pack de 5: {e}")
     return materiasPackDe5
+
+def guardarMateria(materia_actualizada):
+    try:
+        materias = []
+        materia_actualizada_id = materia_actualizada.get('id')
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            for linea in archivoMaterias:
+                try:
+                    materia = json.loads(linea.strip())
+                    if materia.get('id') == materia_actualizada_id:
+                        materias.append(materia_actualizada)
+                    else:
+                        materias.append(materia)
+                except Exception:
+                    continue
+        with open("ETAPA2/Archivos/materias.json", "w", encoding="utf-8") as archivoMaterias:
+            for materia in materias:
+                archivoMaterias.write(json.dumps(materia, ensure_ascii=False) + "\n")
+    except Exception as e:
+        print(f"Error al guardar la materia: {e}")

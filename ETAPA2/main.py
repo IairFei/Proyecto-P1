@@ -182,7 +182,7 @@ def menuInicial(usuario):
 
         #VER OPCIONES FLASHCARDS  
             if opcionElegida == 8 and tipoUsuarioEncontrado == "User":
-                menuFlashcard(usuario)
+                menuFlashcard(usuarioActual)
         
         #AJUSTES DE LA CUENTA (CAMBIO DE CONTRASEÑA Y CERRAR SESION)
             if opcionElegida == 9 and tipoUsuarioEncontrado == "User" or opcionElegida == 6 and tipoUsuarioEncontrado == "Administrator":
