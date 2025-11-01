@@ -41,7 +41,7 @@ En esta segunda etapa, del proyecto se agregaron varias funciones nuevas, entre 
 
 ---
 
-## Resumen Funcional del Sistema
+## Documentacion Formal del Sistema:
 
 Este proyecto es un **sistema de gestión académica** basado en menús de consola. Está diseñado para gestionar la vida académica de estudiantes y las tareas administrativas de un administrador.
 
@@ -119,18 +119,8 @@ Una vez que el usuario inicia sesión, el sistema detecta su rol y le presenta u
 
 ---
 
-## Bibliografía
-*(se completará durante el desarrollo del proyecto)*
-
----
-
 ## Tecnologías & Herramientas
 * Lenguaje de programación: **Python**
 * Control de versiones: **Git + GitHub**
 
-
 ---
-
-## Cronograma Tentativo
-1.  Etapa 1 – Lógica de materias y correlatividades.
-2.  Etapa 2 – Sistema de metas y gamificación.
