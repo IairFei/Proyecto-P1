@@ -7,7 +7,7 @@
 {"id": 7, "nombre": "Sistemas de Representacion", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
 {"id": 8, "nombre": "Matematica Discreta", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
 {"id": 9, "nombre": "Fundamentos de Quimica", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": [{"Formula para el oxido ferrico?": ["a", "o3Fe2", []]}]}
-{"id": 10, "nombre": "Arquitectura de Computadores", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 10, "nombre": "Arquitectura de Computadores", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": [{"cual es la mejor marca de procesadores?": ["a", "AMD", [5]]}, {"Que es un GPU?": ["a", "es un procesador especializado en manipular y modificar memoria con el objetivo de acelerar la creacion de imagenes en un frame buffer de salida para un dispositivo de display.", []]}]}
 {"id": 11, "nombre": "Algebra", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
 {"id": 12, "nombre": "Programacion II", "a\u00f1o": 2, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
 {"id": 13, "nombre": "Sistemas de Informacion II", "a\u00f1o": 2, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
