@@ -1,7 +1,7 @@
 import json
 from Logs.logs import log
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango
-from ..validacionDeDatos import verificarSeguridadContraseña
+from ..validacionDeDatos import verificarSeguridadContrasena
 from Logs.logs import log
 
 def cambiarRol(nuevoRol, usuario):
@@ -253,17 +253,16 @@ def cambioContrasena(usuario):
         log("ajusteUsuario", "INFO", "Contraseña antigua correcta.") 
         while True:
             contrasenaNueva = input("Ingrese su nueva contraseña: ")
-            status =  verificarSeguridadContraseña(contrasenaNueva)
-            if status[1] == True:
-                print(status[0])
+            status =  verificarSeguridadContrasena(contrasenaNueva)
+            print(status[0])
+            if status[1] == True:    
                 log("ajusteUsuario", "INFO", f"Contraseña para el usuario {usuario} cumple con los requisitos de seguridad.")
                 break
-            else:
-                print(status[0])
+            '''else:
                 log("ajusteUsuario", "WARNING", f"Contraseña para el usuario {usuario} no cumple con los requisitos de seguridad por el motivo: {status[0]}")
                 contrasenaNueva = input("Ingrese su nueva contraseña: ").strip()
                 log("ajusteUsuario", "INFO", f"Nuevo intento de contraseña ingresada para el usuario {usuario}.")
-                continue
+                continue'''
         status = contrasenaActualizada(usuario,exContrasena,contrasenaNueva)
         if status == True:   
             print("Contraseña actualizada.\nVolviendo al Menu")
