@@ -368,36 +368,160 @@ Registro de log:
 
 2025-10-24 21:59:28.798286 - menuPrincipal - INFO: Usuario a seleccionó la opción 4 en el menú principal.
 
-2025-11-01 13:37:16.775871 - main - INFO: Opción elegida en el menú de login: 1
+2025-10-25 17:25:21.368603 - main - INFO: Opción elegida en el menú de login: 1
 
-2025-11-01 13:37:18.361720 - login - INFO: Intento de login para el usuario: iholm
+2025-10-25 17:25:24.201039 - login - INFO: Intento de login para el usuario: adoe
 
-2025-11-01 13:37:20.376451 - login - INFO: Intento de login para el usuario: iholm con contraseña proporcionada.
+2025-10-25 17:25:28.149932 - login - INFO: Intento de login para el usuario: adoe con contraseña proporcionada.
 
-2025-11-01 13:37:20.378751 - inicioDeSesion - WARNING: Intento fallido de inicio de sesión para el usuario iholm. Intentos restantes: 2.
+2025-10-25 17:25:28.189118 - main - INFO: Usuario adoe ha iniciado sesión correctamente.
 
-2025-11-01 13:37:20.850690 - login - INFO: Intento de login para el usuario: a
+2025-10-25 17:25:42.522931 - menuPrincipal - INFO: Usuario adoe seleccionó la opción 8 en el menú principal.
 
-2025-11-01 13:37:21.254154 - login - INFO: Intento de login para el usuario: a con contraseña proporcionada.
+2025-10-25 17:26:23.663925 - main - INFO: Opción elegida en el menú de login: 1
 
-2025-11-01 13:37:21.255414 - main - INFO: Usuario a ha iniciado sesión correctamente.
+2025-10-25 17:26:25.708323 - login - INFO: Intento de login para el usuario: adoe
 
-2025-11-01 13:37:37.988687 - eleccionDeMateriaAnio - INFO: Usuario a eligió el año 1 para la materia.
+2025-10-25 17:26:32.119389 - login - INFO: Intento de login para el usuario: adoe con contraseña proporcionada.
 
-2025-11-01 13:37:38.484678 - eleccionDeMateriaCuatrimestre - INFO: Usuario a eligió el cuatrimestre 1 para la materia.
+2025-10-25 17:26:32.120605 - main - INFO: Usuario adoe ha iniciado sesión correctamente.
 
-2025-11-01 13:37:41.968035 - menuInicial - INFO: Usuario a eligió la materia número 2 para inscribirse.
+2025-10-25 17:26:36.117415 - menuPrincipal - INFO: Usuario adoe seleccionó la opción 8 en el menú principal.
 
-2025-11-01 13:37:41.969307 - inscribirseAMateria - INFO: Usuario a se inscribió en la materia Sistemas de Informacion I el día Jueves
+2025-10-25 17:28:16.796976 - main - INFO: Opción elegida en el menú de login: 1
 
-2025-11-01 13:37:59.603113 - menuInicial - INFO: Usuario a eligió el día 4 para cargar la nota.
+2025-10-25 17:28:18.502549 - login - INFO: Intento de login para el usuario: adoe
 
-2025-11-01 13:37:59.604072 - cargarNotas - INFO: Usuario a está cargando notas para la materia: Sistemas de Informacion I.
+2025-10-25 17:28:22.958525 - login - INFO: Intento de login para el usuario: adoe con contraseña proporcionada.
 
-2025-11-01 13:38:02.736324 - cargarNotas - INFO: Usuario a seleccionó la opción 1 para cargar nota.
+2025-10-25 17:28:22.959726 - main - INFO: Usuario adoe ha iniciado sesión correctamente.
 
-2025-11-01 13:38:04.850422 - cargarNotas - INFO: Usuario a ingresó la nota 10 para el primer parcial.
+2025-10-25 17:28:29.224363 - menuPrincipal - INFO: Usuario adoe seleccionó la opción 8 en el menú principal.
 
-2025-11-01 13:38:04.851779 - cargarNotas - INFO: Usuario a cargó la nota 10 para el primer parcial.
+2025-10-25 17:30:04.655654 - main - INFO: Opción elegida en el menú de login: 1
 
-2025-11-01 16:10:50.244206 - main - INFO: Opción elegida en el menú de login: 1
+2025-10-25 17:30:06.550483 - login - INFO: Intento de login para el usuario: adoe
+
+2025-10-25 17:30:10.928290 - login - INFO: Intento de login para el usuario: adoe con contraseña proporcionada.
+
+2025-10-25 17:30:10.929373 - main - INFO: Usuario adoe ha iniciado sesión correctamente.
+
+2025-10-25 17:30:17.418603 - menuPrincipal - INFO: Usuario adoe seleccionó la opción 8 en el menú principal.
+
+2025-10-25 17:46:03.775057 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-10-25 17:46:04.770485 - login - INFO: Intento de login para el usuario: a
+
+2025-10-25 17:46:05.474744 - login - INFO: Intento de login para el usuario: a con contraseña proporcionada.
+
+2025-10-25 17:46:05.475917 - main - INFO: Usuario a ha iniciado sesión correctamente.
+
+2025-10-25 17:46:11.395664 - menuPrincipal - INFO: Usuario a seleccionó la opción 8 en el menú principal.
+
+2025-10-25 17:46:37.428881 - menuPrincipal - INFO: Usuario a seleccionó la opción 0 en el menú principal.
+
+2025-10-25 18:12:40.463477 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-10-25 18:12:46.291226 - login - INFO: Intento de login para el usuario: mmendez
+
+2025-10-25 18:12:48.354892 - login - INFO: Intento de login para el usuario: mmendez con contraseña proporcionada.
+
+2025-10-25 18:12:48.355773 - main - INFO: Usuario mmendez ha iniciado sesión correctamente.
+
+2025-10-25 18:12:50.814062 - menuPrincipal - INFO: Usuario mmendez seleccionó la opción 0 en el menú principal.
+
+2025-10-25 18:14:55.509454 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-10-25 18:14:57.752794 - login - INFO: Intento de login para el usuario: mmendez
+
+2025-10-25 18:15:00.014150 - login - INFO: Intento de login para el usuario: mmendez con contraseña proporcionada.
+
+2025-10-25 18:15:00.014849 - main - INFO: Usuario mmendez ha iniciado sesión correctamente.
+
+2025-10-25 18:15:03.739876 - menuPrincipal - INFO: Usuario mmendez seleccionó la opción 6 en el menú principal.
+
+2025-10-25 23:21:53.312569 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-10-25 23:21:54.254805 - login - INFO: Intento de login para el usuario: a
+
+2025-10-25 23:21:54.884860 - login - INFO: Intento de login para el usuario: a con contraseña proporcionada.
+
+2025-10-25 23:21:54.894935 - main - INFO: Usuario a ha iniciado sesión correctamente.
+
+2025-10-25 23:21:57.034255 - menuPrincipal - INFO: Usuario a seleccionó la opción 8 en el menú principal.
+
+2025-10-25 23:22:08.995866 - menuPrincipal - INFO: Usuario a seleccionó la opción 0 en el menú principal.
+
+2025-10-26 19:28:50.718427 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-10-26 19:28:53.564549 - login - INFO: Intento de login para el usuario: mmendez
+
+2025-10-26 19:28:55.594994 - login - INFO: Intento de login para el usuario: mmendez con contraseña proporcionada.
+
+2025-10-26 19:28:55.632103 - main - INFO: Usuario mmendez ha iniciado sesión correctamente.
+
+2025-10-26 19:29:01.702133 - menuPrincipal - INFO: Usuario mmendez seleccionó la opción 6 en el menú principal.
+
+2025-10-26 19:30:31.344241 - menuPrincipal - INFO: Usuario mmendez seleccionó la opción 0 en el menú principal.
+
+2025-10-26 19:36:47.571951 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-10-26 19:36:50.874756 - login - INFO: Intento de login para el usuario: mmendez
+
+2025-10-26 19:36:53.721229 - login - INFO: Intento de login para el usuario: mmendez con contraseña proporcionada.
+
+2025-10-26 19:36:53.722539 - main - INFO: Usuario mmendez ha iniciado sesión correctamente.
+
+2025-10-26 19:37:03.097090 - menuPrincipal - INFO: Usuario mmendez seleccionó la opción 6 en el menú principal.
+
+2025-10-26 19:37:41.735434 - menuPrincipal - INFO: Usuario mmendez seleccionó la opción 0 en el menú principal.
+
+2025-10-26 19:42:28.537841 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-10-26 19:42:30.892172 - login - INFO: Intento de login para el usuario: mmendez
+
+2025-10-26 19:42:33.845873 - login - INFO: Intento de login para el usuario: mmendez con contraseña proporcionada.
+
+2025-10-26 19:42:33.847163 - main - INFO: Usuario mmendez ha iniciado sesión correctamente.
+
+2025-10-26 19:42:36.608111 - menuPrincipal - INFO: Usuario mmendez seleccionó la opción 6 en el menú principal.
+
+2025-10-26 19:42:49.867702 - menuPrincipal - INFO: Usuario mmendez seleccionó la opción 0 en el menú principal.
+
+2025-10-27 09:15:50.305061 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-10-27 09:15:53.923166 - login - INFO: Intento de login para el usuario: adoe
+
+2025-10-27 09:15:59.730673 - login - INFO: Intento de login para el usuario: adoe con contraseña proporcionada.
+
+2025-10-27 09:15:59.767991 - main - INFO: Usuario adoe ha iniciado sesión correctamente.
+
+2025-10-27 09:16:03.653780 - menuPrincipal - INFO: Usuario adoe seleccionó la opción 8 en el menú principal.
+
+2025-10-27 09:16:12.972039 - eleccionDeMateriaAnio - INFO: Usuario adoe eligió el año 1 para la materia.
+
+2025-10-27 09:16:15.849259 - eleccionDeMateriaCuatrimestre - INFO: Usuario adoe eligió el cuatrimestre 2 para la materia.
+
+2025-10-27 09:17:47.010461 - main - INFO: Opción elegida en el menú de login: None
+
+2025-10-27 09:18:13.693404 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-10-27 09:18:15.987684 - login - INFO: Intento de login para el usuario: adoe
+
+2025-10-27 09:18:21.176787 - login - INFO: Intento de login para el usuario: adoe con contraseña proporcionada.
+
+2025-10-27 09:18:21.177785 - main - INFO: Usuario adoe ha iniciado sesión correctamente.
+
+2025-10-27 09:18:27.851790 - menuPrincipal - INFO: Usuario adoe seleccionó la opción 8 en el menú principal.
+
+2025-10-27 09:18:38.646267 - eleccionDeMateriaAnio - INFO: Usuario adoe eligió el año 1 para la materia.
+
+2025-10-27 09:18:42.474106 - eleccionDeMateriaCuatrimestre - INFO: Usuario adoe eligió el cuatrimestre 2 para la materia.
+
+2025-10-27 09:24:29.754050 - menuPrincipal - INFO: Usuario adoe seleccionó la opción 1 en el menú principal.
+
+2025-10-27 09:24:34.522401 - eleccionDeMateriaAnio - INFO: Usuario adoe eligió el año 1 para la materia.
+
+2025-10-27 09:24:36.163844 - eleccionDeMateriaCuatrimestre - INFO: Usuario adoe eligió el cuatrimestre 1 para la materia.
+
+2025-10-27 09:24:36.164951 - menuInicial - INFO: Usuario adoe no tiene materias disponibles para inscribirse en el año 1 y cuatrimestre 1.
