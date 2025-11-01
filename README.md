@@ -36,9 +36,9 @@ En esta primera etapa, el proyecto se centrará en implementar la lógica princi
 En esta segunda etapa, del proyecto se agregaron varias funciones nuevas, entre ellas:
 * Sistema de incio sesion y registro.
 * Roles con diferente funcionalidades.
-* Creacion de los reportes.
+* Creacion de reportes en formato .csv
 * Crecion de un sistema de logs que reporta lo que va sucediendo y los errores.
-
+* Actualizacion de matrices a diccionarios para facilitar la edicion,busqueda y borrado de datos
 ---
 
 ## Documentacion Formal del Sistema:
