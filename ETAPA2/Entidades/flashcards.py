@@ -47,6 +47,23 @@ def obtenerCantidadDeFlashcardsEnMaterias():
         print(f"Error al obtener la cantidad de flashcards en materias: {e}")
     return cantidadFlashcardsPorMateria
 
+def obtenerValoracionesPorFlashcard():
+    valoracionesPorFlashcard = []
+    try:
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            for linea in archivoMaterias:
+                materia = json.loads(linea.strip())
+                flashcards = materia.get('flashcards', [])
+                for flashcard in flashcards:
+                    pregunta = flashcard[0]
+                    puntajes = flashcard[2]
+                    if puntajes:
+                        promedio = sum(puntajes) / len(puntajes)
+                        valoracionesPorFlashcard.append((pregunta, promedio, len(puntajes)))
+    except IOError as e:
+        print(f"Error al obtener las valoraciones por flashcard: {e}")
+    return valoracionesPorFlashcard
+
 def obtenerCantidadDeFlashcardsPorCreador():
     flashcardsPorCreador = {}
     try:

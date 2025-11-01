@@ -1,12 +1,11 @@
 from Logs.logs import log
 from ..Usuarios.usuarios import obtenerCantidadUsuarios, obtenerUsuarioPorRol
 from Entidades.materias import obtenerCantidadDeMaterias, obtenerCantidadDeInscriptosEnMaterias
-from Entidades.flashcards import obtenerCantidadDeFlashcardsEnMaterias, obtenerCantdadDeFlashcards, obtenerCantidadDeFlashcardsPorCreador
+from Entidades.flashcards import obtenerCantidadDeFlashcardsEnMaterias, obtenerCantdadDeFlashcards, obtenerCantidadDeFlashcardsPorCreador, obtenerValoracionesPorFlashcard
 
 def generarReporte(opcion):
     try:
         reporteGenerado = False
-        pathGeneral = r'C:\Users\93179\Desktop\Programacion 1\Proyecto-P1\ETAPA2\ManejoDeDatos\Reports'
         cantidadDeMaterias = obtenerCantidadDeMaterias()
         cantidadDeUsuarios = obtenerCantidadUsuarios()
         if opcion == 1:
@@ -14,7 +13,7 @@ def generarReporte(opcion):
             nombresAdministradores = ', '.join(admin for admin in usuariosAdministradores)
             usuariosEstudiantes = obtenerUsuarioPorRol("User")
             nombresEstudiantes = ', '.join(estudiantes for estudiantes in usuariosEstudiantes)
-            arch = open(f'{pathGeneral}\\reporte_usuarios.csv', 'w', encoding='utf-8')
+            arch = open(f'ETAPA2\\ManejoDeDatos\\Reports\\reporte_usuarios.csv', 'w', encoding='utf-8')
             arch.write("Reporte de Usuarios\n\n")
             arch.write("Cantidad de usuarios en el sistema: {}\n".format(cantidadDeUsuarios))
             arch.write("Cantidad de administradores: {}\n".format(len(usuariosAdministradores)))
@@ -26,7 +25,7 @@ def generarReporte(opcion):
             log("generarReporte", "INFO", "Reporte de usuarios generado exitosamente.")
         elif opcion == 2:
             inscriptosPorMateria = obtenerCantidadDeInscriptosEnMaterias()
-            arch = open(f'{pathGeneral}\\reporte_materias.csv', 'w', encoding='utf-8')
+            arch = open(f'ETAPA2\\ManejoDeDatos\\Reports\\reporte_materias.csv', 'w', encoding='utf-8')
             arch.write("Reporte de Materias\n\n")
             arch.write("Cantidad de materias en el sistema: {}\n".format(cantidadDeMaterias))
             arch.write("Inscriptos por materia:\n")
@@ -43,18 +42,27 @@ def generarReporte(opcion):
             cantidadDeFlashcards = obtenerCantdadDeFlashcards()
             flashcardsPorMateria = obtenerCantidadDeFlashcardsEnMaterias()
             flashcardsPorCreador = obtenerCantidadDeFlashcardsPorCreador()
-            arch = open(f'{pathGeneral}\\reporte_flashcards.csv', 'w', encoding='utf-8')
+            valoracionesFlashcards = obtenerValoracionesPorFlashcard()
+            #ordenar de mayor valoracion a menor
+            valoracionesFlashcards.sort(key=lambda x: x[1], reverse=True)
+            arch = open(f'ETAPA2\\ManejoDeDatos\\Reports\\reporte_flashcards.csv', 'w', encoding='utf-8')
             arch.write("Reporte de Flashcards\n\n")
             arch.write("Cantidad total de flashcards en el sistema: {}\n".format(cantidadDeFlashcards))
             arch.write("Cantidad de flashcards por materia:\n")
+            contador = 1
             for materia, cantidad in flashcardsPorMateria:
                 if cantidad == 0:
                     continue
                 arch.write("{}: {}\n".format(materia, cantidad))
-            #ranking de creadores de flashcards
+                contador += 1
+            contador = 1
+            for dato in valoracionesFlashcards:
+                arch.write(f"{contador}""-Flashcard: {} | Valoracion promedio: {:.2f} | Cantidad de valoraciones: {}\n".format(dato[0], dato[1], dato[2]))
+                contador += 1
+            contador = 1
             arch.write("Cantidad de flashcards por creador:\n")
             for creador, cantidad in flashcardsPorCreador.items():
-                arch.write("{}: {}\n".format(creador, cantidad))
+                arch.write(f"{contador}""-{}: {}\n".format(creador, cantidad))
             arch.write("Cantidad de materias en el sistema: {}\n".format(cantidadDeMaterias))
             arch.write("Cantidad de usuarios en el sistema: {}\n".format(cantidadDeUsuarios))
             reporteGenerado = True

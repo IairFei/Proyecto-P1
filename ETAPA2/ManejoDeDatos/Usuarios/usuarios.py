@@ -317,3 +317,34 @@ def menuAjustes(usuario):
         except ValueError:
             print("El valor ingresado no es correcto,intente nuevamente")
     return cierraSesion
+
+def darDeBajaUsuario(usuario):
+    try:
+        datos = []
+        usuario_encontrado = False
+        with open('ETAPA2/Archivos/usuarios.csv', 'r') as archivo:
+            for linea in archivo:
+                datos.append(linea)
+                linea_datos = linea.strip().split(",")
+                if linea_datos[0] == usuario:
+                    datos.pop()
+                    usuario_encontrado = True
+        if not usuario_encontrado:
+            print(f"El usuario {usuario} no existe en el sistema.")
+            return False
+        with open('ETAPA2/Archivos/usuarios.csv', 'wt') as archivo:
+            for dato in datos:
+                archivo.write(dato)
+        with open('ETAPA2/Archivos/usuarios.json', 'r', encoding='utf-8') as archivo:
+            lineas_modificadas = []
+            for linea in archivo:
+                usuario_json = json.loads(linea)
+                if usuario_json.get('usuario') == usuario:
+                    continue
+                lineas_modificadas.append(linea)
+        with open('ETAPA2/Archivos/usuarios.json', 'w', encoding='utf-8') as archivo:
+            archivo.writelines(lineas_modificadas)
+        return True
+    except Exception as e:
+        print(f"Error: {e}")
+        return False

@@ -2,7 +2,7 @@ from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido, elec
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
 from Entidades.materias import verNotas,buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
 from Entidades.flashcards import menuFlashcard,aprobarFlashcards
-from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario,menuAjustes
+from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario,menuAjustes,darDeBajaUsuario
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
 from ManejoDeArchivos.verificarArchvos import verificarArchivos
 from ManejoDeDatos.Reports.reportes import generarReporte
@@ -53,7 +53,13 @@ def menuInicial(usuario):
                 inscribirseAMateria(materiasDisponibles[materiaElegida-1], usuarioActual)
                 
             elif opcionElegida == 1 and tipoUsuarioEncontrado == "Administrator":
-                print("Funcionalidad de 'Baja de usuario' para Administradores no implementada aún.")
+                print("Ingrese el nombre de usuario que desea dar de baja: ")
+                usuarioABorrar = input(f"{usuario}: ").strip().lower()
+                resultadoBaja = darDeBajaUsuario(usuarioABorrar)
+                if resultadoBaja:
+                    print(f"El usuario {usuarioABorrar} ha sido dado de baja del sistema.")
+                else:
+                    print("No se pudo dar de baja al usuario. Verifique que el nombre de usuario sea correcto.")
                 
 
         #PACK DE 5 MATERIAS
