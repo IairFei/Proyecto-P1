@@ -27,44 +27,52 @@ def charValido(char):
         esValido = False
     return esValido
 
-def verificarSeguridadContraseña(contraseña):
-    caracteresEspeciales = ["@", "!", "?", "#", "$", "¿", "¡", "&", "%", "(", ")", "=",".",",",";",":"]
-    contieneNumeros = False
+def verificarSeguridadContrasena(contrasena):
+    caracteresEspeciales = ["@", "!", "?", "#", "$", "¿", "¡", "&", "%", "(", ")", "=",".",",",";",":","_","-"]
+    repiteCaracteres = False
     contieneEspecial = False
+    contieneNumeros = False
+    contieneMinuscula = False
+    contieneMayuscula = False
+    caracteres = [str(caracter) for caracter in contrasena]
 
-    letras = [letra for letra in contraseña]
-    
-    for caracter in letras:
+    for caracter in caracteres:
+        if caracteres.count(caracter) > 2:
+            repiteCaracteres = True
         if caracter in caracteresEspeciales:
             contieneEspecial = True
-            break
-    if len(contraseña) < 6:
-        error = "debe contener minimo 6 caracteres!"
-        message = "Contraseña poco segura, " + error
-        return(message, False)
-    if not contieneEspecial:
-        error = "debe contener al menos 1 caracter especial!"
-        message = "Contraseña poco segura, " + error
-        
-        return (message, False)
-
-    for caracter in letras:
-        try:
-            int(caracter)
+        elif caracter.isnumeric():
             contieneNumeros = True
-            break
-        except ValueError:
-            continue
+        elif caracter.islower():
+            contieneMinuscula = True
+        else:
+            contieneMayuscula = True
 
-    if not contieneNumeros:
-        error = "debe contener al menos un numero"
-        message = "Contraseña poco Segura, " + error
-        
-        return (message, False)
-
+    if len(contrasena) < 6:
+        mensaje = "Contraseña demasiado corta, debe contener al menos 6 caracteres."
+        contrasenaCorrecta = False
+    elif len(contrasena) > 12:
+        mensaje = "Contraseña demasiado larga, debe contener como máximo 12 caracteres."
+        contrasenaCorrecta = False
+    elif repiteCaracteres:
+        mensaje = "Contraseña poco segura, no repita caracteres tantas veces."
+        contrasenaCorrecta = False
+    elif not contieneEspecial:
+        mensaje = "La contraseña debe contener caracteres especiales."
+        contrasenaCorrecta = False
+    elif not contieneNumeros:
+        mensaje = "La contraseña debe contener números."
+        contrasenaCorrecta = False
+    elif not contieneMinuscula:
+        mensaje = "La contraseña debe contener minúsculas."
+        contrasenaCorrecta = False
+    elif not contieneMayuscula:
+        mensaje = "La contraseña debe contener mayúsculas."
+        contrasenaCorrecta = False
     else:
-        message = "Contraseña segura"
-        return (message, True)
+        mensaje = "Contraseña segura."
+        contrasenaCorrecta = True
+    return (mensaje, contrasenaCorrecta)
     
 def eleccionDeMateriaAnio(usuario):
     print("Ingrese el año de la materia (1-5): ")
