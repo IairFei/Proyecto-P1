@@ -24,7 +24,7 @@ def contarFlashcards(archivo):
     arch=open(archivo,mode="rt")
     count=0
     for lines in arch:
-        count=+1
+        count+=1
     arch.close()
     return count
 
@@ -44,7 +44,7 @@ def agregar_flashcard_a_materia(materia_id, nueva_flashcard):
                 if str(materia.get('id')) == str(materia_id):
                     materia_encontrada = True
                     materia['flashcards'].append(nueva_flashcard)
-                linea_para_guardar = json.dumps(materia) + '\n'
+                linea_para_guardar = json.dumps(materia, ensure_ascii=False) + '\n'
                 lineas_modificadas.append(linea_para_guardar)
         if materia_encontrada:
             with open(arch, 'w', encoding='utf-8') as archivo:
@@ -203,8 +203,8 @@ def actualizarPuntajes(materia_id, puntajeNuevo, preguntaFlashcard):
                                 lista_puntajes = datos_flashcard[2]
                                 lista_puntajes.append(puntajeNuevo)
                                 flashcard_actualizada = True
-                                break 
-                    linea_para_guardar = json.dumps(materia) + '\n'
+                                break
+                    linea_para_guardar = json.dumps(materia, ensure_ascii=False) + '\n'
                     lineas_modificadas.append(linea_para_guardar)
                 except Exception:
                     lineas_modificadas.append(linea)
