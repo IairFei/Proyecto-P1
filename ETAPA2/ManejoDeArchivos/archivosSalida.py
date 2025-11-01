@@ -20,7 +20,7 @@ def menuExportacion(user):
                 datos = cantEstudiantePack5()
                 break
             if opcion == 3:
-                print("Falta")
+                datos = rankingMejoresFlashcards()
                 break
             if opcion == 4:
                 datos = rankingMateriaFlashcards()
@@ -38,11 +38,12 @@ def menuExportacion(user):
 def generarArchivosSalida(data):
     try:
         print("Generando archivo de salida...")
-        print(data)
         path = "ETAPA2/ArchivosSalida/" + data[0] + ".csv"
         with open( path, 'w') as archivo:
+            print(data[0],data[1])
             for datos in data[1]:
                 for dato in datos:
+                    print(dato,datos)
                     restructedDatos = str(dato) + "\n"
                     archivo.write(restructedDatos)
                 
@@ -137,3 +138,27 @@ def rankingMateriaFlashcards():
         print(f"Error: {e}")
         return None
     
+def rankingMejoresFlashcards():
+    datos = []
+    
+    try:
+        with open("ETAPA2/Archivos/materias.json", 'r', encoding='utf-8') as archivo:
+            for linea in archivo:
+                linea = linea.strip()
+                if linea:
+                    materia = json.loads(linea)
+                    
+                    for flashcardDic in materia["flashcards"]:
+                        for pregunta in flashcardDic.items():
+                            flashcardPuntuaciones = pregunta[1][2] 
+                            if len(flashcardPuntuaciones) > 0:
+                                promedioFlashcard = (sum(flashcardPuntuaciones)) / len(flashcardPuntuaciones)
+                            else:
+                                promedioFlashcard = 0
+                            datos.append((pregunta[0], promedioFlashcard))
+                            
+        return ("rankingFlashcards",datos)
+
+    except Exception as e:
+        print(f"Error procesando el archivo: {e}")
+        return []

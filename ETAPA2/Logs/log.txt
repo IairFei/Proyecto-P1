@@ -525,3 +525,19 @@ Registro de log:
 2025-10-27 09:24:36.163844 - eleccionDeMateriaCuatrimestre - INFO: Usuario adoe eligió el cuatrimestre 1 para la materia.
 
 2025-10-27 09:24:36.164951 - menuInicial - INFO: Usuario adoe no tiene materias disponibles para inscribirse en el año 1 y cuatrimestre 1.
+
+2025-11-01 18:16:55.264531 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-11-01 18:16:55.871852 - login - INFO: Intento de login para el usuario: a
+
+2025-11-01 18:16:56.568081 - login - INFO: Intento de login para el usuario: a con contraseña proporcionada.
+
+2025-11-01 18:16:56.592100 - main - INFO: Usuario a ha iniciado sesión correctamente.
+
+2025-11-01 18:17:03.121819 - eleccionDeMateriaAnio - INFO: Usuario a eligió el año 1 para la materia.
+
+2025-11-01 18:17:03.733008 - eleccionDeMateriaCuatrimestre - INFO: Usuario a eligió el cuatrimestre 1 para la materia.
+
+2025-11-01 18:17:19.714150 - eleccionDeMateriaAnio - INFO: Usuario a eligió el año 1 para la materia.
+
+2025-11-01 18:17:20.556569 - eleccionDeMateriaCuatrimestre - INFO: Usuario a eligió el cuatrimestre 2 para la materia.
