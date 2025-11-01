@@ -1,7 +1,7 @@
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido, eleccionDeMateriaAnio, eleccionDeMateriaCuatrimestre
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
 from Entidades.materias import verNotas,buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
-from Entidades.flashcards import menuFlashcard,aprobarFlashcards,masInfo,guardarFlashcard,ProponerFlashcard
+from Entidades.flashcards import estudiarFlashcard,aprobarFlashcards,masInfo,guardarFlashcard,ProponerFlashcard
 from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario,menuAjustes,darDeBajaUsuario
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
 from Logs.logs import log
@@ -155,11 +155,11 @@ def menuInicial(usuario):
                     print("Opción inválida. Por favor, elija una opción válida.")
                     print("Seleccione el reporte que desea generar:\n1- Reporte de usuarios\n2- Reporte de materias\n3- Reporte de flashcards\n")
                     opcionElegida = int(input(f"{usuario}: "))
-                seGeneroReporte = generarReporte(opcionElegida)
+                """seGeneroReporte = generarReporte(opcionElegida)
                 if seGeneroReporte:
                     print("Reporte generado exitosamente.")
                 else:
-                    print("Opción de reporte inválida.")
+                    print("Opción de reporte inválida.")"""
         # VER CALENDARIO
             if opcionElegida == 5 and tipoUsuarioEncontrado == "User":
                 verCalendario(usuarioActual)
