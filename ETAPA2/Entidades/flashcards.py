@@ -1,7 +1,7 @@
 import json
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango
 from Entidades.materias import mostrarMateriasDisponibles
-#+from Entidades.materias import promedio 
+
 
 def mostrarPreguntaFlashcard(pregunta):
     print("-"*5,"PREGUNTA","-"*5,"\n","\n")
@@ -76,7 +76,7 @@ def ProponerFlashcard(usuario,idMateria):
     pregunta=input(f"{usuario}: ")
     print("Ingrese la respuesta a la pregunta: ")
     respuesta=input(f"{usuario}: ")
-    print("flashcard creada con exito: \n")
+    print("Flashcard creada con exito: \n")
     flashcard[pregunta]=respuesta,materia
     mostrarPreguntaFlashcard(pregunta)
     mostrarRespuestaFlashcard(respuesta)
@@ -97,7 +97,7 @@ def aprobarFlashcards(usuario):
                 respuesta=campos[2]
                 materia=campos[3]
                 puntaje=[]
-                print("flashcard creada por:",usuario)
+                print("Flashcard creada por:",usuario)
                 mostrarPreguntaFlashcard(pregunta)
                 mostrarRespuestaFlashcard(respuesta)
                 print("¿Que desea hacer?")
@@ -121,7 +121,7 @@ def aprobarFlashcards(usuario):
                         print("El valor ingresado no es correcto,intente nuevamente")
                 cantidad=cantidad-1
             print(">>Flashcards procesadas exitosamente<<")
-            
+
         except OSError as msg:
             print("ERROR:",msg)
         else:
@@ -144,6 +144,3 @@ def masInfo():
     print("   Envía nuevas flashcards a los administradores para su revisión y activación.")
 
     print("\n" + "=" * 50 + "\n")
-
-
-#zawdef menuFlashcard(usuario):

@@ -1,9 +1,9 @@
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido, eleccionDeMateriaAnio, eleccionDeMateriaCuatrimestre
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
-from Entidades.materias import verNotas,buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
+from Entidades.materias import verNotas, buscarMateriaPorIndice, mostrarMateriasDisponibles, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
 from Entidades.flashcards import estudiarFlashcard,aprobarFlashcards,masInfo,guardarFlashcard,ProponerFlashcard
-from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario,menuAjustes
-from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
+from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, menuAjustes
+from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario
 from ManejoDeArchivos.verificarArchvos import verificarArchivos
 from Logs.logs import log
 
@@ -155,9 +155,8 @@ def menuInicial(usuario):
                     print(f"El rol del usuario {usuarioACambiar[0].strip()} ha sido cambiado a {nuevoRol}.")
                 else:
                     print("No se pudo cambiar el rol del usuario.")
-                
-
         # VER NOTAS
+
             if opcionElegida == 6 and tipoUsuarioEncontrado == "User":
                 anioElegido = eleccionDeMateriaAnio(usuario)
                 cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuario)
@@ -166,7 +165,7 @@ def menuInicial(usuario):
                 materiaElegida = int(input(f"{usuario}: "))
                 while estaDentroDelRango(0, len(materiasDisponibles), materiaElegida)==False:
                     if materiaElegida==0:
-                        opcionElegida, tipoUsuarioEncontrado= menuPrincipal(usuario)
+                        menuPrincipal(usuario)
                     print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
                     print(f"Ingrese el numero de la materia de la que desea ver sus notas (1 a {len(materiasDisponibles)}):")
                     materiaElegida = int(input(f"{usuario}: "))
@@ -174,14 +173,18 @@ def menuInicial(usuario):
                 verNotas(usuarioActual, materia)
             elif opcionElegida == 6 and tipoUsuarioEncontrado == "Administrator":
                 aprobarFlashcards(usuario)
-            opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+            menuPrincipal(usuario)
+
         #VER PROMEDIO CURSADA
             if opcionElegida == 7 and tipoUsuarioEncontrado == "User":
                 print("Notas")
                 #promedioCursada(notaFinal)
+            elif opcionElegida == 7 and tipoUsuarioEncontrado == "Administrator":
+                print("Funcionalidad de 'Procesar flashcards' para Administradores no implementada aún.")
 
         #VER OPCIONES FLASHCARDS  
             if opcionElegida == 8 and tipoUsuarioEncontrado == "User":
+                    opcionDelMenuFlashcads = ""
                     while True:
                         try:
                             print("=" * 35)
@@ -196,19 +199,23 @@ def menuInicial(usuario):
                             if estaDentroDelRango(1,4,opcion)==False:
                                 raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
                             if opcion==1:
+                                opcionDelMenuFlashcads = "Estudiar Flashcards"
+                            elif opcion==2:
+                                opcionDelMenuFlashcads = "Proponer Flashcards"
+                            print(f"A continuacion, por favor elija para que materia para {opcionDelMenuFlashcads.lower()}:")
+                            anioElegido = eleccionDeMateriaAnio(usuario)
+                            cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuario)
+                            materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,usuarioActual,mostrarTodas=True)
+                            print(f"Ingrese el numero de la materia a la que corresponde la flashcard (1 a  {len(materiasDisponibles)}):")
+                            Materia = int(input(f"{usuario}: "))
+                            while estaDentroDelRango(1, len(materiasDisponibles), Materia)==False:
+                                print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
+                                print(f"Ingrese el numero de la materia a la que corresponde la flashcard (1 a {len(materiasDisponibles)}):")
+                                Materia = int(input(f"{usuario}: "))
+                            idMateria=materiasDisponibles[Materia-1]
+                            if opcion==1:
                                 estudiarFlashcard()
                             elif opcion==2:
-                                print("A continuacion, por favor elija para que materia va a ser la flashcard:")
-                                anioElegido = eleccionDeMateriaAnio(usuario)
-                                cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuario)
-                                materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,usuarioActual,mostrarTodas=True)
-                                print(f"Ingrese el numero de la materia a la que corresponde la flashcard (1 a  {len(materiasDisponibles)}):")
-                                Materia = int(input(f"{usuario}: "))
-                                while estaDentroDelRango(1, len(materiasDisponibles), Materia)==False:
-                                    print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
-                                    print(f"Ingrese el numero de la materia a la que corresponde la flashcard (1 a {len(materiasDisponibles)}):")
-                                    Materia = int(input(f"{usuario}: "))
-                                idMateria=materiasDisponibles[Materia-1]
                                 guardarFlashcard(ProponerFlashcard(usuario,idMateria),usuario)
                                 print(">>Flashcard propuesta exitosamente<<")
                             elif opcion==3:
@@ -217,7 +224,9 @@ def menuInicial(usuario):
                                 break
                         except ValueError:
                             print("El valor ingresado no es correcto,intente nuevamente")
-                    opcionElegida, tipoUsuarioEncontrado = menuPrincipal(usuario)
+                    menuPrincipal(usuario)
+            elif opcionElegida == 8 and tipoUsuarioEncontrado == "Administrator":
+                print("Funcionalidad de 'Menu Flashcards' para Administradores no implementada aún.")
         
         #AJUSTES DE LA CUENTA (CAMBIO DE CONTRASEÑA Y CERRAR SESION)
             if opcionElegida == 9 and tipoUsuarioEncontrado == "User" or opcionElegida == 6 and tipoUsuarioEncontrado == "Administrator":
@@ -233,7 +242,7 @@ def menuInicial(usuario):
         else:
             print("Gracias por usar el sistema. ¡Hasta luego!")
             
-    except KeyboardInterrupt as ki:
+    except KeyboardInterrupt:
         print("\nProceso interrumpido por el usuario.")
     except Exception as e:
         print(f"Error: {e}")
