@@ -183,8 +183,7 @@ def menuInicial(usuario):
         
         #VER PROMEDIO CURSADA
             if opcionElegida == 7 and tipoUsuarioEncontrado == "User":
-                print("Notas")
-                #promedioCursada(notaFinal)
+                promedioCursada(usuarioActual)
             elif opcionElegida == 7 and tipoUsuarioEncontrado == "Administrator":
                 print("Funcionalidad de 'Procesar flashcards' para Administradores no implementada aún.")
 
