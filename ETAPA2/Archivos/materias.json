@@ -1,52 +1,52 @@
-{"id": 1, "nombre": "Fundamentos de Informatica", "a\u00f1o": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 2, "nombre": "Sistemas de Informacion I", "a\u00f1o": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 3, "nombre": "Pensamiento Critico y Comunicacion", "a\u00f1o": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 4, "nombre": "Teoria de Sistemas", "a\u00f1o": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 5, "nombre": "Elementos de Algebra y Geometria", "a\u00f1o": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 6, "nombre": "Programacion I", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": [{"Verdadero o falso. Las tuplas son inmutables?": ["a", "verdadero!", []]}]}
-{"id": 7, "nombre": "Sistemas de Representacion", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 8, "nombre": "Matematica Discreta", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 9, "nombre": "Fundamentos de Quimica", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": [{"Formula para el oxido ferrico?": ["a", "o3Fe2", []]}]}
-{"id": 10, "nombre": "Arquitectura de Computadores", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": [{"cual es la mejor marca de procesadores?": ["a", "AMD", [5]]}, {"Que es un GPU?": ["a", "es un procesador especializado en manipular y modificar memoria con el objetivo de acelerar la creacion de imagenes en un frame buffer de salida para un dispositivo de display.", []]}]}
-{"id": 11, "nombre": "Algebra", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 12, "nombre": "Programacion II", "a\u00f1o": 2, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 13, "nombre": "Sistemas de Informacion II", "a\u00f1o": 2, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 14, "nombre": "Sistemas Operativos", "a\u00f1o": 2, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 15, "nombre": "Fisica I", "a\u00f1o": 2, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 16, "nombre": "Calculo I", "a\u00f1o": 2, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 17, "nombre": "Programacion III", "a\u00f1o": 2, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 18, "nombre": "Paradigma Orientado a Objetos", "a\u00f1o": 2, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 19, "nombre": "Fundamentos de Telecomunicaciones", "a\u00f1o": 2, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 20, "nombre": "Ingenieria de Datos I", "a\u00f1o": 2, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 21, "nombre": "Calculo II", "a\u00f1o": 2, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 22, "nombre": "Proceso de Desarrollo de Software", "a\u00f1o": 3, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 23, "nombre": "Seminario de Integracion Profesional", "a\u00f1o": 3, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 24, "nombre": "Teleinformatica y Redes", "a\u00f1o": 3, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 25, "nombre": "Ingenieria de Datos II", "a\u00f1o": 3, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 26, "nombre": "Probabilidad y Estadistica", "a\u00f1o": 3, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 27, "nombre": "Examen de Ingles", "a\u00f1o": 3, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 28, "nombre": "Aplicaciones Interactivas", "a\u00f1o": 3, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 29, "nombre": "Ingenieria de Software", "a\u00f1o": 3, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 30, "nombre": "Fisica II", "a\u00f1o": 3, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 31, "nombre": "Teoria de la Computacion", "a\u00f1o": 3, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 32, "nombre": "Estadistica Avanzada", "a\u00f1o": 3, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 33, "nombre": "Desarrollo de Aplicaciones I", "a\u00f1o": 4, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 34, "nombre": "Direccion de Proyectos Informaticos", "a\u00f1o": 4, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 35, "nombre": "Ciencia de Datos", "a\u00f1o": 4, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 36, "nombre": "Seguridad e Integridad de la Informacion", "a\u00f1o": 4, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 37, "nombre": "Modelado y Simulacion", "a\u00f1o": 4, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 38, "nombre": "Desarrollo de Aplicaciones II", "a\u00f1o": 4, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 39, "nombre": "Evaluacion de Proyectos Informaticos", "a\u00f1o": 4, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 40, "nombre": "Inteligencia Artificial", "a\u00f1o": 4, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 41, "nombre": "Tecnologia y Medio Ambiente", "a\u00f1o": 4, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 42, "nombre": "Practica Profesional Supervisada", "a\u00f1o": 4, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 43, "nombre": "Optativa 1", "a\u00f1o": 4, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 44, "nombre": "Arquitectura de Aplicaciones", "a\u00f1o": 5, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 45, "nombre": "Tendencias Tecnologicas", "a\u00f1o": 5, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 46, "nombre": "Proyecto Final de Ingenieria en Informatica", "a\u00f1o": 5, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 1, "nombre": "Fundamentos de Informatica", "año": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 2, "nombre": "Sistemas de Informacion I", "año": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 3, "nombre": "Pensamiento Critico y Comunicacion", "año": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 4, "nombre": "Teoria de Sistemas", "año": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 5, "nombre": "Elementos de Algebra y Geometria", "año": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 6, "nombre": "Programacion I", "año": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": [{"Verdadero o falso. Las tuplas son inmutables?": ["a", "verdadero!", []]}]}
+{"id": 7, "nombre": "Sistemas de Representacion", "año": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 8, "nombre": "Matematica Discreta", "año": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 9, "nombre": "Fundamentos de Quimica", "año": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": [{"Formula para el oxido ferrico?": ["a", "o3Fe2", []]}]}
+{"id": 10, "nombre": "Arquitectura de Computadores", "año": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": [{"cual es la mejor marca de procesadores?": ["a", "AMD", [5]]}, {"Que es un GPU?": ["a", "es un procesador especializado en manipular y modificar memoria con el objetivo de acelerar la creacion de imagenes en un frame buffer de salida para un dispositivo de display.", []]}]}
+{"id": 11, "nombre": "Algebra", "año": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 12, "nombre": "Programacion II", "año": 2, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 13, "nombre": "Sistemas de Informacion II", "año": 2, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 14, "nombre": "Sistemas Operativos", "año": 2, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 15, "nombre": "Fisica I", "año": 2, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 16, "nombre": "Calculo I", "año": 2, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 17, "nombre": "Programacion III", "año": 2, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 18, "nombre": "Paradigma Orientado a Objetos", "año": 2, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 19, "nombre": "Fundamentos de Telecomunicaciones", "año": 2, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 20, "nombre": "Ingenieria de Datos I", "año": 2, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 21, "nombre": "Calculo II", "año": 2, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 22, "nombre": "Proceso de Desarrollo de Software", "año": 3, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 23, "nombre": "Seminario de Integracion Profesional", "año": 3, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 24, "nombre": "Teleinformatica y Redes", "año": 3, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 25, "nombre": "Ingenieria de Datos II", "año": 3, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 26, "nombre": "Probabilidad y Estadistica", "año": 3, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 27, "nombre": "Examen de Ingles", "año": 3, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 28, "nombre": "Aplicaciones Interactivas", "año": 3, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 29, "nombre": "Ingenieria de Software", "año": 3, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 30, "nombre": "Fisica II", "año": 3, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 31, "nombre": "Teoria de la Computacion", "año": 3, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 32, "nombre": "Estadistica Avanzada", "año": 3, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 33, "nombre": "Desarrollo de Aplicaciones I", "año": 4, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 34, "nombre": "Direccion de Proyectos Informaticos", "año": 4, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 35, "nombre": "Ciencia de Datos", "año": 4, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 36, "nombre": "Seguridad e Integridad de la Informacion", "año": 4, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 37, "nombre": "Modelado y Simulacion", "año": 4, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 38, "nombre": "Desarrollo de Aplicaciones II", "año": 4, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 39, "nombre": "Evaluacion de Proyectos Informaticos", "año": 4, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 40, "nombre": "Inteligencia Artificial", "año": 4, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 41, "nombre": "Tecnologia y Medio Ambiente", "año": 4, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 42, "nombre": "Practica Profesional Supervisada", "año": 4, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 43, "nombre": "Optativa 1", "año": 4, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 44, "nombre": "Arquitectura de Aplicaciones", "año": 5, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 45, "nombre": "Tendencias Tecnologicas", "año": 5, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
+{"id": 46, "nombre": "Proyecto Final de Ingenieria en Informatica", "año": 5, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
 {"id": 47, "nombre": "Calidad de Software", "año": 5, "cuatrimestre": 1, "correlativas": [], "flashcards": []},
 {"id": 48, "nombre": "Optativa 2", "año": 5, "cuatrimestre": 1, "correlativas": [], "flashcards": []},
-{"id": 49, "nombre": "Negocios Tecnologicos", "a\u00f1o": 5, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 50, "nombre": "Tecnologia e Innovacion", "a\u00f1o": 5, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 51, "nombre": "Derecho Informatico", "a\u00f1o": 5, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 52, "nombre": "Optativa 3", "a\u00f1o": 5, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 49, "nombre": "Negocios Tecnologicos", "año": 5, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 50, "nombre": "Tecnologia e Innovacion", "año": 5, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 51, "nombre": "Derecho Informatico", "año": 5, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 52, "nombre": "Optativa 3", "año": 5, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
