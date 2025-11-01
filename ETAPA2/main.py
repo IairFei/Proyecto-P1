@@ -5,9 +5,10 @@ from Entidades.flashcards import menuFlashcard,aprobarFlashcards
 from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario,menuAjustes
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
 from ManejoDeArchivos.verificarArchvos import verificarArchivos
+from ManejoDeArchivos.archivosSalida import menuExportacion
 from Logs.logs import log
 
-
+menuExportacion("ian")
 def menuPrincipal(usuario):
     print("-----------------------------------------------------")
     tipoUsuarioEncontrado = tipoUsuario(usuario)

@@ -367,3 +367,37 @@ Registro de log:
 2025-10-24 21:58:45.964829 - menuPrincipal - INFO: Usuario a seleccionó la opción 5 en el menú principal.
 
 2025-10-24 21:59:28.798286 - menuPrincipal - INFO: Usuario a seleccionó la opción 4 en el menú principal.
+
+2025-11-01 13:37:16.775871 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-11-01 13:37:18.361720 - login - INFO: Intento de login para el usuario: iholm
+
+2025-11-01 13:37:20.376451 - login - INFO: Intento de login para el usuario: iholm con contraseña proporcionada.
+
+2025-11-01 13:37:20.378751 - inicioDeSesion - WARNING: Intento fallido de inicio de sesión para el usuario iholm. Intentos restantes: 2.
+
+2025-11-01 13:37:20.850690 - login - INFO: Intento de login para el usuario: a
+
+2025-11-01 13:37:21.254154 - login - INFO: Intento de login para el usuario: a con contraseña proporcionada.
+
+2025-11-01 13:37:21.255414 - main - INFO: Usuario a ha iniciado sesión correctamente.
+
+2025-11-01 13:37:37.988687 - eleccionDeMateriaAnio - INFO: Usuario a eligió el año 1 para la materia.
+
+2025-11-01 13:37:38.484678 - eleccionDeMateriaCuatrimestre - INFO: Usuario a eligió el cuatrimestre 1 para la materia.
+
+2025-11-01 13:37:41.968035 - menuInicial - INFO: Usuario a eligió la materia número 2 para inscribirse.
+
+2025-11-01 13:37:41.969307 - inscribirseAMateria - INFO: Usuario a se inscribió en la materia Sistemas de Informacion I el día Jueves
+
+2025-11-01 13:37:59.603113 - menuInicial - INFO: Usuario a eligió el día 4 para cargar la nota.
+
+2025-11-01 13:37:59.604072 - cargarNotas - INFO: Usuario a está cargando notas para la materia: Sistemas de Informacion I.
+
+2025-11-01 13:38:02.736324 - cargarNotas - INFO: Usuario a seleccionó la opción 1 para cargar nota.
+
+2025-11-01 13:38:04.850422 - cargarNotas - INFO: Usuario a ingresó la nota 10 para el primer parcial.
+
+2025-11-01 13:38:04.851779 - cargarNotas - INFO: Usuario a cargó la nota 10 para el primer parcial.
+
+2025-11-01 16:10:50.244206 - main - INFO: Opción elegida en el menú de login: 1
