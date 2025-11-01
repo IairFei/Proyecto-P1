@@ -38,8 +38,7 @@ def agregar_flashcard_a_materia(materia_id, nueva_flashcard):
                 try:
                     materia = json.loads(linea)
                 except Exception:
-                    if linea.strip():
-                        lineas_modificadas.append(linea)
+                    lineas_modificadas.append(linea)
                     continue
                 if str(materia.get('id')) == str(materia_id):
                     materia_encontrada = True
@@ -49,7 +48,6 @@ def agregar_flashcard_a_materia(materia_id, nueva_flashcard):
         if materia_encontrada:
             with open(arch, 'w', encoding='utf-8') as archivo:
                 archivo.writelines(lineas_modificadas)
-            print(f"¡Éxito! Flashcard agregada a la materia con id {materia_id}.")
         else:
             print(f"Error: Se leyó el archivo, pero no se encontró ninguna materia con el id {materia_id}.")
     except FileNotFoundError:
@@ -61,13 +59,11 @@ def guardarFlashcard(flashcard,usuario):
     archivo="ETAPA2/Archivos/flashcardsSinAprobar.csv"
     while True:
         try:
-            for clave in flashcard:
-                pregunta=str(clave)
-                respuesta=str(flashcard[clave][0])
-                materia=flashcard[clave][1]
-            #print(pregunta,respuesta,puntaje)
+            pregunta=flashcard[0]
+            respuesta=flashcard[1]
+            materia=flashcard[2]
             archFlash=open(archivo, mode="at")
-            archFlash.write(f"{usuario};{pregunta};{respuesta};{materia}\n")
+            archFlash.write(f"{usuario["usuario"]};{pregunta};{respuesta};{materia}\n")
         except OSError as msg:
             print("ERROR:",msg)
         else:
@@ -78,7 +74,7 @@ def ProponerFlashcard(usuario,idMateria):
     flashcard={}
     materia=idMateria
     print("ingrese la pregunta para la flashcard: ")
-    pregunta=input(f"{usuario}: ")
+    pregunta=input(f"{usuario["usuario"]}: ")
     print("Ingrese la respuesta a la pregunta: ")
     respuesta=input(f"{usuario}: ")
     print("Flashcard creada con exito: \n")
@@ -91,15 +87,14 @@ def aprobarFlashcards(usuario):
     while True:
         try:
             archFlash=open("ETAPA2/Archivos/flashcardsSinAprobar.csv", mode="rt")
-            next(archFlash)
             cantidad=contarFlashcards("ETAPA2/Archivos/flashcardsSinAprobar.csv")
             for flashcard in archFlash:
                 print("Quedan un total de",cantidad,"flashcards para aprobar")
                 campos=flashcard.strip().split(";")
-                usuario=campos[0]
+                usuarioCreador=campos[0]
                 pregunta=campos[1]
                 respuesta=campos[2]
-                materia=campos[3]
+                materia=buscarMateriaPorIndice(int(campos[3].strip()))
                 puntaje=[]
                 print("Flashcard creada por:",usuario)
                 mostrarPreguntaFlashcard(pregunta)
@@ -119,7 +114,8 @@ def aprobarFlashcards(usuario):
                             print("Flashcard aprobada exitosamente")
                             break
                         elif opcion==2:
-                            print("Flashcard desaprobada exitosamente")
+                            print(f"Flashcard para la materia {materia['nombre']} desaprobada exitosamente")
+                            eliminarDeListaPorAprobar(flashcard)
                             break
                     except ValueError:
                         print("El valor ingresado no es correcto,intente nuevamente")

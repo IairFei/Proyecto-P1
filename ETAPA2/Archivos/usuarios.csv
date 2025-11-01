@@ -1,6 +1,7 @@
 Usuario,Contraseña,Role
 a,a,User
-mrodriguez,aa,User
+mjones,password456,User
+bsmith,abcdefg123,User
 ifeigelman,admin,Administrator
 mmendez,1234,Administrator
 vcinti,111,User

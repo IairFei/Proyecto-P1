@@ -1,9 +1,9 @@
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, charValido, eleccionDeMateriaAnio, eleccionDeMateriaCuatrimestre
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
-from Entidades.materias import verNotas, buscarMateriaPorIndice, mostrarMateriasDisponibles, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
-from Entidades.flashcards import estudiarFlashcard,aprobarFlashcards,masInfo,guardarFlashcard,ProponerFlashcard
-from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, menuAjustes
-from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario
+from Entidades.materias import verNotas,buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
+from Entidades.flashcards import menuFlashcard,aprobarFlashcards,masInfo,guardarFlashcard,ProponerFlashcard
+from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, guardarUsuario,menuAjustes,darDeBajaUsuario
+from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
 from Logs.logs import log
 
 
@@ -12,11 +12,11 @@ def menuPrincipal(usuario):
     tipoUsuarioEncontrado = tipoUsuario(usuario)
     print(f"Tipo de usuario: {tipoUsuarioEncontrado}")
     if tipoUsuarioEncontrado == "Administrator":
-        print("Menú Principal - Usuario Administrador")
-        print("Elija una opción:\n1- Ver calendario\n2- Ver notas\n3- Ver promedio de carrera\n4- Baja de usuario\n5- Cambiar rol de usuario\n6- Procesar flashcards\n0- Salir\n")
+        print("Menú Principal - Rol: Administrador")
+        print("Elija una opción:\n1- Baja de usuario\n2- Cambiar rol de usuario\n3- Procesar flashcards\n4- Generar reporte\n5- Ajustes\n0- Salir\n")
     else:
-        print("Menú Principal - Usuario Estándar")
-        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n8- Menu Flashcards\n9- Ajustes\n0- Salir\n")
+        print("Menú Principal - Rol: Estudiante")
+        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n8- Practicar con Flashcards\n9- Ajustes\n0- Salir\n")
     print("-----------------------------------------------------")
 
 def menuInicial(usuario):
@@ -26,7 +26,6 @@ def menuInicial(usuario):
         usuarioActual = getUsuarioPorNombreUsuario(usuario)
         tipoUsuarioEncontrado = tipoUsuario(usuario)
         while True:
-            print(usuarioActual)
             menuPrincipal(usuario)
             opcionElegida = int(input(f"{usuario}: "))
             while estaDentroDelRango(0,9,opcionElegida) == False:
@@ -52,7 +51,13 @@ def menuInicial(usuario):
                 inscribirseAMateria(materiasDisponibles[materiaElegida-1], usuarioActual)
                 
             elif opcionElegida == 1 and tipoUsuarioEncontrado == "Administrator":
-                print("Funcionalidad de 'Ver calendario' para Administradores no implementada aún.")
+                print("Ingrese el nombre de usuario que desea dar de baja: ")
+                usuarioABorrar = input(f"{usuario}: ").strip().lower()
+                resultadoBaja = darDeBajaUsuario(usuarioABorrar)
+                if resultadoBaja:
+                    print(f"El usuario {usuarioABorrar} ha sido dado de baja del sistema.")
+                else:
+                    print("No se pudo dar de baja al usuario. Verifique que el nombre de usuario sea correcto.")
                 
 
         #PACK DE 5 MATERIAS
@@ -84,7 +89,25 @@ def menuInicial(usuario):
                     log("menuInicial", "INFO", f"Usuario {usuario} no cumple con las condiciones para el 'Pack de 5 materias'.")
                 
             elif opcionElegida == 2 and tipoUsuarioEncontrado == "Administrator":
-                print("Funcionalidad de 'Ver notas' para Administradores no implementada aún.")
+                usuarioACambiar= input("Ingrese el nombre de usuario al que desea cambiar el rol: ").strip().lower()
+                usuarioACambiar = validarNombreUsuarioEnSistema(usuarioACambiar)
+                while usuarioACambiar is None:
+                    print("El usuario ingresado no existe. Por favor, ingrese un usuario válido.")
+                    usuarioACambiar = input("Ingrese el nombre de usuario al que desea cambiar el rol: ").strip().lower()
+                    usuarioACambiar = validarNombreUsuarioEnSistema(usuarioACambiar)
+                nuevoRol = int(input("Ingrese el nuevo rol para el usuario (1- User/2-Administrator): "))
+                while not estaDentroDelRango(1, 2, nuevoRol):
+                    print("Opción inválida. Por favor, ingrese 1 para User o 2 para Administrator.")
+                    nuevoRol = int(input("Ingrese el nuevo rol para el usuario (1- User/2-Administrator): "))
+                if nuevoRol == 1:
+                    nuevoRol = "User"
+                else:
+                    nuevoRol = "Administrator"
+                resultadoCambioDeRol = cambiarRol(nuevoRol, usuarioACambiar)
+                if resultadoCambioDeRol:
+                    print(f"El rol del usuario {usuarioACambiar[0].strip()} ha sido cambiado a {nuevoRol}.")
+                else:
+                    print("No se pudo cambiar el rol del usuario.")
                 
 
         #CARGA DE NOTAS
@@ -101,8 +124,7 @@ def menuInicial(usuario):
                     log("menuInicial", "INFO", f"Usuario {usuario} intentó cargar nota en un día sin materia asignada. Volviendo al menú principal.")
             
             elif opcionElegida == 3 and tipoUsuarioEncontrado == "Administrator":
-                print("Funcionalidad de 'Ver promedio de carrera' para Administradores no implementada aún.")
-                
+                aprobarFlashcards(usuario)                
         
         #DAR DE BAJA
             if opcionElegida == 4 and tipoUsuarioEncontrado == "User":
@@ -126,34 +148,22 @@ def menuInicial(usuario):
                 else:
                     print("No hay materia asignada para ese día. Volviendo al menú principal.")
                     
-            elif opcionElegida == 4 and tipoUsuarioEncontrado == "Administrator":
-                print("Funcionalidad de 'Baja de usuario' para Administradores no implementada aún.")
-                
-                
+            elif opcionElegida == 4 and tipoUsuarioEncontrado == "Administrator":                
+                print("Seleccione el reporte que desea generar:\n1- Reporte de usuarios\n2- Reporte de materias\n3- Reporte de flashcards\n")
+                opcionElegida = int(input(f"{usuario}: "))
+                while estaDentroDelRango(1,3,opcionElegida) == False:
+                    print("Opción inválida. Por favor, elija una opción válida.")
+                    print("Seleccione el reporte que desea generar:\n1- Reporte de usuarios\n2- Reporte de materias\n3- Reporte de flashcards\n")
+                    opcionElegida = int(input(f"{usuario}: "))
+                seGeneroReporte = generarReporte(opcionElegida)
+                if seGeneroReporte:
+                    print("Reporte generado exitosamente.")
+                else:
+                    print("Opción de reporte inválida.")
         # VER CALENDARIO
             if opcionElegida == 5 and tipoUsuarioEncontrado == "User":
                 verCalendario(usuarioActual)
-                
-            elif opcionElegida == 5 and tipoUsuarioEncontrado == "Administrator":
-                usuarioACambiar= input("Ingrese el nombre de usuario al que desea cambiar el rol: ").strip().lower()
-                usuarioACambiar = validarNombreUsuarioEnSistema(usuarioACambiar)
-                while usuarioACambiar is None:
-                    print("El usuario ingresado no existe. Por favor, ingrese un usuario válido.")
-                    usuarioACambiar = input("Ingrese el nombre de usuario al que desea cambiar el rol: ").strip().lower()
-                    usuarioACambiar = validarNombreUsuarioEnSistema(usuarioACambiar)
-                nuevoRol = int(input("Ingrese el nuevo rol para el usuario (1- User/2-Administrator): "))
-                while not estaDentroDelRango(1, 2, nuevoRol):
-                    print("Opción inválida. Por favor, ingrese 1 para User o 2 para Administrator.")
-                    nuevoRol = int(input("Ingrese el nuevo rol para el usuario (1- User/2-Administrator): "))
-                if nuevoRol == 1:
-                    nuevoRol = "User"
-                else:
-                    nuevoRol = "Administrator"
-                resultadoCambioDeRol = cambiarRol(nuevoRol, usuarioACambiar)
-                if resultadoCambioDeRol:
-                    print(f"El rol del usuario {usuarioACambiar[0].strip()} ha sido cambiado a {nuevoRol}.")
-                else:
-                    print("No se pudo cambiar el rol del usuario.")
+
         # VER NOTAS
 
             if opcionElegida == 6 and tipoUsuarioEncontrado == "User":
@@ -170,10 +180,7 @@ def menuInicial(usuario):
                     materiaElegida = int(input(f"{usuario}: "))
                 materia= buscarMateriaPorIndice(materiasDisponibles[materiaElegida-1])
                 verNotas(usuarioActual, materia)
-            elif opcionElegida == 6 and tipoUsuarioEncontrado == "Administrator":
-                aprobarFlashcards(usuario)
-            menuPrincipal(usuario)
-
+        
         #VER PROMEDIO CURSADA
             if opcionElegida == 7 and tipoUsuarioEncontrado == "User":
                 print("Notas")
@@ -236,7 +243,7 @@ def menuInicial(usuario):
                 print("Funcionalidad de 'Menu Flashcards' para Administradores no implementada aún.")
         
         #AJUSTES DE LA CUENTA (CAMBIO DE CONTRASEÑA Y CERRAR SESION)
-            if opcionElegida == 9 and tipoUsuarioEncontrado == "User" or opcionElegida == 6 and tipoUsuarioEncontrado == "Administrator":
+            if opcionElegida == 9 and tipoUsuarioEncontrado == "User" or opcionElegida == 5 and tipoUsuarioEncontrado == "Administrator":
                 cierraSesion = menuAjustes(usuario)
                 if cierraSesion:
                     print("Cerrando sesión.\n-----------------------------------------------------")

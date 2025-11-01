@@ -46,6 +46,30 @@ def buscarNombreMateriaPorIndice(indice, materias):
     nombreDeMateria = materia[2]
     return nombreDeMateria
 
+def obtenerCantidadDeMaterias():
+    cantidad = 0
+    try:
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            for linea in archivoMaterias:
+                cantidad += 1
+    except Exception as e:
+        print(f"Error al obtener la cantidad de materias: {e}")
+    return cantidad
+
+def obtenerCantidadDeInscriptosEnMaterias():
+    cantidadInscriptosPorMateria = []
+    try:
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            for linea in archivoMaterias:
+                try:
+                    materia = json.loads(linea.strip())
+                    cantidadInscriptosPorMateria.append((materia.get('nombre'), materia.get('inscriptos', 0)))
+                except Exception:
+                    continue
+    except IOError as e:
+        print(f"Error al obtener la cantidad de inscriptos en materias: {e}")
+    return cantidadInscriptosPorMateria
+
 def buscarMateriaPorIndice(indice):
     try:
         with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
@@ -159,7 +183,6 @@ def cargarNotas(usuarioActual,materia,diaIngresado):
                     usuarioActual["notas"][str(materia["id"])]["parcial1"] = notaP1
                     guardarUsuario(usuarioActual)
                     log("cargarNotas", "INFO", f"Usuario {usuario} cargó la nota {notaP1} para el primer parcial.")
-                   
         
                 elif opcion == 2:
                     if usuarioActual["notas"][str(materia["id"])]["parcial1"] == None:
@@ -227,7 +250,11 @@ def calcularNotaFinal(usuarioActual,materia):
 
 def eliminarMateriaDelCalendario(usuarioActual,diaIngresado):
     dias=("Lunes", "Martes", "Miercoles", "Jueves", "Viernes")
+    materiaID= usuarioActual["calendario"][dias[diaIngresado-1]]
+    materia=buscarMateriaPorIndice(materiaID)
     usuarioActual["calendario"][dias[diaIngresado-1]] = None
+    materia['inscriptos'] -= 1
+    guardarMateria(materia)
     guardarUsuario(usuarioActual)
     log("eliminarMateriaRecursada", "INFO", f"Materia del dia {dias[diaIngresado-1]} eliminada del calendario.")
 
@@ -311,3 +338,23 @@ def obtenerMateriasPackDe5(usuarioActual):
     except Exception as e:
         print(f"Error al obtener materias pack de 5: {e}")
     return materiasPackDe5
+
+def guardarMateria(materia_actualizada):
+    try:
+        materias = []
+        materia_actualizada_id = materia_actualizada.get('id')
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            for linea in archivoMaterias:
+                try:
+                    materia = json.loads(linea.strip())
+                    if materia.get('id') == materia_actualizada_id:
+                        materias.append(materia_actualizada)
+                    else:
+                        materias.append(materia)
+                except Exception:
+                    continue
+        with open("ETAPA2/Archivos/materias.json", "w", encoding="utf-8") as archivoMaterias:
+            for materia in materias:
+                archivoMaterias.write(json.dumps(materia, ensure_ascii=False) + "\n")
+    except Exception as e:
+        print(f"Error al guardar la materia: {e}")
