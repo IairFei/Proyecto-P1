@@ -159,7 +159,6 @@ def cargarNotas(usuarioActual,materia,diaIngresado):
                     usuarioActual["notas"][str(materia["id"])]["parcial1"] = notaP1
                     guardarUsuario(usuarioActual)
                     log("cargarNotas", "INFO", f"Usuario {usuario} cargó la nota {notaP1} para el primer parcial.")
-                   
         
                 elif opcion == 2:
                     if usuarioActual["notas"][str(materia["id"])]["parcial1"] == None:
@@ -227,7 +226,11 @@ def calcularNotaFinal(usuarioActual,materia):
 
 def eliminarMateriaDelCalendario(usuarioActual,diaIngresado):
     dias=("Lunes", "Martes", "Miercoles", "Jueves", "Viernes")
+    materiaID= usuarioActual["calendario"][dias[diaIngresado-1]]
+    materia=buscarMateriaPorIndice(materiaID)
     usuarioActual["calendario"][dias[diaIngresado-1]] = None
+    materia['inscriptos'] -= 1
+    guardarMateria(materia)
     guardarUsuario(usuarioActual)
     log("eliminarMateriaRecursada", "INFO", f"Materia del dia {dias[diaIngresado-1]} eliminada del calendario.")
 
