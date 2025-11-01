@@ -1,5 +1,5 @@
 import json
-from ..validacionDeDatos import verificarSeguridadContraseña
+from ..validacionDeDatos import verificarSeguridadContrasena
 from ManejoDeDatos.Usuarios.usuarios import validarNombreUsuarioEnSistema
 from faker import Faker
 from Logs.logs import log
@@ -87,7 +87,7 @@ def altaUsuario():
             contrasena = input("Ingrese la contraseña: ").strip()
             log("altaUsuario", "INFO", f"Contraseña ingresada para el usuario {usuario}. Verificando seguridad.")
             while True:
-                status =  verificarSeguridadContraseña(contrasena)
+                status =  verificarSeguridadContrasena(contrasena)
                 if status[1] == True:
                     print(status[0])
                     log("altaUsuario", "INFO", f"Contraseña para el usuario {usuario} cumple con los requisitos de seguridad.")
