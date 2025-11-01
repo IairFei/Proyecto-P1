@@ -242,16 +242,18 @@ def menuInicial(usuario):
         else:
             print("Gracias por usar el sistema. ¡Hasta luego!")
             
-    except KeyboardInterrupt:
-        print("\nProceso interrumpido por el usuario.")
-    except Exception as e:
+    except ValueError as e:
         print(f"Error: {e}")
+        log("menuInicial", "ERROR", f"Error en el menú inicial para el usuario {usuario}: {e}")
+        menuInicial(usuario)
 
 def menuLoginPrincipal():
     try:
         #inicializarUsuariosFake()
         print("Bienvenido al sistema de gestión académica.\nPor favor, elija una de las siguientes opciones: \n1-Iniciar sesión\n2-Crear usuario\n3-Salir")
         opcionElegida = int(input("Opción: "))
+        if opcionElegida is None or opcionElegida == "" or opcionElegida not in [1,2,3]:
+            raise ValueError("Opción inválida.")
         while estaDentroDelRango(1,3,opcionElegida) == False:
             print("Opción inválida. Por favor, elija una opción válida.")
             print("Por favor, elija una de las siguientes opciones: \n1-Iniciar sesión\n2-Crear usuario\n3-Salir")
@@ -262,9 +264,10 @@ def menuLoginPrincipal():
             print("Inicio de sesión fallido. Saliendo del programa.")
             log("main", "INFO", "Inicio de sesión fallido.")
             return
-    except (Exception, KeyboardInterrupt) as e:
-        print(f"Ocurrió un error durante el inicio de sesión: {e}")
-        log("main", "ERROR", f"Ocurrió un error durante el inicio de sesión: {e}")
+    except ValueError as e:
+        print("Opción inválida, ingrese un número correspondiente a las opciones.")
+        print(f"Error: {e}")
+        menuLoginPrincipal()
         return
     else:
         print(f"Acceso concedido. Bienvenido {usuario}.")

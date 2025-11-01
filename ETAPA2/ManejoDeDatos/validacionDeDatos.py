@@ -1,16 +1,30 @@
 from Logs.logs import log
 
 def estaDentroDelRango(nMinimo, nLimite, datoAValidar):
-    estaEnElRango = True
-    if datoAValidar < nMinimo or datoAValidar > nLimite:
+    try:
+        estaEnElRango = True
+        datoAValidar = int(datoAValidar)
+        if datoAValidar is None or datoAValidar == "":
+            raise ValueError("El dato a validar no puede estar vacío.")
+        #validar que sea int
+        if datoAValidar < nMinimo or datoAValidar > nLimite:
+            estaEnElRango = False
+    except ValueError as e:
+        log("estaDentroDelRango", "ERROR", f"Error al validar el rango: {e}")
         estaEnElRango = False
     return estaEnElRango
 
+
 def charValido(char):
-    esValido = False
-    char = char.lower().strip()
-    if char == 's' or char == 'n':
-        esValido = True
+    try:
+        esValido = False
+        char = str(char)
+        char = char.lower().strip()
+        if char == 's' or char == 'n':
+            esValido = True
+    except ValueError as e:
+        log("charValido", "ERROR", f"Error al validar el carácter: {e}")
+        esValido = False
     return esValido
 
 def verificarSeguridadContraseña(contraseña):
