@@ -541,3 +541,55 @@ Registro de log:
 2025-11-01 18:17:19.714150 - eleccionDeMateriaAnio - INFO: Usuario a eligió el año 1 para la materia.
 
 2025-11-01 18:17:20.556569 - eleccionDeMateriaCuatrimestre - INFO: Usuario a eligió el cuatrimestre 2 para la materia.
+
+2025-11-01 18:46:56.533258 - main - INFO: Opción elegida en el menú de login: 2
+
+2025-11-01 18:46:56.535332 - altaUsuario - INFO: Iniciando proceso de alta de usuario.
+
+2025-11-01 18:47:00.932328 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-11-01 18:47:16.759049 - login - INFO: Intento de login para el usuario: a
+
+2025-11-01 18:47:17.209732 - login - INFO: Intento de login para el usuario: a con contraseña proporcionada.
+
+2025-11-01 18:47:17.230950 - main - INFO: Usuario a ha iniciado sesión correctamente.
+
+2025-11-01 18:48:04.560343 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-11-01 18:48:05.822484 - login - INFO: Intento de login para el usuario: a
+
+2025-11-01 18:48:06.135810 - login - INFO: Intento de login para el usuario: a con contraseña proporcionada.
+
+2025-11-01 18:48:06.137095 - main - INFO: Usuario a ha iniciado sesión correctamente.
+
+2025-11-01 18:48:59.954822 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-11-01 18:49:00.428926 - login - INFO: Intento de login para el usuario: a
+
+2025-11-01 18:49:00.735134 - login - INFO: Intento de login para el usuario: a con contraseña proporcionada.
+
+2025-11-01 18:49:00.736361 - main - INFO: Usuario a ha iniciado sesión correctamente.
+
+2025-11-01 18:49:34.299891 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-11-01 18:49:34.848407 - login - INFO: Intento de login para el usuario: a
+
+2025-11-01 18:49:35.152506 - login - INFO: Intento de login para el usuario: a con contraseña proporcionada.
+
+2025-11-01 18:49:35.153620 - main - INFO: Usuario a ha iniciado sesión correctamente.
+
+2025-11-01 18:50:06.929714 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-11-01 18:50:08.839316 - login - INFO: Intento de login para el usuario: a
+
+2025-11-01 18:50:09.230621 - login - INFO: Intento de login para el usuario: a con contraseña proporcionada.
+
+2025-11-01 18:50:09.231870 - main - INFO: Usuario a ha iniciado sesión correctamente.
+
+2025-11-01 18:51:03.875002 - main - INFO: Opción elegida en el menú de login: 1
+
+2025-11-01 18:51:05.349888 - login - INFO: Intento de login para el usuario: a
+
+2025-11-01 18:51:05.614762 - login - INFO: Intento de login para el usuario: a con contraseña proporcionada.
+
+2025-11-01 18:51:05.616141 - main - INFO: Usuario a ha iniciado sesión correctamente.

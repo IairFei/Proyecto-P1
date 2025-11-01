@@ -1,7 +1,7 @@
 import json
 from Logs.logs import log
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango
-from ..validacionDeDatos import verificarSeguridadContraseña
+from ..validacionDeDatos import verificarSeguridadContrasena
 from Logs.logs import log
 
 def cambiarRol(nuevoRol, usuario):
@@ -23,6 +23,31 @@ def cambiarRol(nuevoRol, usuario):
         print(f"Error: {e}")
         return None
 
+def obtenerCantidadUsuarios():
+    try:
+        contador = 0
+        with open('ETAPA2/Archivos/usuarios.csv', 'r') as usuarios:
+            for linea in usuarios:
+                contador += 1
+    except IOError as e:
+        print(f"Error: {e}")
+        contador = -1
+    else:
+        return contador
+
+def obtenerUsuarioPorRol(rol):
+    try:
+        usuarios_encontrados = []
+        with open('ETAPA2/Archivos/usuarios.csv', 'r') as usuarios:
+            for linea in usuarios:
+                datos = linea.strip().split(',')
+                if datos[2].strip().lower() == rol.strip().lower():
+                    usuarios_encontrados.append(datos[0].strip())
+        return usuarios_encontrados
+    except (FileNotFoundError, Exception) as e:
+        print(f"Error: {e}")
+        return None
+    
 def validarNombreUsuarioEnSistema(usuario):
     try:
         datosEncontrados = None
@@ -228,17 +253,16 @@ def cambioContrasena(usuario):
         log("ajusteUsuario", "INFO", "Contraseña antigua correcta.") 
         while True:
             contrasenaNueva = input("Ingrese su nueva contraseña: ")
-            status =  verificarSeguridadContraseña(contrasenaNueva)
-            if status[1] == True:
-                print(status[0])
+            status =  verificarSeguridadContrasena(contrasenaNueva)
+            print(status[0])
+            if status[1] == True:    
                 log("ajusteUsuario", "INFO", f"Contraseña para el usuario {usuario} cumple con los requisitos de seguridad.")
                 break
-            else:
-                print(status[0])
+            '''else:
                 log("ajusteUsuario", "WARNING", f"Contraseña para el usuario {usuario} no cumple con los requisitos de seguridad por el motivo: {status[0]}")
                 contrasenaNueva = input("Ingrese su nueva contraseña: ").strip()
                 log("ajusteUsuario", "INFO", f"Nuevo intento de contraseña ingresada para el usuario {usuario}.")
-                continue
+                continue'''
         status = contrasenaActualizada(usuario,exContrasena,contrasenaNueva)
         if status == True:   
             print("Contraseña actualizada.\nVolviendo al Menu")
@@ -292,3 +316,34 @@ def menuAjustes(usuario):
         except ValueError:
             print("El valor ingresado no es correcto,intente nuevamente")
     return cierraSesion
+
+def darDeBajaUsuario(usuario):
+    try:
+        datos = []
+        usuario_encontrado = False
+        with open('ETAPA2/Archivos/usuarios.csv', 'r') as archivo:
+            for linea in archivo:
+                datos.append(linea)
+                linea_datos = linea.strip().split(",")
+                if linea_datos[0] == usuario:
+                    datos.pop()
+                    usuario_encontrado = True
+        if not usuario_encontrado:
+            print(f"El usuario {usuario} no existe en el sistema.")
+            return False
+        with open('ETAPA2/Archivos/usuarios.csv', 'wt') as archivo:
+            for dato in datos:
+                archivo.write(dato)
+        with open('ETAPA2/Archivos/usuarios.json', 'r', encoding='utf-8') as archivo:
+            lineas_modificadas = []
+            for linea in archivo:
+                usuario_json = json.loads(linea)
+                if usuario_json.get('usuario') == usuario:
+                    continue
+                lineas_modificadas.append(linea)
+        with open('ETAPA2/Archivos/usuarios.json', 'w', encoding='utf-8') as archivo:
+            archivo.writelines(lineas_modificadas)
+        return True
+    except Exception as e:
+        print(f"Error: {e}")
+        return False

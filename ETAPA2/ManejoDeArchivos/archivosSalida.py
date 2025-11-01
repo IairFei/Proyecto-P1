@@ -2,36 +2,32 @@ from ManejoDeDatos.validacionDeDatos import estaDentroDelRango
 import json
 from Entidades.materias import buscarMateriaPorIndice
 
-def menuExportacion(user):
-    cierraSesion = False
-    while True:
-        try:
-            print("Ingrese el numero de la opcion a elegir.")
-            print("OPCIONES:")
-            print("1- Porcentaje aprobacion por materia\n2- Grafico comparativo entre estudiantes con pack 5 materias y los que no\n3- Ranking flashcards\n4-Ranking de materias con mas flashcards \n0- Salir\n")
-            opcion=int(input(f"{user}: "))
+def generarReporte(opcion):
     
-            if estaDentroDelRango(0,4,opcion)==False:
-                raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
-            if opcion==1:
-                datos = porcentajeXMateria()
-                break
-            if opcion == 2:
-                datos = cantEstudiantePack5()
-                break
-            if opcion == 3:
-                datos = rankingMejoresFlashcards()
-                break
-            if opcion == 4:
-                datos = rankingMateriaFlashcards()
-                break
-            else:
-                print("hola")
-                break
-        except ValueError:
-            print("El valor ingresado no es correcto,intente nuevamente")
-    generarArchivosSalida(datos)
-    return cierraSesion
+    datos = None 
+
+    if opcion == 1:
+        datos = porcentajeXMateria()
+
+    elif opcion == 2:
+        datos = cantEstudiantePack5()
+        
+    elif opcion == 3:
+        datos = rankingMejoresFlashcards()
+        
+    elif opcion == 4:
+        datos = rankingMateriaFlashcards()
+        
+    else:
+        print(f"Error: Opción '{opcion}' no válida.")
+        return False 
+
+    if datos is not None:
+        generarArchivosSalida(datos)
+        return True
+    else:
+        print("No se generaron datos para el reporte.")
+        return False
 
 
 

@@ -1,6 +1,6 @@
 
 import random
-from Entidades.materias import tieneCorrelativasAprobadas, darDeBajaNotas
+from Entidades.materias import buscarMateriaPorIndice, guardarMateria, tieneCorrelativasAprobadas, darDeBajaNotas
 from Logs.logs import log
 import json
 from ManejoDeDatos.Usuarios.usuarios import guardarUsuario
@@ -63,7 +63,9 @@ def inscribirseAMateria(materiaSeleccionada, usuarioActual):
         usuarioActual['calendario'][dias[diaElegido]] = materia['id']
         usuarioActual['notas'][str(materia['id'])] = {"parcial1": None, "parcial2": None, "final": None, "nota_final": None, "aprobada": False, "recursa": False}
         log("inscribirseAMateria", "INFO", f"Usuario {usuarioActual['usuario']} se inscribió en la materia {materia['nombre']} el día {dias[diaElegido]}")
+        materia['inscriptos'] += 1
         guardarUsuario(usuarioActual)
+        guardarMateria(materia)
         verCalendario(usuarioActual)
         return
     except Exception as e:
@@ -76,6 +78,9 @@ def darDeBajaMateria(usuarioActual, diaIngresado):
         usuarioActual["calendario"][dias[diaIngresado-1]] = None
         log("darDeBajaMateria", "INFO", f"Materia dada de baja: {indiceMateria} en el dia {diaIngresado}")
         darDeBajaNotas(indiceMateria, usuarioActual)
+        materia=buscarMateriaPorIndice(indiceMateria)
+        materia['inscriptos'] -= 1
+        guardarMateria(materia)
         guardarUsuario(usuarioActual)
     except Exception as e:
         print(f"Error al dar de baja la materia: {e}")
