@@ -4,7 +4,6 @@ from Entidades.materias import verNotas, buscarMateriaPorIndice, mostrarMaterias
 from Entidades.flashcards import estudiarFlashcard,aprobarFlashcards,masInfo,guardarFlashcard,ProponerFlashcard
 from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, menuAjustes
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario
-from ManejoDeArchivos.verificarArchvos import verificarArchivos
 from Logs.logs import log
 
 
@@ -328,5 +327,4 @@ def main():
     menuLoginPrincipal()
         
 if __name__ == "__main__":
-    verificarArchivos()
     main()
