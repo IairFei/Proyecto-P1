@@ -18,6 +18,9 @@ def generarReporte(opcion):
     elif opcion == 4:
         datos = rankingMateriaFlashcards()
         
+    elif opcion == 5:
+        datos = cantEstudiantesXmateria()
+        
     else:
         print(f"Error: Opción '{opcion}' no válida.")
         return False 
@@ -33,13 +36,13 @@ def generarReporte(opcion):
 
 def generarArchivosSalida(data):
     try:
-        print("Generando archivo de salida...")
+        print("-----------------------------------------------------\nGenerando archivo de salida...")
         path = "ETAPA2/ArchivosSalida/" + data[0] + ".csv"
         with open( path, 'w') as archivo:
-            print(data[0],data[1])
+
             for datos in data[1]:
                 for dato in datos:
-                    print(dato,datos)
+
                     restructedDatos = str(dato) + "\n"
                     archivo.write(restructedDatos)
                 
@@ -53,22 +56,29 @@ def generarArchivosSalida(data):
 def porcentajeXMateria():
     temp = {}
     try:
+        with open("ETAPA2/Archivos/materias.json", 'r', encoding='utf-8') as archivo:
+            for linea in archivo:
+                linea = linea.strip()
+                if linea:
+                    materia = json.loads(linea)
+                    nombreMateria = materia["id"]
+                    temp[nombreMateria] = {"total": 0, "Porcentaje": 0}
         with open("ETAPA2/Archivos/usuarios.json", 'r', encoding='utf-8') as archivo:
             for linea in archivo:
-                usuario = json.loads(linea)
-                for materia in usuario["notas"]:
-                    if materia not in temp:
-                        temp[materia] = {"total": 0, "Porcentaje": 0}
-                    temp[materia]["total"] += 1
-                    if usuario["notas"][materia]["aprobada"]:
-                        temp[materia]["Porcentaje"] += 1
-        # PorcentajeDeMaterias = calcularPorcentaje(temp)
+                linea = linea.strip() 
+                if linea:
+                    usuario = json.loads(linea)
+                    for materia in usuario["notas"]:
+                        if materia in temp: 
+                            temp[materia]["total"] += 1
+                            if usuario["notas"][materia]["aprobada"]:
+                                temp[materia]["Porcentaje"] += 1
         datosAsubir = []
-
+                     
         for materiaId in temp.keys():
             materia = buscarMateriaPorIndice(int(materiaId))
             nombreMateria = materia["nombre"]
-            datosAsubir.append((nombreMateria + ": ", "aprobados",f"{temp[materiaId]["Porcentaje"]}","total:",f"{temp[materiaId]["total"]}"))
+            datosAsubir.append((nombreMateria + ": ", "Aprobados:",f"{temp[materiaId]["Porcentaje"]}","Total:",f"{temp[materiaId]["total"]}"))
         return ("PorcentajeDeAprobacionXMateria",datosAsubir)
 
     except Exception as e:
@@ -96,23 +106,22 @@ def cantEstudiantePack5():
         print(f"Error: {e}")
         return None
     
-def calcularPorcentaje(datos):
-    resultados = {}
-    for clave in datos:
-        data = datos[clave]
-        total = data["total"]
-        Porcentaje = data["Porcentaje"]
-        if total > 0:
-            Porcentaje = (Porcentaje / total) * 100  
-        else:
-            Porcentaje = 0.0
-            
-        resultados[clave] = {
-            "total": total, 
-            "Porcentaje": Porcentaje
-        }
-        
-    return resultados
+#Funcion para calcular los porcentajes de las materias, [DESHABILITADA]
+# def calcularPorcentaje(datos):
+#     resultados = {}
+#     for clave in datos:
+#         data = datos[clave]
+#         total = data["total"]
+#         Porcentaje = data["Porcentaje"]
+#         if total > 0:
+#             Porcentaje = (Porcentaje / total) * 100  
+#         else:
+#             Porcentaje = 0.0 
+#         resultados[clave] = {
+#             "total": total, 
+#             "Porcentaje": Porcentaje
+#         }
+#     return resultados
 
 
 
@@ -158,3 +167,32 @@ def rankingMejoresFlashcards():
     except Exception as e:
         print(f"Error procesando el archivo: {e}")
         return []
+    
+def cantEstudiantesXmateria():
+    datos = []
+    materias = []
+    cant = 0
+    try:
+        with open("ETAPA2/Archivos/materias.json", 'r', encoding='utf-8') as archivo:
+            for linea in archivo:
+                linea = linea.strip()
+                if linea:
+                    materia = json.loads(linea)
+                    cantidadAlumnos = materia["inscriptos"]
+                    nombreMateria = materia["nombre"]
+                    materias.append((nombreMateria,cantidadAlumnos))
+        with open("ETAPA2/Archivos/usuarios.json", 'r', encoding='utf-8') as archivo: 
+            for linea in archivo:
+                linea = linea.strip()
+                if linea:
+                    cant += 1
+            materias.append(("Total Alumnos: ", cant))
+        for materia in materias:
+            datos.append((f"{materia[0]}",f"{materia[1]}"))
+        
+        return ("cantidadInscriptosXMateria",datos)
+
+    except Exception as e:
+        print(f"Error procesando el archivo: {e}")
+        return []
+

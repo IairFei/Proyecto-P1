@@ -149,14 +149,14 @@ def menuInicial(usuario):
                     print("No hay materia asignada para ese día. Volviendo al menú principal.")
                     
             elif opcionElegida == 4 and tipoUsuarioEncontrado == "Administrator":                
-                print("Seleccione el reporte que desea generar:\n1- Reporte de usuarios\n2- Reporte de materias\n3- Reporte de flashcards\n")
+                print("Seleccione el reporte que desea generar:\n1- Reporte de materias\n2- Reporte de pack5materias\n3- Report de mejores flashcards\n4- Report de materias con mas flashcards\n5- Reporte de usuarios")
                 opcionElegida = int(input(f"{usuario}: "))
-                while estaDentroDelRango(1,3,opcionElegida) == False:
+                while estaDentroDelRango(1,5,opcionElegida) == False:
                     print("Opción inválida. Por favor, elija una opción válida.")
-                    print("Seleccione el reporte que desea generar:\n1- Reporte de usuarios\n2- Reporte de materias\n3- Reporte de flashcards\n")
+                    print("Seleccione el reporte que desea generar:\n1- Reporte de materias\n2- Reporte de pack5materias\n3- Report de mejores flashcards\n4- Report de materias con mas flashcards\n5- Reporte de usuarios")
                     opcionElegida = int(input(f"{usuario}: "))
-                    seGeneroReporte = generarReporte(opcionElegida)
-                if seGeneroReporte == True:
+                seGeneroReporte = generarReporte(opcionElegida)
+                if seGeneroReporte:
                     print("Reporte generado exitosamente.")
                 else:
                     print("Opción de reporte inválida.")
