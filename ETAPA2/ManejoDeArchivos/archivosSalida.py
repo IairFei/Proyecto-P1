@@ -118,6 +118,8 @@ def calcularPorcentaje(datos):
         
     return resultados
 
+import json
+
 def rankingMateriaFlashcards():
     datos = []
     try:
@@ -126,11 +128,11 @@ def rankingMateriaFlashcards():
                 materia = json.loads(linea)
                 nombre = materia["nombre"]
                 cantFlashcards = len(materia["flashcards"])
-                datos.append((nombre, cantFlashcards))
-        datos.sort(key=, reverse=True)
+                print(nombre, cantFlashcards)
             
-        return datos
-             
+        
+        return 
+            
     except Exception as e:
         print(f"Error: {e}")
         return None
