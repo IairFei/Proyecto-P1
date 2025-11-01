@@ -1,6 +1,6 @@
 import json
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango
-from Entidades.materias import mostrarMateriasDisponibles
+from Entidades.materias import promedio
 
 
 def mostrarPreguntaFlashcard(pregunta):
@@ -128,10 +128,86 @@ def aprobarFlashcards(usuario):
             archFlash.close()
             break
 
-def estudiarFlashcard():
-    print("testing")
 
-def masInfo():
+def obtenerFlashcardsPorMateria(idMateria):
+    flashcards=[]
+    try:
+        with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
+            for linea in archivoMaterias:
+                try:
+                    materia = json.loads(linea.strip())
+                    if materia.get('id') == idMateria:
+                        flashcards = materia.get('flashcards', [])
+                        break
+                except Exception:
+                    continue
+        if flashcards is None or len(flashcards) == 0:
+            print("No hay flashcards disponibles para la materia elegida")
+    except Exception as e:
+        print(f"Error al buscar flashcards: {e}")
+    return flashcards
+
+def seleccionarFlashcards(listaFlashcards,usuario):
+    seleccionadas=[]
+    print("Las flashcards disponibles son:")
+    for flashcard in listaFlashcards:
+        for clave in flashcard:
+            pregunta=str(clave)
+            usuariocreador=flashcard[clave][0]
+            respuesta=str(flashcard[clave][1])
+            puntaje=flashcard[clave][1]
+            mostrarPreguntaFlashcard(pregunta)
+            print(f"Flashcard creada por: {usuariocreador}")
+            print("¿Desea estudiar esta flashcard?")
+            print("│ 1. Si  │")
+            print("│ 2. No  │")
+            while True:
+                try:
+                    opcion=int(input(f"{usuario}: "))
+                    if estaDentroDelRango(1,2,opcion)==False:
+                        raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
+                    if opcion==1:
+                        flashcard={}
+                        flashcard[pregunta]=respuesta,puntaje
+                        seleccionadas.append(flashcard)
+                        print("   ✅ ¡Guardada!")
+                        break
+                    elif opcion==2:
+                        print("   ➡️ Omitida.")
+                        break
+                except ValueError:
+                    print("El valor ingresado no es correcto,intente nuevamente")
+    print(f"\n🎉 Selección finalizada. Has elegido {len(seleccionadas)} flashcards.")
+    return seleccionadas
+
+def estudiarFlashcard(idMateria,usuario):
+    flashcardsDisponibles=obtenerFlashcardsPorMateria(idMateria)
+    if len(flashcardsDisponibles)>0:
+        flashcardsAEstudiar=seleccionarFlashcards(flashcardsDisponibles,usuario)
+        print(">>Iniciando sesion de estudio<<")
+        for flashcard in flashcardsAEstudiar:
+            for clave in flashcard:
+                pregunta=str(clave)
+                respuesta=str(flashcard[clave][0])
+                puntaje=flashcard[clave][1]
+                mostrarPreguntaFlashcard(pregunta)
+                print("│ 1. Mostrar Respuesta  │")
+                print("│ 2. Saltear            │")
+                while True:
+                    try:
+                        opcion=int(input(f"{usuario}: "))
+                        if estaDentroDelRango(1,2,opcion)==False:
+                            raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
+                        if opcion==1:
+                            mostrarRespuestaFlashcard(respuesta)
+                            break
+                        elif opcion==2:
+                            print("   ➡️ Omitida.")
+                            break
+                    except ValueError:
+                        print("El valor ingresado no es correcto,intente nuevamente")
+
+def masInfo(): #FALTA ACTUALIZAR
     print("\n" + "*" * 50)
     print("  ♦  SISTEMA DE FLASHCARDS  ♦")
     print("*" * 50 + "\n")

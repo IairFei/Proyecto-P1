@@ -3,10 +3,10 @@
 {"id": 3, "nombre": "Pensamiento Critico y Comunicacion", "a\u00f1o": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
 {"id": 4, "nombre": "Teoria de Sistemas", "a\u00f1o": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
 {"id": 5, "nombre": "Elementos de Algebra y Geometria", "a\u00f1o": 1, "cuatrimestre": 1, "correlativas": [], "flashcards": []}
-{"id": 6, "nombre": "Programacion I", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 6, "nombre": "Programacion I", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": [{"Verdadero o falso. Las tuplas son inmutables?": ["a", "verdadero!", []]}]}
 {"id": 7, "nombre": "Sistemas de Representacion", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
-{"id": 8, "nombre": "Matematica Discreta", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": [{"como se representa la compuerta or en circuitos?": ["a", "como se representa la compuerta or en circuitos?", "D", []]}]}
-{"id": 9, "nombre": "Fundamentos de Quimica", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 8, "nombre": "Matematica Discreta", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
+{"id": 9, "nombre": "Fundamentos de Quimica", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": [{"Formula para el oxido ferrico?": ["a", "o3Fe2", []]}]}
 {"id": 10, "nombre": "Arquitectura de Computadores", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
 {"id": 11, "nombre": "Algebra", "a\u00f1o": 1, "cuatrimestre": 2, "correlativas": [], "flashcards": []}
 {"id": 12, "nombre": "Programacion II", "a\u00f1o": 2, "cuatrimestre": 1, "correlativas": [], "flashcards": []}

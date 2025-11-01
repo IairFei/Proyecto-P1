@@ -190,35 +190,43 @@ def menuInicial(usuario):
                             print("=" * 35)
                             print("      🎯 MENÚ DE FLASHCARDS 🎯")
                             print("=" * 35)
-                            print("│ 1. Estudiar Flashcards     │")
-                            print("│ 2. Proponer Flashcards     │")
-                            print("│ 3. Más Información         │")
-                            print("│ 4. Salir                   │")
+                            print("│ 1. Elegir Materia para continuar     │")
+                            print("│ 2. Más Información                   │")
+                            print("│ 3. Salir                             │")
                             print("-" * 35)
                             opcion=int(input(f"{usuario}: "))
-                            if estaDentroDelRango(1,4,opcion)==False:
+                            if estaDentroDelRango(1,3,opcion)==False:
                                 raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
                             if opcion==1:
-                                opcionDelMenuFlashcads = "Estudiar Flashcards"
-                            elif opcion==2:
-                                opcionDelMenuFlashcads = "Proponer Flashcards"
-                            print(f"A continuacion, por favor elija para que materia para {opcionDelMenuFlashcads.lower()}:")
-                            anioElegido = eleccionDeMateriaAnio(usuario)
-                            cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuario)
-                            materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,usuarioActual,mostrarTodas=True)
-                            print(f"Ingrese el numero de la materia a la que corresponde la flashcard (1 a  {len(materiasDisponibles)}):")
-                            Materia = int(input(f"{usuario}: "))
-                            while estaDentroDelRango(1, len(materiasDisponibles), Materia)==False:
-                                print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
-                                print(f"Ingrese el numero de la materia a la que corresponde la flashcard (1 a {len(materiasDisponibles)}):")
+                                print(f"A continuacion, por favor elija para que materia para {opcionDelMenuFlashcads.lower()}:")
+                                anioElegido = eleccionDeMateriaAnio(usuario)
+                                cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuario)
+                                materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,usuarioActual,mostrarTodas=True)
+                                print(f"Ingrese el numero de la materia a la que corresponde la flashcard (1 a  {len(materiasDisponibles)}):")
                                 Materia = int(input(f"{usuario}: "))
-                            idMateria=materiasDisponibles[Materia-1]
-                            if opcion==1:
-                                estudiarFlashcard()
+                                while estaDentroDelRango(1, len(materiasDisponibles), Materia)==False:
+                                    print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
+                                    print(f"Ingrese el numero de la materia a la que corresponde la flashcard (1 a {len(materiasDisponibles)}):")
+                                    Materia = int(input(f"{usuario}: "))
+                                idMateria=materiasDisponibles[Materia-1]
+                                print("=" * 35)
+                                print("      🎯 MENÚ DE FLASHCARDS 🎯")
+                                print("=" * 35)
+                                print("│ 1. Estudiar Flashcards               │")
+                                print("│ 2. Proponer Flashcards               │")
+                                print("│ 3. Salir                             │")
+                                print("-" * 35)
+                                opcion=int(input(f"{usuario}: "))
+                                if estaDentroDelRango(1,3,opcion)==False:
+                                    raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
+                                if opcion==1:
+                                    estudiarFlashcard(idMateria,usuario)
+                                elif opcion==2:
+                                    guardarFlashcard(ProponerFlashcard(usuario,idMateria),usuario)
+                                    print(">>Flashcard propuesta exitosamente<<")
+                                else:
+                                    break
                             elif opcion==2:
-                                guardarFlashcard(ProponerFlashcard(usuario,idMateria),usuario)
-                                print(">>Flashcard propuesta exitosamente<<")
-                            elif opcion==3:
                                 masInfo()
                             else:
                                 break
