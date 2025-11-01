@@ -1,6 +1,6 @@
 import json
 from ManejoDeDatos.validacionDeDatos import estaDentroDelRango
-from Entidades.materias import promedio
+from Entidades.materias import promedio, eleccionDeMateriaAnio, eleccionDeMateriaCuatrimestre, mostrarMateriasDisponibles
 
 def resetArchivoFlashcardsSinAprobar():
     archivo="ETAPA2/Archivos/flashcardsSinAprobar.csv"
@@ -275,3 +275,53 @@ def masInfo():
     print("      Se le permite al usuario enviar nuevas flashcards para su revisión.")
 
     print("\n" + "=" * 50 + "\n")
+
+def menuFlashcards(usuarioActual):
+    opcionDelMenuFlashcards = ""
+    while True:
+        try:
+            print("=" * 35)
+            print("      🎯 MENÚ DE FLASHCARDS 🎯")
+            print("=" * 35)
+            print("│ 1. Elegir Materia para continuar     │")
+            print("│ 2. Más Información                   │")
+            print("│ 0. Salir                             │")
+            print("-" * 35)
+            opcion=int(input(f"{usuarioActual["usuario"]}: "))
+            if estaDentroDelRango(0,2,opcion)==False:
+                raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
+            if opcion==1:
+                print(f"A continuacion, por favor elija para que materia para {opcionDelMenuFlashcards.lower()}:")
+                anioElegido = eleccionDeMateriaAnio(usuarioActual["usuario"])
+                cuatrimestreElegido = eleccionDeMateriaCuatrimestre(usuarioActual["usuario"])
+                materiasDisponibles = mostrarMateriasDisponibles(anioElegido,cuatrimestreElegido,usuarioActual,mostrarTodas=True)
+                print(f"Ingrese el numero de la materia a la que corresponde la flashcard (1 a  {len(materiasDisponibles)}):")
+                Materia = int(input(f"{usuarioActual["usuario"]}: "))
+                while estaDentroDelRango(1, len(materiasDisponibles), Materia)==False:
+                    print(f"Numero inválido. Por favor, ingrese un numero entre 1 y {len(materiasDisponibles)}).")
+                    print(f"Ingrese el numero de la materia a la que corresponde la flashcard (1 a {len(materiasDisponibles)}):")
+                    Materia = int(input(f"{usuarioActual["usuario"]}: "))
+                idMateria=materiasDisponibles[Materia-1]
+                print("=" * 35)
+                print("      🎯 MENÚ DE FLASHCARDS 🎯")
+                print("=" * 35)
+                print("│ 1. Estudiar Flashcards               │")
+                print("│ 2. Proponer Flashcards               │")
+                print("│ 0. Salir                             │")
+                print("-" * 35)
+                opcion=int(input(f"{usuarioActual["usuario"]}: "))
+                if estaDentroDelRango(1,3,opcion)==False:
+                    raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
+                if opcion==1:
+                    estudiarFlashcard(idMateria,usuarioActual["usuario"])
+                elif opcion==2:
+                    guardarFlashcard(ProponerFlashcard(usuarioActual["usuario"],idMateria),usuarioActual["usuario"])
+                    print(">>Flashcard propuesta exitosamente<<")
+                else:
+                    break
+            elif opcion==2:
+                masInfo()
+            else:
+                break
+        except ValueError:
+            print("El valor ingresado no es correcto,intente nuevamente")
