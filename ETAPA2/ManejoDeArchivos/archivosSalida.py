@@ -37,6 +37,8 @@ def menuExportacion(user):
 
 def generarArchivosSalida(data):
     try:
+        print("Generando archivo de salida...")
+        print(data)
         path = "ETAPA2/ArchivosSalida/" + data[0] + ".csv"
         with open( path, 'w') as archivo:
             for datos in data[1]:
@@ -121,18 +123,17 @@ def calcularPorcentaje(datos):
 import json
 
 def rankingMateriaFlashcards():
-    datos = []
+    datos1 = []
     try:
         with open("ETAPA2/Archivos/materias.json", 'r', encoding='utf-8') as archivo:
             for linea in archivo:
-                materia = json.loads(linea)
+                materia = json.loads(linea.strip())
                 nombre = materia["nombre"]
                 cantFlashcards = len(materia["flashcards"])
-                print(nombre, cantFlashcards)
-            
-        
-        return 
-            
+                datos1.append((nombre, cantFlashcards))
+            print(datos1)
+        return ("rankingMateriasFlashcards", datos1)
+
     except Exception as e:
         print(f"Error: {e}")
         return None
