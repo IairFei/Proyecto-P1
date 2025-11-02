@@ -275,9 +275,6 @@ def verNotas(usuarioActual, materia):
             print("No hay materias disponibles para ese año y cuatrimestre.")
             continue
         print("Seleccione el número de la materia para ver sus notas:")
-        for i in range(len(indices)):
-            materia_info = buscarMateriaPorIndice(indices[i])
-            print(f"{i+1}- {materia_info['nombre']}")
         seleccion = validarEntero(1,len(indices))
         nueva_materia = buscarMateriaPorIndice(indices[seleccion - 1])
         verNotas(usuarioActual, nueva_materia)  # recursividad
