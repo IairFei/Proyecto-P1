@@ -24,13 +24,16 @@ def verCalendario(usuarioActual):
             nombre_materia = "Libre"
         else:
             nombre_materia = None
-            with open('ETAPA2/Archivos/materias.json', 'r', encoding='utf-8') as archivo_materias:
-                for linea in archivo_materias:
-                    datos_materia = json.loads(linea)
-                    if datos_materia['id'] == materia_id:
-                        nombre_materia = datos_materia['nombre']
-                        break
-            if nombre_materia is None:
+            try:
+                with open('ETAPA2/Archivos/materias.json', 'r', encoding='utf-8') as archivo_materias:
+                    for linea in archivo_materias:
+                        datos_materia = json.loads(linea)
+                        if datos_materia['id'] == materia_id:
+                            nombre_materia = datos_materia['nombre']
+                            break
+                if nombre_materia is None:
+                    nombre_materia = f"ID {materia_id} (no encontrada)"
+            except (OSError, IOError):
                 nombre_materia = f"ID {materia_id} (no encontrada)"
         print(f"{dia:<12} {nombre_materia:<35}")
     print("-" * 50)
@@ -63,7 +66,7 @@ def inscribirseAMateria(materiaSeleccionada, usuarioActual):
         guardarUsuario(usuarioActual)
         guardarMateria(materia)
         return
-    except Exception as e:
+    except (OSError, IOError, ValueError) as e:
         print(f"Error al inscribirse en la materia: {e}")
 
 def darDeBajaMateria(usuarioActual, diaIngresado):
@@ -77,5 +80,5 @@ def darDeBajaMateria(usuarioActual, diaIngresado):
         materia['inscriptos'] -= 1
         guardarMateria(materia)
         guardarUsuario(usuarioActual)
-    except Exception as e:
+    except IndexError as e:
         print(f"Error al dar de baja la materia: {e}")
