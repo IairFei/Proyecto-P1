@@ -23,6 +23,7 @@ def mostrarRespuestaFlashcard(respuesta):
 
 def contarFlashcards(archivo):
     arch=open(archivo,mode="rt")
+    next(arch)
     count=0
     for lines in arch:
         count+=1
