@@ -41,7 +41,7 @@ def menuInicial(usuario):
             materiaElegida = validarEntero(1,len(materiasDisponibles))
             log("menuInicial", "INFO", f"Usuario {usuario} eligió la materia número {materiaElegida} para inscribirse.")
             inscribirseAMateria(materiasDisponibles[materiaElegida-1], usuarioActual)
-    
+            verCalendario(usuarioActual)
     #DAR DE BAJA USUARIO (ADMIN)
         elif opcionElegida == 1 and tipoUsuarioEncontrado == "Administrator":
             print("Ingrese el nombre de usuario que desea dar de baja: ")
