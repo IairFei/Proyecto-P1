@@ -35,8 +35,10 @@ En esta primera etapa, el proyecto se centrará en implementar la lógica princi
 ## Alcance – 2da Etapa
 En esta segunda etapa, del proyecto se agregaron varias funciones nuevas, entre ellas:
 * Sistema de incio sesion y registro.
+* Refactor del proyecto para tener persitencia de datos en archivos.
 * Roles con diferente funcionalidades.
 * Creacion de los reportes.
+* Sistema de estudio con flashcards.
 * Crecion de un sistema de logs que reporta lo que va sucediendo y los errores.
 
 ---

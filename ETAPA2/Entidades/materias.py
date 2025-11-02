@@ -119,9 +119,13 @@ def tieneCorrelativasAprobadas(usuarioActual, idMateria):
 
         for correlativa in correlativas:
             nota_info = notas.get(str(correlativa), {})
-            if nota_info['aprobada'] == False:
+            if nota_info == {}:
                 print(f"Correlativa de {materia['nombre']} no aprobada: {buscarMateriaPorIndice(correlativa)['nombre']}")
                 contNoAprobadas += 1
+            else:
+                if not nota_info.get('aprobada', False):
+                    print(f"Correlativa de {materia['nombre']} no aprobada: {buscarMateriaPorIndice(correlativa)['nombre']}")
+                    contNoAprobadas += 1
 
         if contNoAprobadas > 0:
             aproboCorrelativas = False
