@@ -1,8 +1,8 @@
 from ManejoDeDatos.validacionDeDatos import eleccionDeMateriaAnio, eleccionDeMateriaCuatrimestre, validarTexto, validarEntero
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
-from Entidades.materias import verNotas, buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
+from Entidades.materias import crearArchivoMaterias, verNotas, buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
 from Entidades.flashcards import aprobarFlashcards, menuFlashcards
-from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, menuAjustes, darDeBajaUsuario
+from ManejoDeDatos.Usuarios.usuarios import crearUsuariosCsv, crearUsuariosJson, login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, menuAjustes, darDeBajaUsuario
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
 from ManejoDeArchivos.archivosSalida import generarReporte
 from Logs.logs import log
@@ -227,6 +227,9 @@ def menuLogin(opcionElegida):
     return inicioDeSesionExitoso, usuario
 
 def main():
+    crearArchivoMaterias()
+    crearUsuariosCsv()
+    crearUsuariosJson()
     try:
         menuLoginPrincipal()
     except (KeyboardInterrupt, SystemExit):
