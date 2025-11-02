@@ -180,7 +180,7 @@ def menuInicial(usuario):
         print("Gracias por usar el sistema. ¡Hasta luego!")
 
 def menuLoginPrincipal():
-    #inicializarUsuariosFake()
+    inicializarUsuariosFake()
     print("Bienvenido al sistema de gestión académica.\nPor favor, elija una de las siguientes opciones: \n1-Iniciar sesión\n2-Crear usuario\n3-Salir")
     opcionElegida = validarEntero(1,3)
     log("main", "INFO", f"Opción elegida en el menú de login: {opcionElegida}")
@@ -230,6 +230,7 @@ def menuLogin(opcionElegida):
     return inicioDeSesionExitoso, usuario
 
 def main():
+    log("main", "INFO", "Inicio del programa.")
     crearArchivoMaterias()
     crearUsuariosCsv()
     crearUsuariosJson()
