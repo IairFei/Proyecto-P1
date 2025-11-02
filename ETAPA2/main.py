@@ -151,8 +151,9 @@ def menuInicial(usuario):
             materiaElegida = validarEntero(0,len(materiasDisponibles))
             if materiaElegida==0:
                 menuPrincipal(usuario)
-            materia= buscarMateriaPorIndice(materiasDisponibles[materiaElegida-1])
-            verNotas(usuarioActual, materia)
+            else:
+                materia= buscarMateriaPorIndice(materiasDisponibles[materiaElegida-1])
+                verNotas(usuarioActual, materia)
 
     #VER PROMEDIO CURSADA
         elif opcionElegida == 7 and tipoUsuarioEncontrado == "User":

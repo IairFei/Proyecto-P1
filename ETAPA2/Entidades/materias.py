@@ -1,8 +1,7 @@
-from ManejoDeDatos.validacionDeDatos import estaDentroDelRango,eleccionDeMateriaCuatrimestre, eleccionDeMateriaAnio
+from ManejoDeDatos.validacionDeDatos import eleccionDeMateriaCuatrimestre, eleccionDeMateriaAnio, validarEntero, validarTexto
 from Logs.logs import log
 from ManejoDeDatos.Usuarios.usuarios import guardarUsuario
 import json
-
 
 def mostrarMateriasDisponibles(anio, cuatrimestre, usuario, mostrarTodas=False):
     try:
@@ -37,9 +36,9 @@ def mostrarMateriasDisponibles(anio, cuatrimestre, usuario, mostrarTodas=False):
                         indices.append(indice_materia)
                         contMateriasDisponibles += 1
             return indices
-    except Exception as e:
-        print(e)
-        return []
+    except (IOError, OSError):
+        print("Error al abrir el archivo.")
+        return
 
 def buscarNombreMateriaPorIndice(indice, materias):
     materia = materias[indice].split(".",3)
@@ -52,8 +51,8 @@ def obtenerCantidadDeMaterias():
         with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
             for linea in archivoMaterias:
                 cantidad += 1
-    except Exception as e:
-        print(f"Error al obtener la cantidad de materias: {e}")
+    except (IOError, OSError):
+        print("Error al abrir el archivo.")
     return cantidad
 
 def obtenerCantidadDeInscriptosEnMaterias():
@@ -66,8 +65,8 @@ def obtenerCantidadDeInscriptosEnMaterias():
                     cantidadInscriptosPorMateria.append((materia.get('nombre'), materia.get('inscriptos', 0)))
                 except Exception:
                     continue
-    except IOError as e:
-        print(f"Error al obtener la cantidad de inscriptos en materias: {e}")
+    except (IOError, OSError):
+        print(f"Error al obtener la cantidad de inscriptos en materias.")
     return cantidadInscriptosPorMateria
 
 def buscarMateriaPorIndice(indice):
@@ -80,8 +79,8 @@ def buscarMateriaPorIndice(indice):
                         return materia
                 except Exception:
                     continue
-    except (IndexError, FileNotFoundError) as e:
-        print(e)
+    except (IndexError, FileNotFoundError):
+        print("Error al abrir el archivo.")
     return None
 
 def buscarMateriaPorNombre(nombre, materias):
@@ -127,8 +126,8 @@ def tieneCorrelativasAprobadas(usuarioActual, idMateria):
         if contNoAprobadas > 0:
             aproboCorrelativas = False
         return aproboCorrelativas
-    except Exception as e:
-        print(f"Error al verificar correlativas: {e}")
+    except (IOError, OSError):
+        print(f"Error al verificar correlativas.")
         aproboCorrelativas = False
 
 def tieneRecursadas(usuarioActual):
@@ -147,7 +146,6 @@ def tieneCalendarioVacio(usuarioCalendario):
             vacio = False
     return vacio
 
-
 def estadoPackDe5Materias(usuarioActual):
     vacio=tieneCalendarioVacio(usuarioActual['calendario'])
     recursadas=tieneRecursadas(usuarioActual)
@@ -161,85 +159,75 @@ def darDeBajaNotas(indicemateria, usuario):
 
 def cargarNotas(usuarioActual,materia,diaIngresado):
     usuario = usuarioActual['usuario']
-    try:
+    try: 
         print(f"Cargando notas para la materia: {materia["nombre"]}.")
         log("cargarNotas", "INFO", f"Usuario {usuario} está cargando notas para la materia: {materia["nombre"]}.")
         while True:
-            try:
-                print("¿Que nota desea cargar?\n1- Primer parcial\n2- Segundo parcial\n3- Final regular\n0- Volver al menu principal")
-                opcion = int(input("Usuario: "))
-                log("cargarNotas", "INFO", f"Usuario {usuario} seleccionó la opción {opcion} para cargar nota.")
-                assert estaDentroDelRango(0,3,opcion)
-                if opcion == 0:
-                    log("cargarNotas", "INFO", f"Usuario decidió volver al menú principal")
+            print("¿Que nota desea cargar?\n1- Primer parcial\n2- Segundo parcial\n3- Final regular\n0- Volver al menu principal")
+            opcion = validarEntero(0,3)
+            log("cargarNotas", "INFO", f"Usuario {usuario} seleccionó la opción {opcion} para cargar nota.")
+            
+            if opcion == 0:
+                log("cargarNotas", "INFO", f"Usuario decidió volver al menú principal")
+                guardarUsuario(usuarioActual)
+                break
+            
+            elif opcion == 1:
+                print("Ingrese la nota del primer parcial (0-10):")
+                notaP1 = validarEntero(0,10)
+                usuarioActual["notas"][str(materia["id"])]["parcial1"] = notaP1
+                guardarUsuario(usuarioActual)
+                log("cargarNotas", "INFO", f"Usuario {usuario} cargó la nota {notaP1} para el primer parcial.")
+    
+            elif opcion == 2:
+                if usuarioActual["notas"][str(materia["id"])]["parcial1"] == None:
+                    print("No se puede cargar nota de segundo parcial sin nota de primer parcial.")
+                    log("cargarNotas", "INFO", f"Usuario {usuario} intentó cargar nota de segundo parcial sin tener nota de primer parcial.")
+                else:
+                    print("Ingrese la nota del segundo parcial (0-10):")
+                    notaP2 = validarEntero(0,10)
+                    usuarioActual["notas"][str(materia["id"])]["parcial2"] = notaP2
+                    log("cargarNotas", "INFO", f"Usuario {usuario} cargó la nota {notaP2} para el segundo parcial.")
+                    if usuarioActual["notas"][str(materia["id"])]["parcial1"] < 4 or usuarioActual["notas"][str(materia["id"])]["parcial2"] < 4:
+                        usuarioActual["notas"][str(materia["id"])]["recursa"] = True
+                        usuarioActual["notas"][str(materia["id"])]["parcial1"] = None
+                        usuarioActual["notas"][str(materia["id"])]["parcial2"] = None
+                        usuarioActual["notas"][str(materia["id"])]["final"] = None
+                        print("Materia asignada a recursar y eliminada del calendario.")
+                        eliminarMateriaDelCalendario(usuarioActual,diaIngresado)
+                        break
+                    guardarUsuario(usuarioActual)
+                    
+            else:
+                if usuarioActual["notas"][str(materia["id"])]["parcial1"] == None or usuarioActual["notas"][str(materia["id"])]["parcial2"] == None:
+                    print("No se pueden cargar notas de final sin notas parciales.")
+                else:
+                    print("Ingrese la nota final (0-10):")
+                    notaFinalInput = validarEntero(0,10)
+                    usuarioActual["notas"][str(materia["id"])]["final"] = notaFinalInput
+                    log("cargarNotas", "INFO", f"Usuario {usuario} cargó la nota {notaFinalInput} para el final.")   
+                    usuarioActual["notas"][str(materia["id"])]["final"] = notaFinalInput
+
+                    if usuarioActual["notas"][str(materia["id"])]["final"] >= 4:
+                        usuarioActual["notas"][str(materia["id"])]["nota_final"] = calcularNotaFinal(usuarioActual,materia)
+                        usuarioActual["notas"][str(materia["id"])]["recursa"] = False
+                        usuarioActual["notas"][str(materia["id"])]["aprobada"] = True
+                        log("cargarNotas", "INFO", f"Usuario {usuario} aprobó la materia {materia["id"]} con promedio final {usuarioActual["notas"][str(materia["id"])]["nota_final"]}.")
+                        print("Materia aprobada.")
+                        eliminarMateriaDelCalendario(usuarioActual,diaIngresado)
+                    else:
+                        usuarioActual["notas"][str(materia["id"])]["recursa"] = True
+                        usuarioActual["notas"][str(materia["id"])]["parcial1"] = None
+                        usuarioActual["notas"][str(materia["id"])]["parcial2"] = None
+                        usuarioActual["notas"][str(materia["id"])]["final"] = None
+                        print("Materia asignada a recursar y eliminada del calendario.")
+                        log("cargarNotas", "INFO", f"Usuario {usuario} no aprobó la materia {materia["id"]} con nota final {usuarioActual["notas"][str(materia["id"])]["final"]}, deberá recursar.")
+                        eliminarMateriaDelCalendario(usuarioActual,diaIngresado)
                     guardarUsuario(usuarioActual)
                     break
-                
-                elif opcion == 1:
-                    print("Ingrese la nota del primer parcial (0-10):")
-                    notaP1 = int(input("Usuario: "))
-                    log("cargarNotas", "INFO", f"Usuario {usuario} ingresó la nota {notaP1} para el primer parcial.")
-                    assert estaDentroDelRango(0,10,notaP1)
-                    usuarioActual["notas"][str(materia["id"])]["parcial1"] = notaP1
-                    guardarUsuario(usuarioActual)
-                    log("cargarNotas", "INFO", f"Usuario {usuario} cargó la nota {notaP1} para el primer parcial.")
-        
-                elif opcion == 2:
-                    if usuarioActual["notas"][str(materia["id"])]["parcial1"] == None:
-                        print("No se puede cargar nota de segundo parcial sin nota de primer parcial.")
-                        log("cargarNotas", "INFO", f"Usuario {usuario} intentó cargar nota de segundo parcial sin tener nota de primer parcial.")
-                    else:
-                        print("Ingrese la nota del segundo parcial (0-10):")
-                        notaP2 = int(input("Usuario: "))
-                        log("cargarNotas", "INFO", f"Usuario {usuario} ingresó la nota {notaP2} para el segundo parcial.")
-                        assert estaDentroDelRango(0,10,notaP2)
-                        usuarioActual["notas"][str(materia["id"])]["parcial2"] = notaP2
-                        log("cargarNotas", "INFO", f"Usuario {usuario} cargó la nota {notaP2} para el segundo parcial.")
-                        if usuarioActual["notas"][str(materia["id"])]["parcial1"] < 4 or usuarioActual["notas"][str(materia["id"])]["parcial2"] < 4:
-                            usuarioActual["notas"][str(materia["id"])]["recursa"] = True
-                            usuarioActual["notas"][str(materia["id"])]["parcial1"] = None
-                            usuarioActual["notas"][str(materia["id"])]["parcial2"] = None
-                            usuarioActual["notas"][str(materia["id"])]["final"] = None
-                            print("Materia asignada a recursar y eliminada del calendario.")
-                            eliminarMateriaDelCalendario(usuarioActual,diaIngresado)
-                            break
-                        guardarUsuario(usuarioActual)
-                        
-                else:
-                    if usuarioActual["notas"][str(materia["id"])]["parcial1"] == None or usuarioActual["notas"][str(materia["id"])]["parcial2"] == None:
-                        print("No se pueden cargar notas de final sin notas parciales.")
-                    else:
-                        print("Ingrese la nota final (0-10):")
-                        notaFinalInput = int(input("Usuario: "))
-                        log("cargarNotas", "INFO", f"Usuario {usuario} ingresó la nota {notaFinalInput} para el final.")
-                        assert estaDentroDelRango(0,10,notaFinalInput)
-                        usuarioActual["notas"][str(materia["id"])]["final"] = notaFinalInput
-                        log("cargarNotas", "INFO", f"Usuario {usuario} cargó la nota {notaFinalInput} para el final.")   
-                        usuarioActual["notas"][str(materia["id"])]["final"] = notaFinalInput
-
-                        if usuarioActual["notas"][str(materia["id"])]["final"] >= 4:
-                            usuarioActual["notas"][str(materia["id"])]["nota_final"] = calcularNotaFinal(usuarioActual,materia)
-                            usuarioActual["notas"][str(materia["id"])]["recursa"] = False
-                            usuarioActual["notas"][str(materia["id"])]["aprobada"] = True
-                            log("cargarNotas", "INFO", f"Usuario {usuario} aprobó la materia {materia["id"]} con promedio final {usuarioActual["notas"][str(materia["id"])]["nota_final"]}.")
-                            print("Materia aprobada.")
-                            eliminarMateriaDelCalendario(usuarioActual,diaIngresado)
-                        else:
-                            usuarioActual["notas"][str(materia["id"])]["recursa"] = True
-                            usuarioActual["notas"][str(materia["id"])]["parcial1"] = None
-                            usuarioActual["notas"][str(materia["id"])]["parcial2"] = None
-                            usuarioActual["notas"][str(materia["id"])]["final"] = None
-                            print("Materia asignada a recursar y eliminada del calendario.")
-                            log("cargarNotas", "INFO", f"Usuario {usuario} no aprobó la materia {materia["id"]} con nota final {usuarioActual["notas"][str(materia["id"])]["final"]}, deberá recursar.")
-                            eliminarMateriaDelCalendario(usuarioActual,diaIngresado)
-                        guardarUsuario(usuarioActual)
-                        break
-                
-            except (AssertionError,ValueError):
-                print("Opcion inválida. Por favor, ingrese una opcion válida.\n")            
+            print("Opcion inválida. Por favor, ingrese una opcion válida.\n")            
     except (IOError,OSError):
         print("Error al abrir el archivo de notas.")
-
 
 def calcularNotaFinal(usuarioActual,materia):
     p1 = usuarioActual["notas"][str(materia["id"])]["parcial1"]
@@ -273,16 +261,12 @@ def verNotas(usuarioActual, materia):
             print(f"  Nota final: {nota_materia.get('nota_final', 'Sin cargar')}")
             print(f"  Aprobada: {'Sí' if nota_materia.get('aprobada', False) else 'No'}")
             print(f"  Recursa: {'Sí' if nota_materia.get('recursa', False) else 'No'}")
-
-        opcion = input("¿Desea ver las notas de otra materia? (s/n): ").strip().lower()
-        if opcion != 's':
+        print("¿Desea ver las notas de otra materia? (s/n): ")
+        opcion = validarTexto(("s","si","n","no"))
+        if opcion != 's' and opcion != 'si':
             break
-        try:
-            anio = eleccionDeMateriaAnio(usuarioActual["usuario"])
-            cuatrimestre = eleccionDeMateriaCuatrimestre(usuarioActual["usuario"])
-        except ValueError:
-            print("Año o cuatrimestre inválido.")
-            continue
+        anio = eleccionDeMateriaAnio(usuarioActual["usuario"])
+        cuatrimestre = eleccionDeMateriaCuatrimestre(usuarioActual["usuario"])
         indices = mostrarMateriasDisponibles(anio, cuatrimestre, usuarioActual, mostrarTodas=True)
         if not indices:
             print("No hay materias disponibles para ese año y cuatrimestre.")
@@ -291,18 +275,10 @@ def verNotas(usuarioActual, materia):
         for i in range(len(indices)):
             materia_info = buscarMateriaPorIndice(indices[i])
             print(f"{i+1}- {materia_info['nombre']}")
-        try:
-            seleccion=int(input("Número de materia: "))
-            if estaDentroDelRango(1, len(indices), seleccion):
-                nueva_materia = buscarMateriaPorIndice(indices[seleccion - 1])
-                verNotas(usuarioActual, nueva_materia)  # recursividad
-                break
-            else:
-                print("Selección inválida.")
-                continue
-        except (ValueError, TypeError):
-            print("Selección inválida.")
-            continue
+        seleccion = validarEntero(1,len(indices))
+        nueva_materia = buscarMateriaPorIndice(indices[seleccion - 1])
+        verNotas(usuarioActual, nueva_materia)  # recursividad
+        break
     return
 
 #SACA PROMEDIOS
@@ -334,8 +310,8 @@ def obtenerMateriasPackDe5(usuarioActual):
                 except Exception:
                     continue
             return materiasPackDe5
-    except Exception as e:
-        print(f"Error al obtener materias pack de 5: {e}")
+    except (IOError, OSError):
+        print(f"Error al obtener materias pack de 5.")
     return materiasPackDe5
 
 def guardarMateria(materia_actualizada):
@@ -355,5 +331,5 @@ def guardarMateria(materia_actualizada):
         with open("ETAPA2/Archivos/materias.json", "w", encoding="utf-8") as archivoMaterias:
             for materia in materias:
                 archivoMaterias.write(json.dumps(materia, ensure_ascii=False) + "\n")
-    except Exception as e:
-        print(f"Error al guardar la materia: {e}")
+    except (OSError, IOError):
+        print(f"Error al guardar la materia.")
