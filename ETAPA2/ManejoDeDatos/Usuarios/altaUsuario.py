@@ -4,40 +4,30 @@ from ManejoDeDatos.Usuarios.usuarios import validarNombreUsuarioEnSistema
 from faker import Faker
 from Logs.logs import log
 #fake = Faker('es_AR')
-
 #Alta en archivo JSON
 def nombreUsuarioRepetido(nombreAlumno, apellidoAlumno):
     existeUsuario = "a"
-    try:
-        contador = 1
-        while existeUsuario is not None and len(nombreAlumno) > contador:
-            usuario = nombreAlumno[0].lower() + nombreAlumno[contador].lower() + apellidoAlumno.lower()
-            contador += 1
+    contador = 1
+    while existeUsuario is not None and len(nombreAlumno) > contador:
+        usuario = nombreAlumno[0].lower() + nombreAlumno[contador].lower() + apellidoAlumno.lower()
+        contador += 1
+        existeUsuario = validarNombreUsuarioEnSistema(usuario)
+    if len(nombreAlumno) == contador and existeUsuario is not None:
+        sufijo = 1
+        while existeUsuario is not None:
+            usuario = nombreAlumno.lower() + apellidoAlumno.lower() + str(sufijo)
+            sufijo += 1
             existeUsuario = validarNombreUsuarioEnSistema(usuario)
-        if len(nombreAlumno) == contador and existeUsuario is not None:
-            sufijo = 1
-            while existeUsuario is not None:
-                usuario = nombreAlumno.lower() + apellidoAlumno.lower() + str(sufijo)
-                sufijo += 1
-                existeUsuario = validarNombreUsuarioEnSistema(usuario)
-        return usuario
-    except Exception as e:
-        print(f"Error: {e}")
-        
+    return usuario
+
 def altaEnSistema(usuario, nombreAlumno, apellidoAlumno):
     try:
         # Leer el archivo línea por línea y cargar los datos
         lista_usuarios = []
         with open('ETAPA2/Archivos/usuarios.json', 'r', encoding='utf-8') as users:
-            try:
-                for linea in users:
-                    if linea.strip():
-                        lista_usuarios.append(json.loads(linea))
-            except Exception as e:
-                print(f"Error al leer el archivo JSON: {e}")
-                return None
-                
-
+            for linea in users:
+                if linea.strip():
+                    lista_usuarios.append(json.loads(linea))
         cantidad_usuarios = len(lista_usuarios) + 1
         usuario_dict = {
             "id": cantidad_usuarios,
@@ -55,15 +45,12 @@ def altaEnSistema(usuario, nombreAlumno, apellidoAlumno):
             }
         }
         lista_usuarios.append(usuario_dict)
-
         # Convertir cada usuario a una línea JSON y escribir todo de nuevo
         with open('ETAPA2/Archivos/usuarios.json', 'w', encoding='utf-8') as users:
             users.writelines([json.dumps(u, ensure_ascii=False) + '\n' for u in lista_usuarios])
-
         return True
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
 
 def altaUsuario():
     try:
@@ -109,11 +96,8 @@ def altaUsuario():
                 print("No se pudo dar de alta al usuario en el sistema.")
                 usuario = None
             return usuario
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
-
-
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
 
 def inicializarUsuariosFake():
     fake = Faker()
@@ -132,6 +116,5 @@ def inicializarUsuariosFake():
             dadoDeAlta = altaEnSistema(usuario,nombreAlumno,apellidoAlumno)
             if dadoDeAlta == False or dadoDeAlta is None:
                 print(f"No se pudo dar de alta al usuario {usuario} en el sistema.")
-        except Exception as e:
-            print(f"Error: {e}")
-    
+        except (IOError, OSError):
+            print(f"Error al abrir el archivo.")

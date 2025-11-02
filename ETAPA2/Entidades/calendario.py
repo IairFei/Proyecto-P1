@@ -1,4 +1,3 @@
-
 import random
 from Entidades.materias import buscarMateriaPorIndice, guardarMateria, tieneCorrelativasAprobadas, darDeBajaNotas
 from Logs.logs import log
@@ -14,10 +13,8 @@ def verCalendario(usuarioActual):
     print("=" * 50)
     print("📚 CALENDARIO ACADÉMICO 📚")
     print("=" * 50)
-    
     print(f"{'DÍA':<12} {'MATERIA':<35}")
     print("-" * 50)
-
     dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes"]
     calendario = usuarioActual["calendario"]
     for i in range(5):
@@ -36,7 +33,6 @@ def verCalendario(usuarioActual):
             if nombre_materia is None:
                 nombre_materia = f"ID {materia_id} (no encontrada)"
         print(f"{dia:<12} {nombre_materia:<35}")
-
     print("-" * 50)
     print("✨ Fin del calendario ✨")
     print("=" * 50)
