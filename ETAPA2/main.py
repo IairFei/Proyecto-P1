@@ -1,8 +1,8 @@
 from ManejoDeDatos.validacionDeDatos import eleccionDeMateriaAnio, eleccionDeMateriaCuatrimestre, validarTexto, validarEntero
 from Entidades.calendario import verCalendario, inscribirseAMateria, darDeBajaMateria
-from Entidades.materias import verNotas, buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
+from Entidades.materias import crearArchivoMaterias, verNotas, buscarMateriaPorIndice, mostrarMateriasDisponibles, promedioCursada, obtenerMateriasPackDe5, estadoPackDe5Materias, cargarNotas
 from Entidades.flashcards import aprobarFlashcards, menuFlashcards
-from ManejoDeDatos.Usuarios.usuarios import login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, menuAjustes, darDeBajaUsuario
+from ManejoDeDatos.Usuarios.usuarios import crearUsuariosCsv, crearUsuariosJson, login, tipoUsuario, cambiarRol, validarNombreUsuarioEnSistema, getUsuarioPorNombreUsuario, menuAjustes, darDeBajaUsuario
 from ManejoDeDatos.Usuarios.altaUsuario import altaUsuario, inicializarUsuariosFake
 from ManejoDeArchivos.archivosSalida import generarReporte
 from Logs.logs import log
@@ -41,7 +41,7 @@ def menuInicial(usuario):
             materiaElegida = validarEntero(1,len(materiasDisponibles))
             log("menuInicial", "INFO", f"Usuario {usuario} eligió la materia número {materiaElegida} para inscribirse.")
             inscribirseAMateria(materiasDisponibles[materiaElegida-1], usuarioActual)
-    
+            verCalendario(usuarioActual)
     #DAR DE BAJA USUARIO (ADMIN)
         elif opcionElegida == 1 and tipoUsuarioEncontrado == "Administrator":
             print("Ingrese el nombre de usuario que desea dar de baja: ")
@@ -191,22 +191,24 @@ def menuLoginPrincipal():
     log("main", "INFO", f"Usuario {usuario} ha iniciado sesión correctamente.")
     menuInicial(usuario)
 
-def inicioDeSesion(usuario=None):
-    inicioDeSesionExitoso = False
+def inicioDeSesion(usuario=None, intentosRestantes=3):
     if usuario is None:
         inicioDeSesionExitoso, usuario = login()
-        intentosRestantes = 3
-        while inicioDeSesionExitoso == False and intentosRestantes > 0:
+    else:
+        inicioDeSesionExitoso = False
+
+    if inicioDeSesionExitoso:
+        return inicioDeSesionExitoso, usuario
+    else:
+        if intentosRestantes > 1:
             log("inicioDeSesion", "WARNING", f"Intento fallido de inicio de sesión para el usuario {usuario}. Intentos restantes: {intentosRestantes-1}.")
             print("Acceso denegado. Inténtelo de nuevo.")
-            intentosRestantes -= 1
-            print(f"Le quedan {intentosRestantes} intentos.")
-            if intentosRestantes == 0:
-                print("Ha agotado todos los intentos. Saliendo del programa.")
-                log("inicioDeSesion", "WARNING", f"Usuario {usuario} ha agotado todos los intentos de inicio de sesión.")
-                raise Exception("Acceso denegado.")
-            inicioDeSesionExitoso, usuario = login()               
-    return inicioDeSesionExitoso, usuario
+            print(f"Le quedan {intentosRestantes-1} intentos.")
+            return inicioDeSesion(None, intentosRestantes-1)
+        else:
+            print("Ha agotado todos los intentos. Saliendo del programa.")
+            log("inicioDeSesion", "WARNING", f"Usuario {usuario} ha agotado todos los intentos de inicio de sesión.")
+            raise SystemExit("Fin del programa por múltiples intentos fallidos de inicio de sesión.")
 
 def menuLogin(opcionElegida):
     inicioDeSesionExitoso = False
@@ -222,13 +224,16 @@ def menuLogin(opcionElegida):
             main()
     else:
         print("Saliendo del programa. ¡Hasta luego!")
-        exit()
+        raise SystemExit("Fin del programa por elección del usuario.")
     return inicioDeSesionExitoso, usuario
 
 def main():
+    crearArchivoMaterias()
+    crearUsuariosCsv()
+    crearUsuariosJson()
     try:
         menuLoginPrincipal()
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, SystemExit):
         print("\nProceso finalizado por el usuario.")
 
 if __name__ == "__main__":

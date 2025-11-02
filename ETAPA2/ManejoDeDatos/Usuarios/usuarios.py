@@ -325,3 +325,22 @@ def darDeBajaUsuario(usuario):
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
         return False
+    except Exception as e:
+        print(f"Error: {e}")
+        return False
+    
+def crearUsuariosCsv():
+    try:
+        with open('ETAPA2/Archivos/usuarios.csv', 'r') as archivo:
+            pass
+    except FileNotFoundError:
+        with open('ETAPA2/Archivos/usuarios.csv', 'w', encoding='utf-8') as archivo:
+            archivo.write("Usuario,Contraseña,Role\n")
+    
+def crearUsuariosJson():
+    try:
+        with open('ETAPA2/Archivos/usuarios.json', 'r', encoding='utf-8') as archivo:
+            pass
+    except FileNotFoundError:
+        with open('ETAPA2/Archivos/usuarios.json', 'w', encoding='utf-8') as archivo:
+            pass
