@@ -130,10 +130,12 @@ def menuInicial(usuario):
 
     #GENERAR REPORTE
         elif opcionElegida == 4 and tipoUsuarioEncontrado == "Administrator":                
-                print("Seleccione el reporte que desea generar:\n1- Reporte de materias\n2- Reporte de pack5materias\n3- Report de mejores flashcards\n4- Report de materias con mas flashcards\n5- Reporte de usuarios")
-                opcionElegida = validarEntero(1,5)
+                print("Seleccione el reporte que desea generar:\n1- Reporte de materias\n2- Reporte de pack5materias\n3- Report de mejores flashcards\n4- Report de materias con mas flashcards\n5- Reporte de usuarios\n0- Volver al menu")
+                opcionElegida = validarEntero(0,5)
                 seGeneroReporte = generarReporte(opcionElegida)
-                if seGeneroReporte:
+                if seGeneroReporte== "salir":
+                    print("Volviendo a Menu.")
+                elif seGeneroReporte :
                     print("Reporte generado exitosamente.")
                 else:
                     print("Opción de reporte inválida.")
