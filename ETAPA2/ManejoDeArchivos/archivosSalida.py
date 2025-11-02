@@ -4,7 +4,8 @@ from Logs.logs import log
 
 def generarReporte(opcion):
     archivos =["","porcentajeXMateria","cantEstudiantePack5","rankingMejoresFlashcards","rankingMateriaFlashcards","cantEstudiantesXmateria"]
-    datos = None 
+    datos = None
+    archivoGenerado = False
     if opcion == 1:
         datos = porcentajeXMateria()
     elif opcion == 2:
@@ -15,20 +16,17 @@ def generarReporte(opcion):
         datos = rankingMateriaFlashcards()
     elif opcion == 5:
         datos = cantEstudiantesXmateria()
-    elif opcion == 0:
-        return "salir"
     else:
         print(f"Error: Opción '{opcion}' no válida.")
-        
-        return False
     if datos is not None:
         generarArchivosSalida(datos)
         log("GenerarReporte","INFO",f"Se creo el reporte {archivos[opcion]}")
-        return True
+        archivoGenerado = True
     else:
         print("No se generaron datos para el reporte.")
         log("GenerarReporte","ERROR",f"Se produjo un error creando el reporte {archivos[opcion]}")
-        return False
+    return archivoGenerado
+        
 
 def generarArchivosSalida(data):
     try:

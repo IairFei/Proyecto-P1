@@ -166,9 +166,11 @@ def guardarUsuario(usuarioActual):
             return False
         with open(ruta, 'w', encoding='utf-8') as archivo:
             archivo.writelines(lineas_modificadas)
+        log("guardarUsuario","INFO",f"Usuario {usuarioActual['usuario']} guardado correctamente.")
         return True
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+        log("guardarUsuario","ERROR","Se produjo un error al guardar el usuario.")
 
 def getUsuarioPorNombreUsuario(nombreUsuario):
     try:
@@ -324,9 +326,6 @@ def darDeBajaUsuario(usuario):
         return True
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
-        return False
-    except Exception as e:
-        print(f"Error: {e}")
         return False
     
 def crearUsuariosCsv():

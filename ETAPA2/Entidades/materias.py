@@ -331,10 +331,10 @@ def guardarMateria(materia_actualizada):
         with open("ETAPA2/Archivos/materias.json", "w", encoding="utf-8") as archivoMaterias:
             for materia in materias:
                 archivoMaterias.write(json.dumps(materia, ensure_ascii=False) + "\n")
+        log("guardarMateria","INFO",f"Materia {materia_actualizada_id} guardada correctamente.")
     except (OSError, IOError):
+        log("guardarMateria","ERROR","Se produjo un error al guardar la materia.")
         print(f"Error al guardar la materia.")
-    except Exception as e:
-        print(f"Error al guardar la materia: {e}")
 
 
 def crearArchivoMaterias():
