@@ -29,6 +29,7 @@ def verificarSeguridadContrasena(contrasena):
     contieneNumeros = False
     contieneMinuscula = False
     contieneMayuscula = False
+    contrasenaCorrecta = True 
     caracteres = [str(caracter) for caracter in contrasena]
 
     for caracter in caracteres:
@@ -42,31 +43,31 @@ def verificarSeguridadContrasena(contrasena):
             contieneMinuscula = True
         else:
             contieneMayuscula = True
+    mensaje="La contraseña debe cumplir con los siguientes requisitos:\n"
 
     if len(contrasena) < 6:
-        mensaje = "Contraseña demasiado corta, debe contener al menos 6 caracteres."
+        mensaje += "- Debe contener al menos 6 caracteres.\n"
         contrasenaCorrecta = False
-    elif len(contrasena) > 12:
-        mensaje = "Contraseña demasiado larga, debe contener como máximo 12 caracteres."
+    if len(contrasena) > 12:
+        mensaje += "- Debe contener como máximo 12 caracteres.\n"
         contrasenaCorrecta = False
-    elif repiteCaracteres:
-        mensaje = "Contraseña poco segura, no repita caracteres tantas veces."
+    if repiteCaracteres:
+        mensaje += "- No repetir caracteres tantas veces.\n"
         contrasenaCorrecta = False
-    elif not contieneEspecial:
-        mensaje = "La contraseña debe contener caracteres especiales."
+    if not contieneEspecial:
+        mensaje += "- Debe contener caracteres especiales.\n"
         contrasenaCorrecta = False
-    elif not contieneNumeros:
-        mensaje = "La contraseña debe contener números."
+    if not contieneNumeros:
+        mensaje += "- Debe contener números.\n"
         contrasenaCorrecta = False
-    elif not contieneMinuscula:
-        mensaje = "La contraseña debe contener minúsculas."
+    if not contieneMinuscula:
+        mensaje += "- Debe contener minúsculas.\n"
         contrasenaCorrecta = False
-    elif not contieneMayuscula:
-        mensaje = "La contraseña debe contener mayúsculas."
+    if not contieneMayuscula:
+        mensaje += "- Debe contener mayúsculas.\n"
         contrasenaCorrecta = False
-    else:
+    if contrasenaCorrecta:
         mensaje = "Contraseña segura."
-        contrasenaCorrecta = True
     return (mensaje, contrasenaCorrecta)
 
 def eleccionDeMateriaAnio(usuario):
