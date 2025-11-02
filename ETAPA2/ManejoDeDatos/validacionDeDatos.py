@@ -1,19 +1,5 @@
 from Logs.logs import log
 
-def estaDentroDelRango(nMinimo, nLimite, datoAValidar):
-    try:
-        estaEnElRango = True
-        datoAValidar = int(datoAValidar)
-        if datoAValidar is None or datoAValidar == "":
-            raise ValueError("El dato a validar no puede estar vacío.")
-        #validar que sea int
-        if datoAValidar < nMinimo or datoAValidar > nLimite:
-            estaEnElRango = False
-    except ValueError as e:
-        log("estaDentroDelRango", "ERROR", f"Error al validar el rango: {e}")
-        estaEnElRango = False
-    return estaEnElRango
-
 def validarEntero(min, max):
     while True:
         try:
@@ -35,18 +21,6 @@ def validarTexto(opciones):
         except ValueError:
             print("Entrada inválida. Intente nuevamente.")
     return entrada
-
-def charValido(char):
-    try:
-        esValido = False
-        char = str(char)
-        char = char.lower().strip()
-        if char == 's' or char == 'n':
-            esValido = True
-    except ValueError as e:
-        log("charValido", "ERROR", f"Error al validar el carácter: {e}")
-        esValido = False
-    return esValido
 
 def verificarSeguridadContrasena(contrasena):
     caracteresEspeciales = ["@", "!", "?", "#", "$", "¿", "¡", "&", "%", "(", ")", "=",".",",",";",":","_","-"]
@@ -97,20 +71,12 @@ def verificarSeguridadContrasena(contrasena):
 
 def eleccionDeMateriaAnio(usuario):
     print("Ingrese el año de la materia (1-5): ")
-    anioElegido = int(input(f"{usuario}: "))
-    while estaDentroDelRango(1,5,anioElegido) == False:
-        print("Año inválido. Por favor, ingrese un año válido (1-5).")
-        print("Ingrese el año de la materia (1-5): ")
-        anioElegido = int(input(f"{usuario}: "))
+    anioElegido = validarEntero(1,5)
     log("eleccionDeMateriaAnio", "INFO", f"Usuario {usuario} eligió el año {anioElegido} para la materia.")  
     return anioElegido
 
 def eleccionDeMateriaCuatrimestre(usuario):
     print("Ingrese el cuatrimestre de la materia (1-2): ")
-    cuatrimestreElegido = int(input(f"{usuario}: "))
-    while estaDentroDelRango(1,2,cuatrimestreElegido) == False:
-        print("Cuatrimestre inválido. Por favor, ingrese un cuatrimestre válido (1-2).")
-        print("Ingrese el cuatrimestre de la materia (1-2): ")
-        cuatrimestreElegido = int(input(f"{usuario}: "))
+    cuatrimestreElegido = validarEntero(1,2)
     log("eleccionDeMateriaCuatrimestre", "INFO", f"Usuario {usuario} eligió el cuatrimestre {cuatrimestreElegido} para la materia.")
     return cuatrimestreElegido
