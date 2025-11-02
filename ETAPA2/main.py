@@ -16,7 +16,7 @@ def menuPrincipal(usuario):
         print("Elija una opción:\n1- Baja de usuario\n2- Cambiar rol de usuario\n3- Procesar flashcards\n4- Generar reporte\n5- Ajustes\n0- Salir\n")
     else:
         print("Menú Principal - Rol: Estudiante")
-        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n8- Practicar con Flashcards\n9- Ajustes\n0- Salir\n")
+        print("Elija una opción:\n1- Anotarse a materias\n2- Estado 'Pack de 5 materias'\n3- Cargar nota de materia\n4- Dar de baja una materia\n5- Ver calendario\n6- Ver notas\n7- Ver promedio de carrera\n8- Menú de  Flashcards\n9- Ajustes\n0- Salir\n")
     print("-----------------------------------------------------")
 
 def menuInicial(usuario):
