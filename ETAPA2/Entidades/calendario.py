@@ -56,16 +56,15 @@ def inscribirseAMateria(materiaSeleccionada, usuarioActual):
         diasCalendario = [i for i in range(5) if calendario[dias[i]] is None]
         if not diasCalendario:
             print("No hay días disponibles en el calendario para inscribirse en una nueva materia.")
-            return
-        diaElegido = random.choice(diasCalendario)
-        print(f"Inscribiéndose en la materia {materia['nombre']} el día {dias[diaElegido]}")
-        usuarioActual['calendario'][dias[diaElegido]] = materia['id']
-        usuarioActual['notas'][str(materia['id'])] = {"parcial1": None, "parcial2": None, "final": None, "nota_final": None, "aprobada": False, "recursa": False}
-        log("inscribirseAMateria", "INFO", f"Usuario {usuarioActual['usuario']} se inscribió en la materia {materia['nombre']} el día {dias[diaElegido]}")
-        materia['inscriptos'] += 1
-        guardarUsuario(usuarioActual)
-        guardarMateria(materia)
-        return
+        else:
+            diaElegido = random.choice(diasCalendario)
+            print(f"Inscribiéndose en la materia {materia['nombre']} el día {dias[diaElegido]}")
+            usuarioActual['calendario'][dias[diaElegido]] = materia['id']
+            usuarioActual['notas'][str(materia['id'])] = {"parcial1": None, "parcial2": None, "final": None, "nota_final": None, "aprobada": False, "recursa": False}
+            log("inscribirseAMateria", "INFO", f"Usuario {usuarioActual['usuario']} se inscribió en la materia {materia['nombre']} el día {dias[diaElegido]}")
+            materia['inscriptos'] += 1
+            guardarUsuario(usuarioActual)
+            guardarMateria(materia)
     except (OSError, IOError, ValueError) as e:
         print(f"Error al inscribirse en la materia: {e}")
 
