@@ -13,12 +13,12 @@ def resetArchivoFlashcardsSinAprobar():
         archFlash.close()
 
 def mostrarPreguntaFlashcard(pregunta):
-    print("-"*5,"PREGUNTA","-"*5,"\n","\n")
-    print(pregunta,"\n","\n")
+    print("-"*5,"PREGUNTA","-"*5,"\n")
+    print(pregunta,"\n",)
 
 def mostrarRespuestaFlashcard(respuesta):
-    print("-"*5,"RESPUESTA","-"*5,"\n","\n")
-    print(respuesta,"\n","\n")
+    print("-"*5,"RESPUESTA","-"*5,"\n")
+    print(respuesta,"\n")
 
 def contarFlashcards(archivo):
     arch=open(archivo,mode="rt")
@@ -113,7 +113,6 @@ def aprobarFlashcards(usuario):
                         print("Flashcard aprobada exitosamente")
                     else:
                         print("Flashcard desaprobada exitosamente")
-                    print("El valor ingresado no es correcto,intente nuevamente")
                     cantidad=cantidad-1
                 resetArchivoFlashcardsSinAprobar()
                 print("Flashcards procesadas exitosamente.")
@@ -159,10 +158,8 @@ def seleccionarFlashcards(listaFlashcards,usuario):
                 flashcard[pregunta]=respuesta,puntaje
                 seleccionadas.append(flashcard)
                 print("Flashcard guardada.")
-                #break
             elif opcion==2:
                 print("Flashcard omitida.")
-                #break
     print(f"\nSelección finalizada. Has elegido {len(seleccionadas)} flashcards.")
     return seleccionadas
 
@@ -226,7 +223,7 @@ def estudiarFlashcard(idMateria,usuario):
                         raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
                     actualizarPuntajes(idMateria, calificacion, pregunta)
                 elif opcion==2:
-                    print("   ➡️ Omitida.")
+                    print("Flashcard omitida.")
                     break
 
 def masInfo():
@@ -234,12 +231,12 @@ def masInfo():
     print("  ♦  SISTEMA DE FLASHCARDS  ♦")
     print("*" * 50 + "\n")
 
-    print("👉 1. ELEGIR MATERIA PARA CONTINUAR")
+    print("1. ELEGIR MATERIA PARA CONTINUAR")
     print("   Se le pide al usuario elegir una materia, para que luego elija que hacer")
-    print("📚 1. Estudiar flashcards de la materia elegida")
+    print("1. Estudiar flashcards de la materia elegida")
     print("      Se muestran las flashcards disponibles para la materia seleccionada")
     print("      El usuario puede elegir cuales quiere estudiar.")
-    print("✍️ 2. Proponer nuevas flashcards para la materia elegida")
+    print("2. Proponer nuevas flashcards para la materia elegida")
     print("      Se le permite al usuario enviar nuevas flashcards para su revisión.")
 
     print("\n" + "=" * 50 + "\n")
@@ -251,9 +248,7 @@ def menuFlashcards(usuarioActual):
             print("=" * 35)
             print("      🎯 MENÚ DE FLASHCARDS 🎯")
             print("=" * 35)
-            print("│ 1. Elegir Materia para continuar     │")
-            print("│ 2. Más Información                   │")
-            print("│ 0. Salir                             │")
+            print("1- Estudiar Flashcards\n2- Proponer Flashcards\n0- Salir")
             print("-" * 35)
             opcion = validarEntero(0,2)
             if opcion==1:

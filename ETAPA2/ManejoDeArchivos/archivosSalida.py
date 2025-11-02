@@ -13,6 +13,8 @@ def generarReporte(opcion):
         datos = rankingMateriaFlashcards()
     elif opcion == 5:
         datos = cantEstudiantesXmateria()
+    elif opcion == 0:
+        return "salir"
     else:
         print(f"Error: Opción '{opcion}' no válida.")
         return False
