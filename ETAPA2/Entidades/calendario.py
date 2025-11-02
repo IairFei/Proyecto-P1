@@ -29,7 +29,7 @@ def verCalendario(usuarioActual):
                     for linea in archivo_materias:
                         datos_materia = json.loads(linea)
                         if datos_materia['id'] == materia_id:
-                            nombre_materia = datos_materia['nombre']
+                            nombre_materia = datos_materia['nombre'] + (f" ( {datos_materia['año']} Año, {datos_materia['cuatrimestre']} Cuatrimestre )")
                             break
                 if nombre_materia is None:
                     nombre_materia = f"ID {materia_id} (no encontrada)"
