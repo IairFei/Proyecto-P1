@@ -41,7 +41,6 @@ def generarArchivosSalida(data):
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
         log("generarArchivosSalida","ERROR","Se produjo un error creando el reporte")
-    return
 
 def porcentajeXMateria():
     temp = {}
@@ -72,6 +71,7 @@ def porcentajeXMateria():
         return ("PorcentajeDeAprobacionXMateria", datosAsubir)
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+        log("porcentajeXMateria","ERROR","Se produjo un error creando el reporte")
 
 def cantEstudiantePack5():
     conPack = 0
@@ -90,6 +90,7 @@ def cantEstudiantePack5():
         return ("cantEstudiantesUsanPack5Materias",datosAsubir)
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+        log("cantEstudiantePack5","ERROR","Se produjo un error creando el reporte")
 
 #Funcion para calcular los porcentajes de las materias, [DESHABILITADA]
 # def calcularPorcentaje(datos):
@@ -122,6 +123,7 @@ def rankingMateriaFlashcards():
         return ("rankingMateriasFlashcards", datosMaterias)
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+        log("rankingMateriaFlashcards","ERROR","Se produjo un error creando el reporte")    
 
 def rankingMejoresFlashcards():
     datos = []
@@ -143,6 +145,7 @@ def rankingMejoresFlashcards():
         return ("rankingFlashcards",datos)
     except (IOError, OSError):
         print(f"Error procesando el archivo.")
+        log("rankingMejoresFlashcards","ERROR","Se produjo un error creando el reporte")
 
 def cantEstudiantesXmateria():
     datos = []
@@ -168,3 +171,4 @@ def cantEstudiantesXmateria():
         return ("cantidadInscriptosXMateria",datos)
     except (IOError, OSError):
         print(f"Error procesando el archivo:.")
+        log("cantEstudiantesXmateria","ERROR","Se produjo un error creando el reporte")

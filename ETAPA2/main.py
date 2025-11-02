@@ -187,13 +187,13 @@ def menuLoginPrincipal():
     opcionElegida = validarEntero(1,3)
     log("main", "INFO", f"Opción elegida en el menú de login: {opcionElegida}")
     inicioDeSesionExitoso, usuario = menuLogin(opcionElegida)
-    if usuario is None or inicioDeSesionExitoso is False:
+    if usuario is not None or inicioDeSesionExitoso is not False:
+        print(f"Acceso concedido. Bienvenido {usuario}.")
+        log("main", "INFO", f"Usuario {usuario} ha iniciado sesión correctamente.")
+        menuInicial(usuario)
+    else:
         print("Inicio de sesión fallido. Saliendo del programa.")
         log("main", "INFO", "Inicio de sesión fallido.")
-        return
-    print(f"Acceso concedido. Bienvenido {usuario}.")
-    log("main", "INFO", f"Usuario {usuario} ha iniciado sesión correctamente.")
-    menuInicial(usuario)
 
 def inicioDeSesion(usuario=None, intentosRestantes=3):
     if usuario is None:
@@ -240,6 +240,7 @@ def main():
         menuLoginPrincipal()
     except (KeyboardInterrupt, SystemExit):
         print("\nProceso finalizado por el usuario.")
+        log("main", "INFO", "Programa finalizado por el usuario.")
 
 if __name__ == "__main__":
     main()

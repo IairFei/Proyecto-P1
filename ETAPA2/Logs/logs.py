@@ -14,7 +14,7 @@ def log(funcion, tipoMensaje, mensaje):
                 file.write(f"Función: {funcion}\n")
                 file.write(f"Error: {mensaje}\n")
                 file.write("-" * 50 + "\n")
-    except Exception as e:
+    except (IOError, OSError) as e:
         print(f"SYSTEM: Error al escribir en el log {e}")
         with open("ETAPA2/Logs/errorLogs.txt", "a", encoding="utf-8") as file:
             file.write("\nFecha y hora: " + str(datetime.datetime.now()) + "\n")

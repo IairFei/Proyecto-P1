@@ -10,6 +10,7 @@ def resetArchivoFlashcardsSinAprobar():
         archFlash.write("usuarioCreador;pregunta;respuesta;materia\n")
     except OSError as msg:
         print("ERROR:",msg)
+        log("resetArchivoFlashcardsSinAprobar","ERROR",f"No se pudo resetear el archivo de flashcards sin aprobar: {msg}")
     else:
         archFlash.close()
 
@@ -57,6 +58,7 @@ def agregarFlashcardAMateria(materia_id, nueva_flashcard):
             print(f"Error: Se leyó el archivo, pero no se encontró ninguna materia con el id {materia_id}.")
     except FileNotFoundError:
         print(f"Error: El archivo no existe en la ruta: {arch}")
+        log("agregarFlashcardAMateria","ERROR",f"El archivo no existe en la ruta: {arch}")
 
 def guardarFlashcard(flashcard,usuario):
     archivo="ETAPA2/Archivos/flashcardsSinAprobar.csv"
@@ -119,7 +121,7 @@ def aprobarFlashcards(usuario):
                 print("Flashcards procesadas exitosamente.")
         except (OSError,IOError):
             print("Error al abrir el archivo.")
-            return
+            log("aprobarFlashcards","ERROR","Error al abrir el archivo de flashcards sin aprobar")
         break
 
 def obtenerFlashcardsPorMateria(idMateria):
@@ -136,8 +138,9 @@ def obtenerFlashcardsPorMateria(idMateria):
                     continue
         if flashcards is None or len(flashcards) == 0:
             print("No hay flashcards disponibles para la materia elegida")
-    except Exception as e:
-        print(f"Error al buscar flashcards: {e}")
+    except (IOError, OSError):
+        print("Error al abrir el archivo de materias.")
+        log("obtenerFlashcardsPorMateria","ERROR","Error al abrir el archivo de materias.json")
     return flashcards
 
 def seleccionarFlashcards(listaFlashcards,usuario):
@@ -202,6 +205,7 @@ def actualizarPuntajes(materia_id, puntajeNuevo, preguntaFlashcard):
 
     except (FileNotFoundError, IOError, OSError):
         print(f"Error: El archivo no existe en la ruta: {arch}")
+        log("actualizarPuntajes","ERROR",f"El archivo no existe en la ruta: {arch}")
 
 def estudiarFlashcard(idMateria,usuario):
     flashcardsDisponibles=obtenerFlashcardsPorMateria(idMateria)
@@ -212,7 +216,6 @@ def estudiarFlashcard(idMateria,usuario):
             for clave in flashcard:
                 pregunta = str(clave)
                 respuesta = str(flashcard[clave][0])
-                puntaje = flashcard[clave][1]
                 mostrarPreguntaFlashcard(pregunta)
                 print("1- Mostrar Respuesta")
                 print("2- Saltear            │")
@@ -281,3 +284,4 @@ def menuFlashcards(usuarioActual):
                 break
         except ValueError:
             print("El valor ingresado no es correcto,intente nuevamente")
+            log("menuFlashcards","ERROR","El valor ingresado no es correcto,intente nuevamente")

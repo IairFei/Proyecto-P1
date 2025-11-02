@@ -22,6 +22,7 @@ def nombreUsuarioRepetido(nombreAlumno, apellidoAlumno):
 
 def altaEnSistema(usuario, nombreAlumno, apellidoAlumno):
     try:
+        seDioDeAlta = False
         # Leer el archivo línea por línea y cargar los datos
         lista_usuarios = []
         with open('ETAPA2/Archivos/usuarios.json', 'r', encoding='utf-8') as users:
@@ -48,9 +49,12 @@ def altaEnSistema(usuario, nombreAlumno, apellidoAlumno):
         # Convertir cada usuario a una línea JSON y escribir todo de nuevo
         with open('ETAPA2/Archivos/usuarios.json', 'w', encoding='utf-8') as users:
             users.writelines([json.dumps(u, ensure_ascii=False) + '\n' for u in lista_usuarios])
-        return True
+        seDioDeAlta = True
+        log("altaEnSistema", "INFO", f"Usuario {usuario} dado de alta correctamente en el sistema.")
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+        log("altaEnSistema", "ERROR", f"Se produjo un error al dar de alta al usuario {usuario} en el sistema.")
+    return seDioDeAlta
 
 def altaUsuario():
     try:
@@ -98,6 +102,7 @@ def altaUsuario():
             return usuario
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+        log("altaUsuario", "ERROR", f"Se produjo un error al intentar dar de alta un nuevo usuario.")
 
 def inicializarUsuariosFake():
     fake = Faker()
@@ -116,5 +121,7 @@ def inicializarUsuariosFake():
             dadoDeAlta = altaEnSistema(usuario,nombreAlumno,apellidoAlumno)
             if dadoDeAlta == False or dadoDeAlta is None:
                 print(f"No se pudo dar de alta al usuario {usuario} en el sistema.")
+                log("inicializarUsuariosFake", "INFO", f"No se pudo dar de alta al usuario {usuario} en el sistema.")
         except (IOError, OSError):
             print(f"Error al abrir el archivo.")
+            log("inicializarUsuariosFake", "ERROR", f"Se produjo un error al intentar dar de alta un nuevo usuario fake {usuario}.")

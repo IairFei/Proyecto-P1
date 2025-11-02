@@ -38,7 +38,7 @@ def mostrarMateriasDisponibles(anio, cuatrimestre, usuario, mostrarTodas=False):
             return indices
     except (IOError, OSError):
         print("Error al abrir el archivo.")
-        return
+        log("mostrarMateriasDisponibles","ERROR","Error al abrir el archivo de materias.json")
 
 def buscarNombreMateriaPorIndice(indice, materias):
     materia = materias[indice].split(".",3)
@@ -53,6 +53,7 @@ def obtenerCantidadDeMaterias():
                 cantidad += 1
     except (IOError, OSError):
         print("Error al abrir el archivo.")
+        log("obtenerCantidadDeMaterias","ERROR","Error al abrir el archivo de materias.json")
     return cantidad
 
 def obtenerCantidadDeInscriptosEnMaterias():
@@ -67,21 +68,25 @@ def obtenerCantidadDeInscriptosEnMaterias():
                     continue
     except (IOError, OSError):
         print(f"Error al obtener la cantidad de inscriptos en materias.")
+        log("obtenerCantidadDeInscriptosEnMaterias","ERROR","Error al abrir el archivo de materias.json")
     return cantidadInscriptosPorMateria
 
 def buscarMateriaPorIndice(indice):
     try:
+        materiaEncontrada = None
         with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
             for linea in archivoMaterias:
                 try:
                     materia = json.loads(linea.strip())
                     if materia.get('id') == indice:
-                        return materia
+                        materiaEncontrada = materia
+                        break
                 except Exception:
                     continue
     except (IndexError, FileNotFoundError):
         print("Error al abrir el archivo.")
-    return None
+        log("buscarMateriaPorIndice","ERROR","Error al abrir el archivo de materias.json")
+    return materiaEncontrada
 
 def buscarMateriaPorNombre(nombre, materias):
     cont = 0
@@ -113,25 +118,23 @@ def tieneCorrelativasAprobadas(usuarioActual, idMateria):
                         break
                 except Exception:
                     continue
-        if correlativas is None or len(correlativas) == 0:
-            return True
-        notas = usuarioActual.get('notas', {})
-
-        for correlativa in correlativas:
-            nota_info = notas.get(str(correlativa), {})
-            if nota_info == {}:
-                print(f"Correlativa de {materia['nombre']} no aprobada: {buscarMateriaPorIndice(correlativa)['nombre']}")
-                contNoAprobadas += 1
-            else:
-                if not nota_info.get('aprobada', False):
+        if correlativas is not None or len(correlativas) != 0:
+            notas = usuarioActual.get('notas', {})
+            for correlativa in correlativas:
+                nota_info = notas.get(str(correlativa), {})
+                if nota_info == {}:
                     print(f"Correlativa de {materia['nombre']} no aprobada: {buscarMateriaPorIndice(correlativa)['nombre']}")
                     contNoAprobadas += 1
-
-        if contNoAprobadas > 0:
-            aproboCorrelativas = False
+                else:
+                    if not nota_info.get('aprobada', False):
+                        print(f"Correlativa de {materia['nombre']} no aprobada: {buscarMateriaPorIndice(correlativa)['nombre']}")
+                        contNoAprobadas += 1
+            if contNoAprobadas > 0:
+                aproboCorrelativas = False
         return aproboCorrelativas
     except (IOError, OSError):
         print(f"Error al verificar correlativas.")
+        log("tieneCorrelativasAprobadas","ERROR","Error al abrir el archivo de materias.json")
         aproboCorrelativas = False
 
 def tieneRecursadas(usuarioActual):
@@ -151,11 +154,12 @@ def tieneCalendarioVacio(usuarioCalendario):
     return vacio
 
 def estadoPackDe5Materias(usuarioActual):
+    pack5MateriasDisponible = False
     vacio=tieneCalendarioVacio(usuarioActual['calendario'])
     recursadas=tieneRecursadas(usuarioActual)
     if vacio==True and recursadas==False:
-        return True
-    return False
+        pack5MateriasDisponible = True
+    return pack5MateriasDisponible
 
 def darDeBajaNotas(indicemateria, usuario):
     del usuario['notas'][str(indicemateria)]
@@ -231,6 +235,7 @@ def cargarNotas(usuarioActual,materia,diaIngresado):
                     break       
     except (IOError,OSError):
         print("Error al abrir el archivo de notas.")
+        log("cargarNotas", "ERROR", "Error al abrir el archivo de notas.")
 
 def calcularNotaFinal(usuarioActual,materia):
     p1 = usuarioActual["notas"][str(materia["id"])]["parcial1"]
@@ -279,7 +284,6 @@ def verNotas(usuarioActual, materia):
         nueva_materia = buscarMateriaPorIndice(indices[seleccion - 1])
         verNotas(usuarioActual, nueva_materia)  # recursividad
         break
-    return
 
 #SACA PROMEDIOS
 promedio= lambda lista: sum(lista) / len(lista)
@@ -297,7 +301,6 @@ def promedioCursada(usuarioActual):
 
 def obtenerMateriasPackDe5(usuarioActual):
     materiasPackDe5=[]
-    indice=0
     try:
         with open("ETAPA2/Archivos/materias.json", "r", encoding="utf-8") as archivoMaterias:
             for linea in archivoMaterias:
@@ -309,9 +312,9 @@ def obtenerMateriasPackDe5(usuarioActual):
                             break
                 except Exception:
                     continue
-            return materiasPackDe5
     except (IOError, OSError):
         print(f"Error al obtener materias pack de 5.")
+        log("obtenerMateriasPackDe5","ERROR","Error al abrir el archivo de materias.json")
     return materiasPackDe5
 
 def guardarMateria(materia_actualizada):
@@ -333,8 +336,8 @@ def guardarMateria(materia_actualizada):
                 archivoMaterias.write(json.dumps(materia, ensure_ascii=False) + "\n")
         log("guardarMateria","INFO",f"Materia {materia_actualizada_id} guardada correctamente.")
     except (OSError, IOError):
-        log("guardarMateria","ERROR","Se produjo un error al guardar la materia.")
         print(f"Error al guardar la materia.")
+        log("guardarMateria","ERROR","Se produjo un error al guardar la materia.")
 
 
 def crearArchivoMaterias():
@@ -402,6 +405,7 @@ def crearArchivoMaterias():
             with open(ruta, "w", encoding="utf-8") as archivoMaterias:
                 archivoMaterias.write(data_inicial)
             print("Archivo de materias creado correctamente.")
-        except Exception as e:
+            log("crearArchivoMaterias","INFO","Archivo de materias.json creado correctamente.")
+        except (IOError, OSError) as e:
             print(f"Error al crear el archivo de materias: {e}")
-
+            log("crearArchivoMaterias","ERROR","Error al crear el archivo de materias.json")

@@ -67,6 +67,7 @@ def inscribirseAMateria(materiaSeleccionada, usuarioActual):
             guardarMateria(materia)
     except (OSError, IOError, ValueError) as e:
         print(f"Error al inscribirse en la materia: {e}")
+        log("inscribirseAMateria", "ERROR", f"Error al inscribirse en la materia: {e}")
 
 def darDeBajaMateria(usuarioActual, diaIngresado):
     try:
@@ -81,3 +82,4 @@ def darDeBajaMateria(usuarioActual, diaIngresado):
         guardarUsuario(usuarioActual)
     except IndexError as e:
         print(f"Error al dar de baja la materia: {e}")
+        log("darDeBajaMateria", "ERROR", f"Error al dar de baja la materia: {e}")

@@ -17,9 +17,10 @@ def cambiarRol(nuevoRol, usuario):
             for dato in datos:
                 usuarios.write(','.join(dato) + '\n')
         seModficoEnCSV = True
-        return seModficoEnCSV
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+        log("cambiarRol", "ERROR", f"Se produjo un error al cambiar el rol del usuario {usuario[0]} en el sistema.")
+    return seModficoEnCSV
 
 def obtenerCantidadUsuarios():
     try:
@@ -41,9 +42,10 @@ def obtenerUsuarioPorRol(rol):
                 datos = linea.strip().split(',')
                 if datos[2].strip().lower() == rol.strip().lower():
                     usuarios_encontrados.append(datos[0].strip())
-        return usuarios_encontrados
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+        log("obtenerUsuarioPorRol", "ERROR", f"Se produjo un error al obtener usuarios con el rol {rol}.")
+    return usuarios_encontrados
     
 def validarNombreUsuarioEnSistema(usuario):
     try:
@@ -54,9 +56,9 @@ def validarNombreUsuarioEnSistema(usuario):
                 if datos[0].strip() == usuario:
                     datosEncontrados = datos
                     break
-        return datosEncontrados
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+    return datosEncontrados
 
 def validarContrasena(usuario,contrasena):
     try:
@@ -67,9 +69,10 @@ def validarContrasena(usuario,contrasena):
                 if datos[0].strip() == usuario and datos[1].strip() == contrasena:
                     datosEncontrados = datos
                     break
-        return datosEncontrados
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+        log("validarContrasena", "ERROR", f"Se produjo un error al validar la contraseña para el usuario {usuario}.")
+    return datosEncontrados
 
 def tipoUsuario(usuario):
     try:
@@ -77,15 +80,11 @@ def tipoUsuario(usuario):
         datos = validarNombreUsuarioEnSistema(usuario)
         if datos is not None:
             tipo_usuario_encontrado = datos[2].strip()
-        return tipo_usuario_encontrado
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+    return tipo_usuario_encontrado
 
 def crearDiccionarioUsuarioManual(usuario_original):
-    """
-    Crea una copia manual del diccionario de usuario según la estructura específica del archivo
-    """
-    # Crear diccionario de notas manualmente
     notas_copia = {}
     for materia_id, nota_data in usuario_original['notas'].items():
         notas_copia[materia_id] = {
@@ -96,8 +95,7 @@ def crearDiccionarioUsuarioManual(usuario_original):
             'aprobada': nota_data['aprobada'],
             'recursa': nota_data['recursa']
         }
-    
-    # Crear diccionario de calendario manualmente
+
     calendario_copia = {
         'Lunes': usuario_original['calendario']['Lunes'],
         'Martes': usuario_original['calendario']['Martes'],
@@ -106,7 +104,6 @@ def crearDiccionarioUsuarioManual(usuario_original):
         'Viernes': usuario_original['calendario']['Viernes']
     }
     
-    # Crear diccionario de usuario manualmente
     usuario_copia = {
         'id': usuario_original['id'],
         'usuario': usuario_original['usuario'],
@@ -123,6 +120,7 @@ def guardarUsuario(usuarioActual):
     """
     Actualiza un usuario específico en el archivo JSON manteniendo los demás usuarios
     """
+    usuarioGuardado = False
     try:
         ruta = 'ETAPA2/Archivos/usuarios.json'
         usuario_encontrado = False
@@ -161,16 +159,17 @@ def guardarUsuario(usuarioActual):
                     usuario_encontrado = True
                 else:
                     lineas_modificadas.append(linea if linea.endswith('\n') else linea + '\n')
-        if not usuario_encontrado:
+        if usuario_encontrado:
+            with open(ruta, 'w', encoding='utf-8') as archivo:
+                archivo.writelines(lineas_modificadas)
+            log("guardarUsuario","INFO",f"Usuario {usuarioActual['usuario']} guardado correctamente.")
+            usuarioGuardado = True
+        else:
             print(f"Error: Usuario {usuarioActual['usuario']} no encontrado en el archivo")
-            return False
-        with open(ruta, 'w', encoding='utf-8') as archivo:
-            archivo.writelines(lineas_modificadas)
-        log("guardarUsuario","INFO",f"Usuario {usuarioActual['usuario']} guardado correctamente.")
-        return True
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
         log("guardarUsuario","ERROR","Se produjo un error al guardar el usuario.")
+    return usuarioGuardado
 
 def getUsuarioPorNombreUsuario(nombreUsuario):
     try:
@@ -184,9 +183,10 @@ def getUsuarioPorNombreUsuario(nombreUsuario):
                 if usuario.get('usuario') == nombreUsuario:
                     datosEncontrados = crearDiccionarioUsuarioManual(usuario)
                     break
-        return datosEncontrados
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+        log("getUsuarioPorNombreUsuario","ERROR",f"Se produjo un error al obtener el usuario {nombreUsuario}.")
+    return datosEncontrados
 
 def validarLogin(usuario, contrasena):
     concidencia = False
@@ -196,9 +196,10 @@ def validarLogin(usuario, contrasena):
             contrasena_archivo = datos[1].strip()
             if contrasena == contrasena_archivo:
                 concidencia = True
-        return concidencia
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+        log("validarLogin","ERROR",f"Se produjo un error al validar el login para el usuario {usuario}.")
+    return concidencia
 
 def login():
     validacion = None
@@ -224,9 +225,10 @@ def login():
             print("Inicio de sesión exitoso.")
         else:
             print("Nombre de usuario o contraseña incorrectos.")
-        return validacion, usuario
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+        log("login","ERROR","Se produjo un error al intentar iniciar sesión.")
+    return validacion, usuario
 
 def cambioContrasena(usuario):
     try:
@@ -250,11 +252,6 @@ def cambioContrasena(usuario):
             if status[1] == True:    
                 log("ajusteUsuario", "INFO", f"Contraseña para el usuario {usuario} cumple con los requisitos de seguridad.")
                 break
-            '''else:
-                log("ajusteUsuario", "WARNING", f"Contraseña para el usuario {usuario} no cumple con los requisitos de seguridad por el motivo: {status[0]}")
-                contrasenaNueva = input("Ingrese su nueva contraseña: ").strip()
-                log("ajusteUsuario", "INFO", f"Nuevo intento de contraseña ingresada para el usuario {usuario}.")
-                continue'''
         status = contrasenaActualizada(usuario,exContrasena,contrasenaNueva)
         if status == True:   
             print("Contraseña actualizada.\nVolviendo al Menu")
@@ -269,6 +266,7 @@ def cambioContrasena(usuario):
 
 def contrasenaActualizada(usuario,exContrasena,contrasenaNueva):
     try:
+        seActualizoLaContrasena = False
         with open('ETAPA2/Archivos/usuarios.csv', 'r') as archivo:
             datos = []
             for lineas in archivo:
@@ -281,9 +279,11 @@ def contrasenaActualizada(usuario,exContrasena,contrasenaNueva):
         with open('ETAPA2/Archivos/usuarios.csv', 'wt') as archivo:
             for dato in datos:
                 archivo.write(dato)
-            return True
+        seActualizoLaContrasena = True
+        log("contrasenaActualizada", "INFO", f"Contraseña del usuario {usuario} actualizada correctamente.")
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+    return seActualizoLaContrasena
 
 def menuAjustes(usuario):
     cierraSesion = False
@@ -299,6 +299,7 @@ def menuAjustes(usuario):
 
 def darDeBajaUsuario(usuario):
     try:
+        seDioDeBaja = False
         datos = []
         usuario_encontrado = False
         with open('ETAPA2/Archivos/usuarios.csv', 'r') as archivo:
@@ -323,16 +324,18 @@ def darDeBajaUsuario(usuario):
                 lineas_modificadas.append(linea)
         with open('ETAPA2/Archivos/usuarios.json', 'w', encoding='utf-8') as archivo:
             archivo.writelines(lineas_modificadas)
-        return True
+        seDioDeBaja = True
+        log("darDeBajaUsuario", "INFO", f"Usuario {usuario} dado de baja correctamente del sistema.")
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
-        return False
+        log("darDeBajaUsuario", "ERROR", f"Se produjo un error al dar de baja al usuario {usuario} del sistema.")
+    return seDioDeBaja
     
 def crearUsuariosCsv():
     try:
         with open('ETAPA2/Archivos/usuarios.csv', 'r') as archivo:
             pass
-    except FileNotFoundError:
+    except (FileNotFoundError, IOError, OSError):
         with open('ETAPA2/Archivos/usuarios.csv', 'w', encoding='utf-8') as archivo:
             archivo.write("Usuario,Contraseña,Role\n")
             archivo.write("admin,admin,Administrator\n")
@@ -341,6 +344,6 @@ def crearUsuariosJson():
     try:
         with open('ETAPA2/Archivos/usuarios.json', 'r', encoding='utf-8') as archivo:
             pass
-    except FileNotFoundError:
+    except (FileNotFoundError, IOError, OSError):
         with open('ETAPA2/Archivos/usuarios.json', 'w', encoding='utf-8') as archivo:
             pass
