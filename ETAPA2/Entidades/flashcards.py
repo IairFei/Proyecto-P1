@@ -249,7 +249,7 @@ def menuFlashcards(usuarioActual):
             print("=" * 35)
             print("       MENÚ DE FLASHCARDS ")
             print("=" * 35)
-            print("1- Estudiar Flashcards\n2- Proponer Flashcards\n0- Salir")
+            print("1- Elegir Materia para continuar\n2- Mas Informacion\n0- Salir")
             print("-" * 35)
             opcion = validarEntero(0,2)
             if opcion==1:
@@ -265,7 +265,7 @@ def menuFlashcards(usuarioActual):
                 print("=" * 35)
                 print("1- Estudiar Flashcards\n2- Proponer Flashcards\n0- Salir")
                 print("-" * 35)
-                opcion = validarEntero(1,3)
+                opcion = validarEntero(0,2)
                 if opcion==1:
                     estudiarFlashcard(idMateria,usuarioActual["usuario"])
                     
