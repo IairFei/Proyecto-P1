@@ -1,10 +1,52 @@
-Fundamentos de Informatica: 
-aprobados
-1
-total:
-1
-Sistemas de Informacion I: 
-aprobados
-0
-total:
-1
+materia,aprobados,total
+Fundamentos de Informatica,3,4
+Sistemas de Informacion I,2,3
+Pensamiento Critico y Comunicacion,2,3
+Teoria de Sistemas,3,3
+Elementos de Algebra y Geometria,2,3
+Programacion I,1,2
+Sistemas de Representacion,0,2
+Matematica Discreta,0,2
+Fundamentos de Quimica,0,3
+Algebra,0,1
+Programacion II,0,1
+Sistemas de Informacion II,0,2
+Sistemas Operativos,0,2
+Fisica I,0,2
+Calculo I,0,2
+Programacion III,0,1
+Paradigma Orientado a Objetos,2,2
+Fundamentos de Telecomunicaciones,1,2
+Ingenieria de Datos I,0,1
+Calculo II,0,1
+Proceso de Desarrollo de Software,1,1
+Seminario de Integracion Profesional,0,1
+Teleinformatica y Redes,0,0
+Ingenieria de Datos II,1,1
+Probabilidad y Estadistica,0,1
+Examen de Ingles,1,1
+Aplicaciones Interactivas,1,1
+Ingenieria de Software,1,1
+Fisica II,0,1
+Teoria de la Computacion,0,1
+Estadistica Avanzada,0,0
+Desarrollo de Aplicaciones I,0,1
+Direccion de Proyectos Informaticos,0,1
+Ciencia de Datos,0,1
+Seguridad e Integridad de la Informacion,0,0
+Modelado y Simulacion,0,1
+Desarrollo de Aplicaciones II,0,0
+Evaluacion de Proyectos Informaticos,0,0
+Inteligencia Artificial,0,0
+Tecnologia y Medio Ambiente,0,0
+Practica Profesional Supervisada,0,0
+Optativa 1,0,0
+Arquitectura de Aplicaciones,0,0
+Tendencias Tecnologicas,0,0
+Proyecto Final de Ingenieria en Informatica,0,0
+Calidad de Software,0,0
+Optativa 2,0,0
+Negocios Tecnologicos,0,0
+Tecnologia e Innovacion,0,0
+Derecho Informatico,0,0
+Optativa 3,0,0
