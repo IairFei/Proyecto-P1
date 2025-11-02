@@ -219,8 +219,6 @@ def estudiarFlashcard(idMateria,usuario):
                     mostrarRespuestaFlashcard(respuesta)
                     print("Califique esta flashcard del 1 al 5:")
                     calificacion = validarEntero(1,5)
-                    if estaDentroDelRango(1,5,calificacion)==False:
-                        raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
                     actualizarPuntajes(idMateria, calificacion, pregunta)
                 elif opcion==2:
                     print("Flashcard omitida.")
