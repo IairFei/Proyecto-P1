@@ -1,6 +1,7 @@
 import json
 from ManejoDeDatos.validacionDeDatos import validarEntero
 from Entidades.materias import promedio, eleccionDeMateriaAnio, eleccionDeMateriaCuatrimestre, mostrarMateriasDisponibles
+from Logs.logs import log
 
 def resetArchivoFlashcardsSinAprobar():
     archivo="ETAPA2/Archivos/flashcardsSinAprobar.csv"
@@ -50,12 +51,11 @@ def agregarFlashcardAMateria(materia_id, nueva_flashcard):
             with open(arch, 'w', encoding='utf-8') as archivo:
                 archivo.writelines(lineas_modificadas)
             print(f"¡Éxito! Flashcard agregada a la materia con id {materia_id}.")
+            
         else:
             print(f"Error: Se leyó el archivo, pero no se encontró ninguna materia con el id {materia_id}.")
     except FileNotFoundError:
         print(f"Error: El archivo no existe en la ruta: {arch}")
-    except Exception as e:
-        print(f"Ocurrió un error inesperado durante la operación: {e}")
 
 def guardarFlashcard(flashcard,usuario):
     archivo="ETAPA2/Archivos/flashcardsSinAprobar.csv"
@@ -158,6 +158,7 @@ def seleccionarFlashcards(listaFlashcards,usuario):
                 flashcard[pregunta]=respuesta,puntaje
                 seleccionadas.append(flashcard)
                 print("Flashcard guardada.")
+                log("seleccionarFlashcard","INFO",f"el se guardo flashcard -{pregunta}-")
             elif opcion==2:
                 print("Flashcard omitida.")
     print(f"\nSelección finalizada. Has elegido {len(seleccionadas)} flashcards.")
@@ -220,13 +221,15 @@ def estudiarFlashcard(idMateria,usuario):
                     print("Califique esta flashcard del 1 al 5:")
                     calificacion = validarEntero(1,5)
                     actualizarPuntajes(idMateria, calificacion, pregunta)
+                    log("estudiarFlashcard","INFO",f"el usuario Califico la flashcard -{pregunta}-")
                 elif opcion==2:
                     print("Flashcard omitida.")
+                    log("estudiarFlashcard","INFO",f"el usuario omitio la flashcard -{pregunta}-")
                     break
 
 def masInfo():
     print("\n" + "*" * 50)
-    print("  ♦  SISTEMA DE FLASHCARDS  ♦")
+    print("    SISTEMA DE FLASHCARDS  ")
     print("*" * 50 + "\n")
 
     print("1. ELEGIR MATERIA PARA CONTINUAR")
@@ -244,7 +247,7 @@ def menuFlashcards(usuarioActual):
     while True:
         try:
             print("=" * 35)
-            print("      🎯 MENÚ DE FLASHCARDS 🎯")
+            print("       MENÚ DE FLASHCARDS ")
             print("=" * 35)
             print("1- Estudiar Flashcards\n2- Proponer Flashcards\n0- Salir")
             print("-" * 35)
@@ -258,13 +261,14 @@ def menuFlashcards(usuarioActual):
                 Materia = validarEntero(1,len(materiasDisponibles))
                 idMateria = materiasDisponibles[Materia-1]
                 print("=" * 35)
-                print("      🎯 MENÚ DE FLASHCARDS 🎯")
+                print("       MENÚ DE FLASHCARDS ")
                 print("=" * 35)
                 print("1- Estudiar Flashcards\n2- Proponer Flashcards\n0- Salir")
                 print("-" * 35)
                 opcion = validarEntero(1,3)
                 if opcion==1:
                     estudiarFlashcard(idMateria,usuarioActual["usuario"])
+                    
                 elif opcion==2:
                     guardarFlashcard(ProponerFlashcard(usuarioActual["usuario"],idMateria),usuarioActual["usuario"])
                     print(">>Flashcard propuesta exitosamente<<")

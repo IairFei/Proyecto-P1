@@ -1,7 +1,9 @@
 import json
 from Entidades.materias import buscarMateriaPorIndice
+from Logs.logs import log
 
 def generarReporte(opcion):
+    archivos =["","porcentajeXMateria","cantEstudiantePack5","rankingMejoresFlashcards","rankingMateriaFlashcards","cantEstudiantesXmateria"]
     datos = None 
     if opcion == 1:
         datos = porcentajeXMateria()
@@ -17,12 +19,15 @@ def generarReporte(opcion):
         return "salir"
     else:
         print(f"Error: Opción '{opcion}' no válida.")
+        
         return False
     if datos is not None:
         generarArchivosSalida(datos)
+        log("GenerarReporte","INFO",f"Se creo el reporte {archivos[opcion]}")
         return True
     else:
         print("No se generaron datos para el reporte.")
+        log("GenerarReporte","ERROR",f"Se produjo un error creando el reporte {archivos[opcion]}")
         return False
 
 def generarArchivosSalida(data):
@@ -37,6 +42,7 @@ def generarArchivosSalida(data):
         print(f"datos extraidos, en: {path}")
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
+        log("generarArchivosSalida","ERROR","Se produjo un error creando el reporte")
     return
 
 def porcentajeXMateria():
