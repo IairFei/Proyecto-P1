@@ -1,5 +1,5 @@
 import json
-from ManejoDeDatos.validacionDeDatos import estaDentroDelRango, validarEntero, validarTexto
+from ManejoDeDatos.validacionDeDatos import validarEntero
 from Entidades.materias import promedio, eleccionDeMateriaAnio, eleccionDeMateriaCuatrimestre, mostrarMateriasDisponibles
 
 def resetArchivoFlashcardsSinAprobar():

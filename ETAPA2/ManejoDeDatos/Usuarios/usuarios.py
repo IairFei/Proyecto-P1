@@ -1,7 +1,6 @@
 import json
 from Logs.logs import log
-from ManejoDeDatos.validacionDeDatos import estaDentroDelRango
-from ..validacionDeDatos import verificarSeguridadContrasena
+from ..validacionDeDatos import verificarSeguridadContrasena, validarEntero
 from Logs.logs import log
 
 def cambiarRol(nuevoRol, usuario):
@@ -19,9 +18,8 @@ def cambiarRol(nuevoRol, usuario):
                 usuarios.write(','.join(dato) + '\n')
         seModficoEnCSV = True
         return seModficoEnCSV
-    except (FileNotFoundError, Exception) as e:
-        print(f"Error: {e}")
-        return None
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
 
 def obtenerCantidadUsuarios():
     try:
@@ -29,8 +27,8 @@ def obtenerCantidadUsuarios():
         with open('ETAPA2/Archivos/usuarios.csv', 'r') as usuarios:
             for linea in usuarios:
                 contador += 1
-    except IOError as e:
-        print(f"Error: {e}")
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
         contador = -1
     else:
         return contador
@@ -44,9 +42,8 @@ def obtenerUsuarioPorRol(rol):
                 if datos[2].strip().lower() == rol.strip().lower():
                     usuarios_encontrados.append(datos[0].strip())
         return usuarios_encontrados
-    except (FileNotFoundError, Exception) as e:
-        print(f"Error: {e}")
-        return None
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
     
 def validarNombreUsuarioEnSistema(usuario):
     try:
@@ -58,9 +55,8 @@ def validarNombreUsuarioEnSistema(usuario):
                     datosEncontrados = datos
                     break
         return datosEncontrados
-    except (FileNotFoundError, Exception) as e:
-        print(f"Error: {e}")
-        return None
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
 
 def validarContrasena(usuario,contrasena):
     try:
@@ -72,9 +68,8 @@ def validarContrasena(usuario,contrasena):
                     datosEncontrados = datos
                     break
         return datosEncontrados
-    except (FileNotFoundError, Exception) as e:
-        print(f"Error: {e}")
-        return None
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
 
 def tipoUsuario(usuario):
     try:
@@ -83,9 +78,8 @@ def tipoUsuario(usuario):
         if datos is not None:
             tipo_usuario_encontrado = datos[2].strip()
         return tipo_usuario_encontrado
-    except (FileNotFoundError, Exception) as e:
-        print(f"Error: {e}")
-        return None
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
 
 def crearDiccionarioUsuarioManual(usuario_original):
     """
@@ -173,9 +167,8 @@ def guardarUsuario(usuarioActual):
         with open(ruta, 'w', encoding='utf-8') as archivo:
             archivo.writelines(lineas_modificadas)
         return True
-    except (FileNotFoundError, Exception) as e:
-        print(f"Error: {e}")
-        return False
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
 
 def getUsuarioPorNombreUsuario(nombreUsuario):
     try:
@@ -190,9 +183,8 @@ def getUsuarioPorNombreUsuario(nombreUsuario):
                     datosEncontrados = crearDiccionarioUsuarioManual(usuario)
                     break
         return datosEncontrados
-    except (FileNotFoundError, Exception) as e:
-        print(f"Error: {e}")
-        return None
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
 
 def validarLogin(usuario, contrasena):
     concidencia = False
@@ -203,9 +195,8 @@ def validarLogin(usuario, contrasena):
             if contrasena == contrasena_archivo:
                 concidencia = True
         return concidencia
-    except (FileNotFoundError, Exception) as e:
-        print(f"Error: {e}")
-        return None
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
 
 def login():
     validacion = None
@@ -232,9 +223,8 @@ def login():
         else:
             print("Nombre de usuario o contraseña incorrectos.")
         return validacion, usuario
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
 
 def cambioContrasena(usuario):
     try:
@@ -272,9 +262,8 @@ def cambioContrasena(usuario):
             print("Ocurrio un error mientras se actualizaba la contraseña.")
             log("ajusteUsuario", "WARNING", f"Se actualizo la contraseña del usuario: {usuario}.")
         return None
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
 
 def contrasenaActualizada(usuario,exContrasena,contrasenaNueva):
     try:
@@ -291,30 +280,19 @@ def contrasenaActualizada(usuario,exContrasena,contrasenaNueva):
             for dato in datos:
                 archivo.write(dato)
             return True
-    except Exception as e:
-        print(f"Error: {e}")
-    return None
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
 
 def menuAjustes(usuario):
     cierraSesion = False
-    while True:
-        try:
-            print("Ingrese el numero de la opcion a elegir.")
-            print("OPCIONES:")
-            print("1- Cambiar contraseña\n2- Cerrar Sesión\n0- Salir\n")
-            opcion=int(input(f"{usuario}: "))
-            
-            if estaDentroDelRango(0,2,opcion)==False:
-                raise ValueError("Numero ingresado fuera del rango, intente nuevamente\n")
-            if opcion==1:
-                cambioContrasena(usuario) 
-            elif opcion == 2:
-                cierraSesion = True
-                break
-            else:
-                break
-        except ValueError:
-            print("El valor ingresado no es correcto,intente nuevamente")
+    print("Ingrese el numero de la opcion a elegir.")
+    print("OPCIONES:")
+    print("1- Cambiar contraseña\n2- Cerrar Sesión\n0- Salir\n")
+    opcion = validarEntero(0,2)
+    if opcion==1:
+        cambioContrasena(usuario) 
+    elif opcion == 2:
+        cierraSesion = True
     return cierraSesion
 
 def darDeBajaUsuario(usuario):
@@ -344,6 +322,25 @@ def darDeBajaUsuario(usuario):
         with open('ETAPA2/Archivos/usuarios.json', 'w', encoding='utf-8') as archivo:
             archivo.writelines(lineas_modificadas)
         return True
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
+        return False
     except Exception as e:
         print(f"Error: {e}")
         return False
+    
+def crearUsuariosCsv():
+    try:
+        with open('ETAPA2/Archivos/usuarios.csv', 'r') as archivo:
+            pass
+    except FileNotFoundError:
+        with open('ETAPA2/Archivos/usuarios.csv', 'w', encoding='utf-8') as archivo:
+            archivo.write("Usuario,Contraseña,Role\n")
+    
+def crearUsuariosJson():
+    try:
+        with open('ETAPA2/Archivos/usuarios.json', 'r', encoding='utf-8') as archivo:
+            pass
+    except FileNotFoundError:
+        with open('ETAPA2/Archivos/usuarios.json', 'w', encoding='utf-8') as archivo:
+            pass

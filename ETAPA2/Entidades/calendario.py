@@ -62,7 +62,6 @@ def inscribirseAMateria(materiaSeleccionada, usuarioActual):
         materia['inscriptos'] += 1
         guardarUsuario(usuarioActual)
         guardarMateria(materia)
-        verCalendario(usuarioActual)
         return
     except Exception as e:
         print(f"Error al inscribirse en la materia: {e}")

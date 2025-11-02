@@ -1,31 +1,23 @@
-from ManejoDeDatos.validacionDeDatos import estaDentroDelRango
 import json
 from Entidades.materias import buscarMateriaPorIndice
 
 def generarReporte(opcion):
-    
     datos = None 
-
     if opcion == 1:
         datos = porcentajeXMateria()
-
     elif opcion == 2:
         datos = cantEstudiantePack5()
-        
     elif opcion == 3:
         datos = rankingMejoresFlashcards()
-        
     elif opcion == 4:
         datos = rankingMateriaFlashcards()
-        
     elif opcion == 5:
         datos = cantEstudiantesXmateria()
     elif opcion == 0:
         return "salir"
     else:
         print(f"Error: Opción '{opcion}' no válida.")
-        return False 
-
+        return False
     if datos is not None:
         generarArchivosSalida(datos)
         return True
@@ -33,26 +25,19 @@ def generarReporte(opcion):
         print("No se generaron datos para el reporte.")
         return False
 
-
-
 def generarArchivosSalida(data):
     try:
         print("-----------------------------------------------------\nGenerando archivo de salida...")
         path = "ETAPA2/ArchivosSalida/" + data[0] + ".csv"
         with open( path, 'w') as archivo:
-
             for datos in data[1]:
                 for dato in datos:
-
                     restructedDatos = str(dato) + "\n"
                     archivo.write(restructedDatos)
-                
         print(f"datos extraidos, en: {path}")
-    except (FileNotFoundError, Exception) as e:
-        print(f"Error: {e}")
-        return None
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
     return
-
 
 def porcentajeXMateria():
     temp = {}
@@ -75,17 +60,14 @@ def porcentajeXMateria():
                             if usuario["notas"][materia]["aprobada"]:
                                 temp[materia]["Porcentaje"] += 1
         datosAsubir = []
-                     
         for materiaId in temp.keys():
             materia = buscarMateriaPorIndice(int(materiaId))
             nombreMateria = materia["nombre"]
             datosAsubir.append((nombreMateria + ": ", "Aprobados:",f"{temp[materiaId]["Porcentaje"]}","Total:",f"{temp[materiaId]["total"]}"))
         return ("PorcentajeDeAprobacionXMateria",datosAsubir)
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
 
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
-    
 def cantEstudiantePack5():
     conPack = 0
     sinPack = 0
@@ -97,16 +79,13 @@ def cantEstudiantePack5():
                     conPack += 1
                 else:
                     sinPack +=1
-            
         datosAsubir = []
         datosAsubir.append(("Estudiantes que usan Pack 5 materias: ", f"{conPack}"))
         datosAsubir.append(("Estudiantes que no usan Pack 5 materias: ", f"{sinPack}"))
         return ("cantEstudiantesUsanPack5Materias",datosAsubir)
-             
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
-    
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
+
 #Funcion para calcular los porcentajes de las materias, [DESHABILITADA]
 # def calcularPorcentaje(datos):
 #     resultados = {}
@@ -124,12 +103,9 @@ def cantEstudiantePack5():
 #         }
 #     return resultados
 
-
-
 def rankingMateriaFlashcards():
     datosMaterias = []
     try:
-    
         with open("ETAPA2/Archivos/materias.json", 'r', encoding='utf-8') as archivo:
             for linea in archivo:
                 linea = linea.strip()
@@ -139,14 +115,11 @@ def rankingMateriaFlashcards():
                     cantFlashcards = len(materia["flashcards"])
                     datosMaterias.append((nombre, cantFlashcards))
         return ("rankingMateriasFlashcards", datosMaterias)
+    except (IOError, OSError):
+        print(f"Error al abrir el archivo.")
 
-    except Exception as e:
-        print(f"Error: {e}")
-        return None
-    
 def rankingMejoresFlashcards():
     datos = []
-    
     try:
         with open("ETAPA2/Archivos/materias.json", 'r', encoding='utf-8') as archivo:
             for linea in archivo:
@@ -162,13 +135,10 @@ def rankingMejoresFlashcards():
                             else:
                                 promedioFlashcard = 0
                             datos.append((pregunta[0], promedioFlashcard))
-                            
         return ("rankingFlashcards",datos)
+    except (IOError, OSError):
+        print(f"Error procesando el archivo.")
 
-    except Exception as e:
-        print(f"Error procesando el archivo: {e}")
-        return []
-    
 def cantEstudiantesXmateria():
     datos = []
     materias = []
@@ -190,10 +160,6 @@ def cantEstudiantesXmateria():
             materias.append(("Total Alumnos: ", cant))
         for materia in materias:
             datos.append((f"{materia[0]}",f"{materia[1]}"))
-        
         return ("cantidadInscriptosXMateria",datos)
-
-    except Exception as e:
-        print(f"Error procesando el archivo: {e}")
-        return []
-
+    except (IOError, OSError):
+        print(f"Error procesando el archivo:.")
