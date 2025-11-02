@@ -29,11 +29,11 @@ def generarArchivosSalida(data):
     try:
         print("-----------------------------------------------------\nGenerando archivo de salida...")
         path = "ETAPA2/ArchivosSalida/" + data[0] + ".csv"
-        with open( path, 'w') as archivo:
+        with open(path, 'w', encoding='utf-8') as archivo:
             for datos in data[1]:
-                for dato in datos:
-                    restructedDatos = str(dato) + "\n"
-                    archivo.write(restructedDatos)
+                # Convierte la tupla/lista en una línea CSV separada por comas
+                linea_csv = ",".join([str(dato) for dato in datos]) + "\n"
+                archivo.write(linea_csv)
         print(f"datos extraidos, en: {path}")
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
@@ -48,7 +48,7 @@ def porcentajeXMateria():
                 if linea:
                     materia = json.loads(linea)
                     nombreMateria = materia["id"]
-                    temp[nombreMateria] = {"total": 0, "Porcentaje": 0}
+                    temp[str(nombreMateria)] = {"total": 0, "Porcentaje": 0}
         with open("ETAPA2/Archivos/usuarios.json", 'r', encoding='utf-8') as archivo:
             for linea in archivo:
                 linea = linea.strip() 
@@ -60,11 +60,12 @@ def porcentajeXMateria():
                             if usuario["notas"][materia]["aprobada"]:
                                 temp[materia]["Porcentaje"] += 1
         datosAsubir = []
+        datosAsubir.append(("materia", "aprobados", "total"))
         for materiaId in temp.keys():
             materia = buscarMateriaPorIndice(int(materiaId))
             nombreMateria = materia["nombre"]
-            datosAsubir.append((nombreMateria + ": ", "Aprobados:",f"{temp[materiaId]["Porcentaje"]}","Total:",f"{temp[materiaId]["total"]}"))
-        return ("PorcentajeDeAprobacionXMateria",datosAsubir)
+            datosAsubir.append((nombreMateria, f"{temp[materiaId]['Porcentaje']}", f"{temp[materiaId]['total']}"))
+        return ("PorcentajeDeAprobacionXMateria", datosAsubir)
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
 
@@ -80,8 +81,8 @@ def cantEstudiantePack5():
                 else:
                     sinPack +=1
         datosAsubir = []
-        datosAsubir.append(("Estudiantes que usan Pack 5 materias: ", f"{conPack}"))
-        datosAsubir.append(("Estudiantes que no usan Pack 5 materias: ", f"{sinPack}"))
+        datosAsubir.append(("Estudiantes que usan Pack 5 materias", f"{conPack}"))
+        datosAsubir.append(("Estudiantes que no usan Pack 5 materias", f"{sinPack}"))
         return ("cantEstudiantesUsanPack5Materias",datosAsubir)
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
@@ -134,7 +135,7 @@ def rankingMejoresFlashcards():
                                 promedioFlashcard = (sum(flashcardPuntuaciones)) / len(flashcardPuntuaciones)
                             else:
                                 promedioFlashcard = 0
-                            datos.append((pregunta[0], promedioFlashcard))
+                            datos.append((pregunta[0], f"{promedioFlashcard:.2f}"))
         return ("rankingFlashcards",datos)
     except (IOError, OSError):
         print(f"Error procesando el archivo.")

@@ -1,52 +1,51 @@
-{"id": 1, "nombre": "Fundamentos de Informatica", "año": 1, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"dfadfas": ["a", "afasfas", [4]]}]}
-{"id": 2, "nombre": "Sistemas de Informacion I", "año": 1, "cuatrimestre": 1, "inscriptos": 1, "correlativas": [], "flashcards": []}
-{"id": 3, "nombre": "Pensamiento Critico y Comunicacion", "año": 1, "cuatrimestre": 1, "inscriptos": 1, "correlativas": [], "flashcards": []}
-{"id": 4, "nombre": "Teoria de Sistemas", "año": 1, "cuatrimestre": 1, "inscriptos": 1, "correlativas": [], "flashcards": []}
-{"id": 5, "nombre": "Elementos de Algebra y Geometria", "año": 1, "cuatrimestre": 1, "inscriptos": 1, "correlativas": [], "flashcards": []}
-{"id": 6, "nombre": "Programacion I", "año": 1, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"Verdadero o falso. Las tuplas son inmutables?": ["a", "verdadero!", []]}]}
-{"id": 7, "nombre": "Sistemas de Representacion", "año": 1, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 8, "nombre": "Matematica Discreta", "año": 1, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 9, "nombre": "Fundamentos de Quimica", "año": 1, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"Formula para el oxido ferrico?": ["a", "o3Fe2", []]}]}
-{"id": 10, "nombre": "Arquitectura de Computadores", "año": 1, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"cual es la mejor marca de procesadores?": ["a", "AMD", [5]]}, {"Que es un GPU?": ["a", "es un procesador especializado en manipular y modificar memoria con el objetivo de acelerar la creacion de imagenes en un frame buffer de salida para un dispositivo de display.", []]}]}
-{"id": 11, "nombre": "Algebra", "año": 1, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 12, "nombre": "Programacion II", "año": 2, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 13, "nombre": "Sistemas de Informacion II", "año": 2, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 14, "nombre": "Sistemas Operativos", "año": 2, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 15, "nombre": "Fisica I", "año": 2, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 16, "nombre": "Calculo I", "año": 2, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 17, "nombre": "Programacion III", "año": 2, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 18, "nombre": "Paradigma Orientado a Objetos", "año": 2, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 19, "nombre": "Fundamentos de Telecomunicaciones", "año": 2, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 20, "nombre": "Ingenieria de Datos I", "año": 2, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 21, "nombre": "Calculo II", "año": 2, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 22, "nombre": "Proceso de Desarrollo de Software", "año": 3, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 23, "nombre": "Seminario de Integracion Profesional", "año": 3, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 24, "nombre": "Teleinformatica y Redes", "año": 3, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 25, "nombre": "Ingenieria de Datos II", "año": 3, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 26, "nombre": "Probabilidad y Estadistica", "año": 3, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 27, "nombre": "Examen de Ingles", "año": 3, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 28, "nombre": "Aplicaciones Interactivas", "año": 3, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 29, "nombre": "Ingenieria de Software", "año": 3, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 30, "nombre": "Fisica II", "año": 3, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 31, "nombre": "Teoria de la Computacion", "año": 3, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 32, "nombre": "Estadistica Avanzada", "año": 3, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 33, "nombre": "Desarrollo de Aplicaciones I", "año": 4, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 34, "nombre": "Direccion de Proyectos Informaticos", "año": 4, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 35, "nombre": "Ciencia de Datos", "año": 4, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 36, "nombre": "Seguridad e Integridad de la Informacion", "año": 4, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 37, "nombre": "Modelado y Simulacion", "año": 4, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 38, "nombre": "Desarrollo de Aplicaciones II", "año": 4, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 39, "nombre": "Evaluacion de Proyectos Informaticos", "año": 4, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 40, "nombre": "Inteligencia Artificial", "año": 4, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 41, "nombre": "Tecnologia y Medio Ambiente", "año": 4, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 42, "nombre": "Practica Profesional Supervisada", "año": 4, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 43, "nombre": "Optativa 1", "año": 4, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 44, "nombre": "Arquitectura de Aplicaciones", "año": 5, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 45, "nombre": "Tendencias Tecnologicas", "año": 5, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 46, "nombre": "Proyecto Final de Ingenieria en Informatica", "año": 5, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 47, "nombre": "Calidad de Software", "año": 5, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 48, "nombre": "Optativa 2", "año": 5, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 49, "nombre": "Negocios Tecnologicos", "año": 5, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 50, "nombre": "Tecnologia e Innovacion", "año": 5, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 51, "nombre": "Derecho Informatico", "año": 5, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
-{"id": 52, "nombre": "Optativa 3", "año": 5, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": []}
+{"id": 1, "nombre": "Fundamentos de Informatica", "año": 1, "cuatrimestre": 1, "inscriptos": 1, "correlativas": [], "flashcards": [{"¿Qué es un algoritmo?": ["krobinson", "Un conjunto finito de pasos para resolver un problema.", [5, 4, 5]]}, {"¿Qué diferencia hay entre hardware y software?": ["tramos", "El hardware es físico, el software es lógico.", [4, 5]]}]}
+{"id": 2, "nombre": "Sistemas de Informacion I", "año": 1, "cuatrimestre": 1, "inscriptos": 2, "correlativas": [], "flashcards": [{"¿Qué es un sistema de información?": ["ayoung", "Un conjunto de elementos que interactúan para administrar datos y generar información útil.", [5, 5, 5]]}]}
+{"id": 3, "nombre": "Pensamiento Critico y Comunicacion", "año": 1, "cuatrimestre": 1, "inscriptos": 2, "correlativas": [], "flashcards": [{"¿Qué implica pensar críticamente?": ["cjones", "Analizar, evaluar y cuestionar ideas de forma racional.", [4, 4, 5]]}]}
+{"id": 4, "nombre": "Teoria de Sistemas", "año": 1, "cuatrimestre": 1, "inscriptos": 1, "correlativas": [], "flashcards": [{"¿Qué es un sistema abierto?": ["jwise", "Aquel que intercambia materia, energía o información con su entorno.", [5, 4, 5]]}]}
+{"id": 5, "nombre": "Elementos de Algebra y Geometria", "año": 1, "cuatrimestre": 1, "inscriptos": 2, "correlativas": [], "flashcards": [{"¿Qué es una recta perpendicular?": ["gwilson", "Una recta que forma un ángulo de 90° con otra.", [3, 5]]}]}
+{"id": 6, "nombre": "Programacion I", "año": 1, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"Verdadero o falso. Las tuplas son inmutables?": ["jgibson", "Verdadero!", [5]]}, {"¿Qué estructura se usa para repetir código?": ["jmitchell", "El bucle for o while.", [4, 4]]}]}
+{"id": 7, "nombre": "Sistemas de Representacion", "año": 1, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es una proyección ortogonal?": ["jsmith", "Una proyección perpendicular al plano de proyección.", [5, 5]]}]}
+{"id": 8, "nombre": "Matematica Discreta", "año": 1, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es un conjunto?": ["kjohnson", "Una colección bien definida de elementos.", [4, 5, 5]]}]}
+{"id": 9, "nombre": "Fundamentos de Quimica", "año": 1, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"Formula para el oxido ferrico?": ["krobinson", "Fe2O3", [5]]}]}
+{"id": 11, "nombre": "Algebra", "año": 1, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es una matriz identidad?": ["cjones", "Una matriz cuadrada con unos en su diagonal principal.", [5, 5]]}]}
+{"id": 12, "nombre": "Programacion II", "año": 2, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es una función recursiva?": ["jwise", "Una función que se llama a sí misma.", [4, 4, 5]]}]}
+{"id": 13, "nombre": "Sistemas de Informacion II", "año": 2, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es un ERP?": ["gwilson", "Un sistema que integra la gestión de recursos empresariales.", [5, 5]]}]}
+{"id": 14, "nombre": "Sistemas Operativos", "año": 2, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es un proceso?": ["jgibson", "Un programa en ejecución.", [4, 5]]}, {"¿Qué hace el planificador del sistema operativo?": ["jmitchell", "Asigna CPU a los procesos activos.", [5]]}]}
+{"id": 15, "nombre": "Fisica I", "año": 2, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué dice la segunda ley de Newton?": ["jsmith", "F = m * a", [5, 5, 5]]}]}
+{"id": 16, "nombre": "Calculo I", "año": 2, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Cuál es la derivada de x²?": ["kjohnson", "2x", [5, 5]]}]}
+{"id": 17, "nombre": "Programacion III", "año": 2, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es un patrón de diseño?": ["krobinson", "Una solución reutilizable a un problema común de diseño.", [5, 4, 5]]}]}
+{"id": 18, "nombre": "Paradigma Orientado a Objetos", "año": 2, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es la herencia?": ["tramos", "Un mecanismo que permite reutilizar código de una clase base.", [5, 5]]}]}
+{"id": 19, "nombre": "Fundamentos de Telecomunicaciones", "año": 2, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es la modulación?": ["ayoung", "Proceso de variar una señal portadora para transmitir información.", [4, 5]]}]}
+{"id": 20, "nombre": "Ingenieria de Datos I", "año": 2, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es un ETL?": ["cjones", "Proceso de extracción, transformación y carga de datos.", [5, 4, 5]]}]}
+{"id": 21, "nombre": "Calculo II", "año": 2, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es una integral definida?": ["jwise", "Representa el área bajo una curva entre dos límites.", [5]]}]}
+{"id": 22, "nombre": "Proceso de Desarrollo de Software", "año": 3, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es Scrum?": ["gwilson", "Un marco ágil de trabajo para gestión de proyectos.", [5, 5]]}]}
+{"id": 23, "nombre": "Seminario de Integracion Profesional", "año": 3, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Cuál es el objetivo del seminario?": ["jgibson", "Integrar conocimientos teóricos en proyectos reales.", [4, 4]]}]}
+{"id": 24, "nombre": "Teleinformatica y Redes", "año": 3, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué capa del modelo OSI usa TCP?": ["jmitchell", "La capa de transporte.", [5]]}]}
+{"id": 25, "nombre": "Ingenieria de Datos II", "año": 3, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es un data warehouse?": ["jsmith", "Un repositorio centralizado de información para análisis.", [5, 5]]}]}
+{"id": 26, "nombre": "Probabilidad y Estadistica", "año": 3, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué mide la desviación estándar?": ["kjohnson", "La dispersión de los datos respecto a la media.", [4, 5, 4]]}]}
+{"id": 27, "nombre": "Examen de Ingles", "año": 3, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué significa 'throughout'?": ["krobinson", "A lo largo de.", [5, 5]]}]}
+{"id": 28, "nombre": "Aplicaciones Interactivas", "año": 3, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es UX?": ["tramos", "Experiencia del usuario al interactuar con un producto.", [5, 4, 5]]}]}
+{"id": 29, "nombre": "Ingenieria de Software", "año": 3, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es un caso de uso?": ["ayoung", "Una descripción de cómo un usuario interactúa con el sistema.", [5, 5, 5]]}]}
+{"id": 30, "nombre": "Fisica II", "año": 3, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es la ley de Coulomb?": ["cjones", "Describe la fuerza eléctrica entre dos cargas.", [4, 5]]}]}
+{"id": 31, "nombre": "Teoria de la Computacion", "año": 3, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es un autómata finito?": ["jwise", "Un modelo matemático de una máquina con estados finitos.", [5, 5]]}]}
+{"id": 32, "nombre": "Estadistica Avanzada", "año": 3, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es la regresión lineal?": ["gwilson", "Un modelo que relaciona una variable dependiente con una o más independientes.", [5]]}]}
+{"id": 33, "nombre": "Desarrollo de Aplicaciones I", "año": 4, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es una API REST?": ["jgibson", "Una interfaz que usa HTTP y principios REST para comunicación cliente-servidor.", [5, 4, 5]]}]}
+{"id": 34, "nombre": "Direccion de Proyectos Informaticos", "año": 4, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es un diagrama de Gantt?": ["jmitchell", "Una herramienta para planificar y controlar proyectos.", [4, 5]]}]}
+{"id": 35, "nombre": "Ciencia de Datos", "año": 4, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es un modelo supervisado?": ["jsmith", "Un modelo entrenado con datos etiquetados.", [5, 5]]}]}
+{"id": 36, "nombre": "Seguridad e Integridad de la Informacion", "año": 4, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es el cifrado simétrico?": ["kjohnson", "Usa la misma clave para cifrar y descifrar.", [5, 5, 5]]}]}
+{"id": 37, "nombre": "Modelado y Simulacion", "año": 4, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es una simulación discreta?": ["krobinson", "Representa sistemas donde los cambios ocurren en momentos puntuales.", [4, 5]]}]}
+{"id": 38, "nombre": "Desarrollo de Aplicaciones II", "año": 4, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es una SPA?": ["tramos", "Single Page Application, app que carga una sola página dinámica.", [5, 5]]}]}
+{"id": 39, "nombre": "Evaluacion de Proyectos Informaticos", "año": 4, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es el ROI?": ["ayoung", "Retorno sobre la inversión, mide rentabilidad del proyecto.", [4, 5, 5]]}]}
+{"id": 40, "nombre": "Inteligencia Artificial", "año": 4, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es una red neuronal?": ["cjones", "Un modelo de aprendizaje inspirado en el cerebro humano.", [5, 5, 5]]}]}
+{"id": 41, "nombre": "Tecnologia y Medio Ambiente", "año": 4, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es la huella de carbono?": ["jwise", "La cantidad total de gases de efecto invernadero generados por una actividad.", [4, 5]]}]}
+{"id": 42, "nombre": "Practica Profesional Supervisada", "año": 4, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Cuál es el objetivo de la PPS?": ["gwilson", "Aplicar en un entorno real los conocimientos adquiridos.", [5, 5]]}]}
+{"id": 43, "nombre": "Optativa 1", "año": 4, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué define una materia optativa?": ["jgibson", "Es de elección libre según el interés del estudiante.", [4, 4, 5]]}]}
+{"id": 44, "nombre": "Arquitectura de Aplicaciones", "año": 5, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es una arquitectura en microservicios?": ["jmitchell", "Una estructura de software basada en pequeños servicios independientes.", [5, 5]]}]}
+{"id": 45, "nombre": "Tendencias Tecnologicas", "año": 5, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es la computación cuántica?": ["jsmith", "Un tipo de cómputo que usa qubits para representar información.", [5]]}]}
+{"id": 46, "nombre": "Proyecto Final de Ingenieria en Informatica", "año": 5, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué busca el proyecto final?": ["kjohnson", "Integrar todos los conocimientos de la carrera en un proyecto completo.", [5, 5, 4]]}]}
+{"id": 47, "nombre": "Calidad de Software", "año": 5, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es un test unitario?": ["krobinson", "Una prueba que verifica el correcto funcionamiento de una unidad de código.", [5, 5]]}]}
+{"id": 48, "nombre": "Optativa 2", "año": 5, "cuatrimestre": 1, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué se busca en una optativa?": ["tramos", "Profundizar un área de interés específica.", [4, 5]]}]}
+{"id": 49, "nombre": "Negocios Tecnologicos", "año": 5, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es un MVP?": ["ayoung", "Producto mínimo viable para validar una idea en el mercado.", [5, 5, 5]]}]}
+{"id": 50, "nombre": "Tecnologia e Innovacion", "año": 5, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es la innovación disruptiva?": ["cjones", "Una innovación que cambia radicalmente un mercado o industria.", [5, 5]]}]}
+{"id": 51, "nombre": "Derecho Informatico", "año": 5, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué es la Ley de Protección de Datos Personales?": ["jwise", "Norma que protege los datos personales en bases de datos.", [5, 4]]}]}
+{"id": 52, "nombre": "Optativa 3", "año": 5, "cuatrimestre": 2, "inscriptos": 0, "correlativas": [], "flashcards": [{"¿Qué caracteriza a una optativa 3?": ["gwilson", "Su enfoque flexible y adaptado a las tendencias actuales.", [4, 5]]}]}
