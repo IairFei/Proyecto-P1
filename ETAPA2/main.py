@@ -190,22 +190,24 @@ def menuLoginPrincipal():
     log("main", "INFO", f"Usuario {usuario} ha iniciado sesión correctamente.")
     menuInicial(usuario)
 
-def inicioDeSesion(usuario=None):
-    inicioDeSesionExitoso = False
+def inicioDeSesion(usuario=None, intentosRestantes=3):
     if usuario is None:
         inicioDeSesionExitoso, usuario = login()
-        intentosRestantes = 3
-        while inicioDeSesionExitoso == False and intentosRestantes > 0:
+    else:
+        inicioDeSesionExitoso = False
+
+    if inicioDeSesionExitoso:
+        return inicioDeSesionExitoso, usuario
+    else:
+        if intentosRestantes > 1:
             log("inicioDeSesion", "WARNING", f"Intento fallido de inicio de sesión para el usuario {usuario}. Intentos restantes: {intentosRestantes-1}.")
             print("Acceso denegado. Inténtelo de nuevo.")
-            intentosRestantes -= 1
-            print(f"Le quedan {intentosRestantes} intentos.")
-            if intentosRestantes == 0:
-                print("Ha agotado todos los intentos. Saliendo del programa.")
-                log("inicioDeSesion", "WARNING", f"Usuario {usuario} ha agotado todos los intentos de inicio de sesión.")
-                raise Exception("Acceso denegado.")
-            inicioDeSesionExitoso, usuario = login()               
-    return inicioDeSesionExitoso, usuario
+            print(f"Le quedan {intentosRestantes-1} intentos.")
+            return inicioDeSesion(None, intentosRestantes-1)
+        else:
+            print("Ha agotado todos los intentos. Saliendo del programa.")
+            log("inicioDeSesion", "WARNING", f"Usuario {usuario} ha agotado todos los intentos de inicio de sesión.")
+            raise SystemExit("Fin del programa por múltiples intentos fallidos de inicio de sesión.")
 
 def menuLogin(opcionElegida):
     inicioDeSesionExitoso = False
@@ -221,13 +223,13 @@ def menuLogin(opcionElegida):
             main()
     else:
         print("Saliendo del programa. ¡Hasta luego!")
-        exit()
+        raise SystemExit("Fin del programa por elección del usuario.")
     return inicioDeSesionExitoso, usuario
 
 def main():
     try:
         menuLoginPrincipal()
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, SystemExit):
         print("\nProceso finalizado por el usuario.")
 
 if __name__ == "__main__":
