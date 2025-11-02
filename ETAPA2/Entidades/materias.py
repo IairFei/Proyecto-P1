@@ -224,8 +224,7 @@ def cargarNotas(usuarioActual,materia,diaIngresado):
                         log("cargarNotas", "INFO", f"Usuario {usuario} no aprobó la materia {materia["id"]} con nota final {usuarioActual["notas"][str(materia["id"])]["final"]}, deberá recursar.")
                         eliminarMateriaDelCalendario(usuarioActual,diaIngresado)
                     guardarUsuario(usuarioActual)
-                    break
-            print("Opcion inválida. Por favor, ingrese una opcion válida.\n")            
+                    break       
     except (IOError,OSError):
         print("Error al abrir el archivo de notas.")
 

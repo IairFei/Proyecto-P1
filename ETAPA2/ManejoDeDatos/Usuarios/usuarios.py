@@ -336,6 +336,7 @@ def crearUsuariosCsv():
     except FileNotFoundError:
         with open('ETAPA2/Archivos/usuarios.csv', 'w', encoding='utf-8') as archivo:
             archivo.write("Usuario,Contraseña,Role\n")
+            archivo.write("admin,admin,Administrator\n")
     
 def crearUsuariosJson():
     try:
