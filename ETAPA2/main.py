@@ -45,7 +45,7 @@ def menuInicial(usuario):
     #DAR DE BAJA USUARIO (ADMIN)
         elif opcionElegida == 1 and tipoUsuarioEncontrado == "Administrator":
             print("Ingrese el nombre de usuario que desea dar de baja: ")
-            usuarioABorrar = input(f"{usuario}: ").strip().lower()
+            usuarioABorrar = input("Usuario: ").strip().lower()
             resultadoBaja = darDeBajaUsuario(usuarioABorrar)
             if resultadoBaja:
                 print(f"El usuario {usuarioABorrar} ha sido dado de baja del sistema.")
