@@ -309,22 +309,22 @@ def darDeBajaUsuario(usuario):
                 if linea_datos[0] == usuario:
                     datos.pop()
                     usuario_encontrado = True
-        if not usuario_encontrado:
-            print(f"El usuario {usuario} no existe en el sistema.")
-            return False
-        with open('ETAPA2/Archivos/usuarios.csv', 'wt') as archivo:
-            for dato in datos:
-                archivo.write(dato)
-        with open('ETAPA2/Archivos/usuarios.json', 'r', encoding='utf-8') as archivo:
-            lineas_modificadas = []
-            for linea in archivo:
-                usuario_json = json.loads(linea)
-                if usuario_json.get('usuario') == usuario:
-                    continue
-                lineas_modificadas.append(linea)
-        with open('ETAPA2/Archivos/usuarios.json', 'w', encoding='utf-8') as archivo:
-            archivo.writelines(lineas_modificadas)
-        seDioDeBaja = True
+        if usuario_encontrado:
+            with open('ETAPA2/Archivos/usuarios.csv', 'wt') as archivo:
+                for dato in datos:
+                    archivo.write(dato)
+            with open('ETAPA2/Archivos/usuarios.json', 'r', encoding='utf-8') as archivo:
+                lineas_modificadas = []
+                for linea in archivo:
+                    usuario_json = json.loads(linea)
+                    if usuario_json.get('usuario') == usuario:
+                        continue
+                    lineas_modificadas.append(linea)
+            with open('ETAPA2/Archivos/usuarios.json', 'w', encoding='utf-8') as archivo:
+                archivo.writelines(lineas_modificadas)
+            seDioDeBaja = True
+        else:
+            print(f"Error: Usuario {usuario} no encontrado en el archivo")
         log("darDeBajaUsuario", "INFO", f"Usuario {usuario} dado de baja correctamente del sistema.")
     except (IOError, OSError):
         print(f"Error al abrir el archivo.")
