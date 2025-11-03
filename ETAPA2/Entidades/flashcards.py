@@ -81,9 +81,9 @@ def ProponerFlashcard(usuario,idMateria):
     flashcard={}
     materia=idMateria
     print("ingrese la pregunta para la flashcard: ")
-    pregunta=input(f"{usuario}: ")
+    pregunta=input("Usuario: ")
     print("Ingrese la respuesta a la pregunta: ")
-    respuesta=input(f"{usuario}: ")
+    respuesta=input("Usuario: ")
     print("Flashcard creada con exito: \n")
     flashcard[pregunta]=respuesta,materia
     mostrarPreguntaFlashcard(pregunta)
