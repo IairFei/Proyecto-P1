@@ -218,7 +218,7 @@ def estudiarFlashcard(idMateria,usuario):
                 respuesta = str(flashcard[clave][0])
                 mostrarPreguntaFlashcard(pregunta)
                 print("1- Mostrar Respuesta")
-                print("2- Saltear            │")
+                print("2- Saltear Flashcard")
                 opcion= validarEntero(1,2)
                 if opcion==1:
                     mostrarRespuestaFlashcard(respuesta)
